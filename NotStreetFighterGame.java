@@ -15,6 +15,7 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
 
     private boolean[] keys;
     private boolean[] tapKeys;
+    private BufferedImage back;
 
     private int[] keyCodes = {
         KeyEvent.VK_ENTER,
@@ -44,8 +45,17 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
         paint(window);
     }
 
-    public void paintComponent(Graphics window) {
+    public void paint(Graphics window) {
+        Graphics2D twoDGraph = (Graphics2D) window;
+        if(back == null)
+            back = (BufferedImage)(createImage(getWidth(), getHeight()));
+
+        Graphics graphToBack = back.createGraphics();
+        //Overwrites screen with white every frame
+        graphToBack.setColor(Color.WHITE);
+        graphToBack.fillRect(0, 0, getWidth(), getHeight());
         
+        twoDGraph.drawImage(back, null, 0, 0);
     }
 
     @Override
