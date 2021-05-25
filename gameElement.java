@@ -1,13 +1,13 @@
 import java.awt.*;
 
-public abstract class gameElement
+public abstract class GameElement
 {
   private int x;
   private int y;
   private int width;
   private int height;
 
-  public gameElement()
+  public GameElement()
   {
     x = 10;
     y = 10;
@@ -15,7 +15,7 @@ public abstract class gameElement
     height = 10;
   }
 
-  public gameElement(int x, int y)
+  public GameElement(int x, int y)
   {
     this.x = x;
     this.y = y;
@@ -23,7 +23,7 @@ public abstract class gameElement
     height = 10;
   }
 
-  public gameElement(int x, int y, int w, int h)
+  public GameElement(int x, int y, int w, int h)
   {
     this.x = x;
     this.y = y;
@@ -77,7 +77,7 @@ public abstract class gameElement
     return height;
   }
 
-  public boolean touching(gameElement other) {
+  public boolean touching(GameElement other) {
     Rectangle thisRect = new Rectangle(x, y, width, height);
     Rectangle otherRect = new Rectangle(other.x, other.y, other.width, other.height);
     return thisRect.intersects(otherRect);
@@ -87,7 +87,8 @@ public abstract class gameElement
     //     (this.y + this.height >= other.y && this.y <= other.y));
   }
 
-  public abstract void move(String direction);
+  
+  public abstract void move(int x, int y);
   public abstract void draw(Graphics window);
 
   public String toString()

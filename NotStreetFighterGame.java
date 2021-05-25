@@ -65,7 +65,8 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
         } catch(Exception e) {
 
         }
-        window.drawImage(im,100,100,100,100,null);
+        
+
         Graphics2D twoDGraph = (Graphics2D) window;
         if(back == null)
             back = (BufferedImage)(createImage(getWidth(), getHeight()));
@@ -78,6 +79,8 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
         graphToBack.setColor(Color.BLACK);
         graphToBack.drawString(Arrays.toString(tapKeys), 500, 300);
         graphToBack.drawString(Arrays.toString(tapKeysPrev), 500, 400);
+
+        graphToBack.drawImage(im, 100, 100, 100, 100, null);
         
         twoDGraph.drawImage(back, null, 0, 0);
     }
