@@ -6,6 +6,7 @@ import java.io.*;
 
 public class Main extends JFrame {
   private Main(String arg){
+	  System.out.println();
     if (arg == null ) {
         arg = "Person.png";
     } 
