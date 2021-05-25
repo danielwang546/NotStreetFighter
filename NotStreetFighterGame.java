@@ -9,6 +9,10 @@ import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.net.URL;
+import javax.swing.*;
+import java.awt.*;
+import javax.imageio.*;
 
 public class NotStreetFighterGame extends Canvas implements KeyListener, Runnable 
 {
@@ -44,8 +48,15 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
         paint(window);
     }
 
-    public void paintComponent(Graphics window) {
-        
+    public void paint(Graphics window) {
+        Image im = null;
+        try {
+            URL url = getClass().getResource("Person.png");
+            im = ImageIO.read(url);
+        } catch(Exception e) {
+
+        }
+        window.drawImage(im,100,100,100,100,null);
     }
 
     @Override
