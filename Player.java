@@ -15,14 +15,19 @@ import java.awt.*;
 import javax.imageio.*;
 import java.util.Arrays;
 
-public class Player extends gameElement{
+public class Player extends GameElement{
 
-    private int speed;
+    private int xSpeed;
+    private int ySpeed;
+    private int yAcceleration;
     private Image image;
     
     public Player(){
         super();
-        speed = 2;
+        xSpeed = 0;
+        ySpeed = 0;
+        yAcceleration = 0;
+        
 
         try{
             URL url = getClass().getResource("ship.jpg");
@@ -32,19 +37,43 @@ public class Player extends gameElement{
         }
     }
 
-    public void move(String direction){
-        if(direction.equals("LEFT")){
-            setX(getX() - speed);
-        } else if(direction.equals("RIGHT")){
-            setX(getX() + speed);
-        } else if(direction.equals("UP")){
-            setY(getY() - speed);
-        } else if(direction.equals("DOWN")){
-            setY(getY() + speed);
-        }
+    public void move(int x, int y){
+       setX(getX() + x);
+       setY(getY() + y);
     }
 
     public void draw(Graphics window){
+        //applyGravity();
+        move(xSpeed, ySpeed);
         window.drawImage(image,getX(),getY(),getWidth(),getHeight(),null);
     }
+
+    public void setXSpeed(int s){
+        xSpeed = s;
+    }
+
+    public void setYSpeed(int s){
+        ySpeed = s;
+    }
+
+    public void setYAcelleration(int s){
+        yAcceleration = s;
+    }
+
+    public int getXSpeed(){
+        return xSpeed;
+    }
+
+    public int getYSpeed(){
+        return ySpeed;
+    }
+
+    public int getYAccelteration(){
+        return yAcceleration;
+    }
+/*
+    public void applyGravity(){
+
+    }
+*/
 }
