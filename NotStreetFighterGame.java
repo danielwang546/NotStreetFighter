@@ -22,6 +22,7 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
     private boolean[] tapKeys;
     private boolean[] tapKeysPrev;
     private BufferedImage back;
+    private Player player1;
 
     private int[] keyCodes = {
         KeyEvent.VK_ENTER,
@@ -46,6 +47,8 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
         keys = new boolean[keyCodes.length];
         tapKeys = new boolean[tapKeyCodes.length];
         tapKeysPrev = new boolean[tapKeyCodes.length];
+
+        player1 = new Player();
 
         this.addKeyListener(this);
         new Thread(this).start();
@@ -83,6 +86,21 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
         graphToBack.drawImage(im, 100, 100, 100, 100, null);
         
         twoDGraph.drawImage(back, null, 0, 0);
+
+        if(keys[0]){
+             player1.move(-player1.getXSpeed(), 0); 
+        }
+        if(keys[1]) {
+              player1.move(player1.getXSpeed(), 0);
+        }
+        if(keys[2]) {
+              player1.move(0, -player1.getYSpeed());
+        }
+        if(keys[3]) {
+              player1.move(0, player1.getYSpeed());
+        }
+
+        player1.draw(graphToBack);
     }
 
     @Override
@@ -103,6 +121,23 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
                 tapKeysPrev[i] = true;
             }
         }
+
+        if (e.getKeyCode() == KeyEvent.VK_A) {
+            keys[0] = true;
+        }
+        
+        if (e.getKeyCode() == KeyEvent.VK_D) {
+            keys[1] = true;
+        }
+
+        if (e.getKeyCode() == KeyEvent.VK_W) {
+            keys[2] = true;
+        }
+
+        if (e.getKeyCode() == KeyEvent.VK_S) {
+            keys[3] = true;
+        }
+    
     }
 
     @Override
@@ -117,6 +152,22 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
             if(e.getKeyCode() == tapKeyCodes[i]) {
                 tapKeysPrev[i] = false;
             }
+        }
+
+        if (e.getKeyCode() == KeyEvent.VK_A) {
+            keys[0] = false;
+        }
+
+        if (e.getKeyCode() == KeyEvent.VK_D) {
+            keys[1] = false;
+        }
+
+        if (e.getKeyCode() == KeyEvent.VK_W) {
+            keys[2] = false;
+        }
+
+        if (e.getKeyCode() == KeyEvent.VK_S) {
+            keys[3] = false;
         }
     }
 
