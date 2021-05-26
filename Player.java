@@ -26,7 +26,7 @@ public class Player extends GameElement{
         super();
         xSpeed = 0;
         ySpeed = 0;
-        yAcceleration = 0;
+        yAcceleration = 1;
         
 
         try{
@@ -71,9 +71,14 @@ public class Player extends GameElement{
     public int getYAccelteration(){
         return yAcceleration;
     }
-/*
-    public void applyGravity(){
 
+    public void applyGravity(){
+        //if(touchingfloor){
+            //ySpeed = 0;
+        //}
+        //else{
+            ySpeed += yAcceleration;
+        //}
     }
-*/
+
 }
