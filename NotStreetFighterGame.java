@@ -11,6 +11,7 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.net.URL;
 import javax.swing.*;
+
 import java.awt.*;
 import javax.imageio.*;
 import java.util.Arrays;
@@ -20,7 +21,6 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
 
     private boolean[] keys;
     private boolean[] tapKeys;
-    private boolean[] tapKeysPrev;
     private BufferedImage back;
     private Player player1;
 
@@ -41,12 +41,13 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
         KeyEvent.VK_SPACE
     };
 
+    private ArrayList<Player.PlayerState> p1Queue;
+
     public NotStreetFighterGame() {
         setBackground(Color.WHITE);
 
         keys = new boolean[keyCodes.length];
         tapKeys = new boolean[tapKeyCodes.length];
-        tapKeysPrev = new boolean[tapKeyCodes.length];
 
         player1 = new Player();
 
@@ -80,8 +81,6 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
         graphToBack.fillRect(0, 0, getWidth(), getHeight());
 
         graphToBack.setColor(Color.BLACK);
-        graphToBack.drawString(Arrays.toString(tapKeys), 500, 300);
-        graphToBack.drawString(Arrays.toString(tapKeysPrev), 500, 400);
 
         graphToBack.drawImage(im, 100, 100, 100, 100, null);
         
@@ -111,33 +110,6 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
             }
         }  
 
-        for(int i = 0; i < tapKeys.length; i++) {
-            //only updates if tapKeysPrev was previously false and the key is pressed
-            tapKeys[i] = !tapKeysPrev[i] && e.getKeyCode() == tapKeyCodes[i];
-        }
-
-        for(int i = 0; i < tapKeyCodes.length; i++) {
-            if(e.getKeyCode() == tapKeyCodes[i]) {
-                tapKeysPrev[i] = true;
-            }
-        }
-
-        if (e.getKeyCode() == KeyEvent.VK_A) {
-            keys[0] = true;
-        }
-        
-        if (e.getKeyCode() == KeyEvent.VK_D) {
-            keys[1] = true;
-        }
-
-        if (e.getKeyCode() == KeyEvent.VK_W) {
-            keys[2] = true;
-        }
-
-        if (e.getKeyCode() == KeyEvent.VK_S) {
-            keys[3] = true;
-        }
-    
     }
 
     @Override
@@ -146,28 +118,6 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
             if(e.getKeyCode() == keyCodes[i]) {
                 keys[i] = false;
             }
-        }
-
-        for(int i = 0; i < tapKeyCodes.length; i++) {
-            if(e.getKeyCode() == tapKeyCodes[i]) {
-                tapKeysPrev[i] = false;
-            }
-        }
-
-        if (e.getKeyCode() == KeyEvent.VK_A) {
-            keys[0] = false;
-        }
-
-        if (e.getKeyCode() == KeyEvent.VK_D) {
-            keys[1] = false;
-        }
-
-        if (e.getKeyCode() == KeyEvent.VK_W) {
-            keys[2] = false;
-        }
-
-        if (e.getKeyCode() == KeyEvent.VK_S) {
-            keys[3] = false;
         }
     }
 
