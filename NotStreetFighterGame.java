@@ -18,6 +18,8 @@ import java.util.Arrays;
 
 public class NotStreetFighterGame extends Canvas implements KeyListener, Runnable 
 {
+    private long beforeTime, deltaTime, initTime;
+    private int counter = 0;
 
     private boolean[] keys;
     private boolean[] tapKeys;
@@ -46,6 +48,9 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
     public NotStreetFighterGame() {
         setBackground(Color.WHITE);
 
+        beforeTime = 0;
+        initTime = System.currentTimeMillis();
+
         keys = new boolean[keyCodes.length];
         tapKeys = new boolean[tapKeyCodes.length];
 
@@ -69,7 +74,8 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
         } catch(Exception e) {
 
         }
-        
+        deltaTime = System.currentTimeMillis() - beforeTime;
+        double frameRate = 1000.0 / deltaTime;
 
         Graphics2D twoDGraph = (Graphics2D) window;
         if(back == null)
@@ -83,8 +89,9 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
         graphToBack.setColor(Color.BLACK);
 
         graphToBack.drawImage(im, 100, 100, 100, 100, null);
+        graphToBack.drawString(frameRate + " FPS", 5, 10);
         
-        twoDGraph.drawImage(back, null, 0, 0);
+        
 
         if(keys[0]){
              player1.move(-player1.getXSpeed(), 0); 
@@ -100,6 +107,19 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
         }
 
         player1.draw(graphToBack);
+
+        if(System.currentTimeMillis() - initTime < 10000 && counter < 10000) {
+            counter++;
+        } else {
+            graphToBack.drawString(counter + " frames in 10s", 5, 30);
+        }
+
+        //draws everything from graphToBack to the image
+        twoDGraph.drawImage(back, null, 0, 0);
+
+        beforeTime = System.currentTimeMillis();
+
+        
     }
 
     @Override
@@ -119,6 +139,14 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
                 keys[i] = false;
             }
         }
+
+        for(int i = 0; i < tapKeyCodes.length; i++) {
+            if(e.getKeyCode() == tapKeyCodes[i]) {
+                tapKeys[i] = true;
+            } else {
+                tapKeys[i] = false;
+            }
+        }
     }
 
     @Override
@@ -130,7 +158,7 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
     public void run() {
         try {
             while(true) {
-                Thread.currentThread().sleep(5);
+                Thread.sleep(5);
                 repaint();
             }
         } catch (Exception e) {
