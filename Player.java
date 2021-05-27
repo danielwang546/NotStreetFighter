@@ -81,7 +81,7 @@ public class Player extends GameElement{
     }
 
     public void draw(Graphics window){
-        //applyGravity();
+        
         move(xSpeed, ySpeed);
         updateImage();
         window.drawImage(image,getX(),getY(),getWidth(),getHeight(),null);

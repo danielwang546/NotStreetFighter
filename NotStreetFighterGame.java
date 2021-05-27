@@ -86,12 +86,10 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
         graphToBack.setColor(Color.BLACK);
 
         graphToBack.drawString(frameRate + " FPS", 5, 10);
-        
-        
 
-        /*if(keys[2]){
-            player1.setYSpeed(-1);
-        }*/
+        if(keys[2]){
+            player1.setYSpeed(-15);
+        }
         if(keys[3]) {
             player1.setXSpeed(-5);
         }
@@ -103,6 +101,12 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
         }
         if (!keys[3] && !keys[5]) {
             player1.setXSpeed(0);
+        }
+
+        if(player1.getY() < 400) {
+            player1.applyGravity();
+        } else {
+            player1.setYSpeed(Math.min(player1.getYSpeed(), 0));
         }
 
         player1.draw(graphToBack);
