@@ -62,7 +62,7 @@ public class Player extends GameElement{
         state = PlayerState.IDLE;
 
         try{
-            URL url = getClass().getResource("ship.jpg");
+            URL url = getClass().getResource("");
             image = ImageIO.read(url);
         } catch(Exception e){
             e.printStackTrace();

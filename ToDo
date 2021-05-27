@@ -1,16 +1,50 @@
 -----------TODO LIST-------------
 
+FRAMEWORK:
+ 
+ 1) Time based frames
+
+ 2) DEFINITIVELY outline basic class framework - Everyone
+
+PLAYER:
+
+ 1) Player physics - James
+ 
+ 2) Player collision (ground, platforms, other players)
+ 
+ 3) Player state
+ 
+GAMEPLAY:
+
+ 1) Attack boxes
+ 
+ 2) Multiple attacks?
+ 
+ 3) Blocking
+ 
+ 4) Interesting movement mechanics?
+ 
+??ENVIRONMENT??: 
+
+ 1) Draw environment
+ 	-Background
+ 	-Platforms
+ 	-Ground
+ 	
+ 2) Interact with environment
+ 
+ 3) 
+ 
+VISUALS:
+
  1) Draw animations - Nathan/James
 	- Walk X
 	- Jump
 	- Crouch
-	- Punch X (kinda)
+	- Punch X
 	- Block
 
- 2) Finish player gravity - James
+ 2) ***Write animations in code*** - Nathan
 
- 3) ***Write animations in code*** - Nathan
-
- 4) Animation Queue - Daniel
-
- 5) DEFINITIVELY outline basic class framework - Everyone
+ 3) Animation Queue - Daniel
+ 
