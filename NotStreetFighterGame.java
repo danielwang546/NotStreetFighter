@@ -109,7 +109,7 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
 
         player1.draw(graphToBack);
 
-        if(System.currentTimeMillis() - initTime < 10000 && counter < 10000) {
+        if(currTime - initTime < 10000 && counter < 10000) {
             counter++;
         } else {
             graphToBack.drawString(counter + " frames in 10s", 5, 30);
