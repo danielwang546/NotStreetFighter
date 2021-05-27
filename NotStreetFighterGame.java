@@ -55,7 +55,7 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
         keys = new boolean[keyCodes.length];
         tapKeys = new boolean[tapKeyCodes.length];
 
-        player1 = new Player();
+        player1 = new Player(1);
 
         platform = new Ground(0,500,1600,20);
 
@@ -137,8 +137,6 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
         for(int i = 0; i < tapKeyCodes.length; i++) {
             if(e.getKeyCode() == tapKeyCodes[i]) {
                 tapKeys[i] = true;
-            } else {
-                tapKeys[i] = false;
             }
         }
     }
