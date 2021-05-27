@@ -94,17 +94,17 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
         
         
 
-        if(keys[0]){
-             player1.move(-player1.getXSpeed(), 0); 
-        }
-        if(keys[1]) {
-              player1.move(player1.getXSpeed(), 0);
-        }
-        if(keys[2]) {
-              player1.move(0, -player1.getYSpeed());
+        if(keys[2]){
+             player1.move(0, -player1.getYSpeed()); 
         }
         if(keys[3]) {
+              player1.move(-player1.getXSpeed(), 0);
+        }
+        if(keys[4]) {
               player1.move(0, player1.getYSpeed());
+        }
+        if(keys[5]) {
+              player1.move(player1.getXSpeed(), 0);
         }
 
         player1.draw(graphToBack);
