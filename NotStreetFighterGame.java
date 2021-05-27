@@ -18,7 +18,7 @@ import java.util.Arrays;
 
 public class NotStreetFighterGame extends Canvas implements KeyListener, Runnable 
 {
-    private long beforeTime, deltaTime, initTime;
+    private long beforeTime, deltaTime, currTime, initTime;
     private int counter = 0;
 
     private boolean[] keys;
@@ -74,8 +74,9 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
         } catch(Exception e) {
 
         }
-        deltaTime = System.currentTimeMillis() - beforeTime;
-        double frameRate = 1000.0 / deltaTime;
+        currTime = System.currentTimeMillis();
+        deltaTime = currTime - beforeTime;
+        double frameRate = ((int)(100000.0/deltaTime))/100.0; //magic to get the framerate in Hz, truncated to 2 decimals
 
         Graphics2D twoDGraph = (Graphics2D) window;
         if(back == null)
@@ -114,12 +115,10 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
             graphToBack.drawString(counter + " frames in 10s", 5, 30);
         }
 
-        //draws everything from graphToBack to the image
+        //draws everything from graphToBack to the image (put all draws before this line)
         twoDGraph.drawImage(back, null, 0, 0);
 
-        beforeTime = System.currentTimeMillis();
-
-        
+        beforeTime = currTime;
     }
 
     @Override
