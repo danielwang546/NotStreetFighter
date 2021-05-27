@@ -25,6 +25,7 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
     private boolean[] tapKeys;
     private BufferedImage back;
     private Player player1;
+    private Ground platform;
 
     private int[] keyCodes = {
         KeyEvent.VK_ENTER,
@@ -56,6 +57,8 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
 
         player1 = new Player();
 
+        platform = new Ground(0,500,1600,20);
+
         this.addKeyListener(this);
         new Thread(this).start();
 
@@ -67,13 +70,6 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
     }
 
     public void paint(Graphics window) {
-        Image im = null;
-        try {
-            URL url = getClass().getResource("Person.png");
-            im = ImageIO.read(url);
-        } catch(Exception e) {
-
-        }
         currTime = System.currentTimeMillis();
         deltaTime = currTime - beforeTime;
         double frameRate = ((int)(100000.0/deltaTime))/100.0; //magic to get the framerate in Hz, truncated to 2 decimals
@@ -89,7 +85,6 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
 
         graphToBack.setColor(Color.BLACK);
 
-        graphToBack.drawImage(im, 100, 100, 100, 100, null);
         graphToBack.drawString(frameRate + " FPS", 5, 10);
         
         
