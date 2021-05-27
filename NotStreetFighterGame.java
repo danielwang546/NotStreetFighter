@@ -57,7 +57,7 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
 
         player1 = new Player(1);
 
-        platform = new Ground(0,500,1600,20);
+        platform = new Ground(0,600,1600,20);
 
         this.addKeyListener(this);
         new Thread(this).start();
@@ -89,20 +89,24 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
         
         
 
-        if(keys[2]){
-             player1.move(0, -player1.getYSpeed()); 
-        }
+        /*if(keys[2]){
+            player1.setYSpeed(-1);
+        }*/
         if(keys[3]) {
-              player1.move(-player1.getXSpeed(), 0);
+            player1.setXSpeed(-5);
         }
-        if(keys[4]) {
-              player1.move(0, player1.getYSpeed());
-        }
+        /*if(keys[4]) {
+            player1.setYSpeed(1);
+        }*/
         if(keys[5]) {
-              player1.move(player1.getXSpeed(), 0);
+            player1.setXSpeed(5);
+        }
+        if (!keys[3] && !keys[5]) {
+            player1.setXSpeed(0);
         }
 
         player1.draw(graphToBack);
+        platform.draw(graphToBack);
 
         if(currTime - initTime < 10000 && counter < 10000) {
             counter++;

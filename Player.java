@@ -74,8 +74,8 @@ public class Player extends GameElement{
     }
 
     public void move(int x, int y){
-       setX(getX() + x);
-       setY(getY() + y);
+       setX(getX()+x);
+       setY(getY()+y);
     }
 
     public void draw(Graphics window){
