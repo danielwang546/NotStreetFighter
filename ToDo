@@ -1,5 +1,16 @@
 -----------TODO LIST-------------
 
  1) Draw animations - Nathan/James
+	- Walk X
+	- Jump
+	- Crouch
+	- Punch X (kinda)
+	- Block
+
  2) Finish player gravity - James
- 3) Write animations in code
+
+ 3) ***Write animations in code*** - Nathan
+
+ 4) Animation Queue - Daniel
+
+ 5) DEFINITIVELY outline basic class framework - Everyone
