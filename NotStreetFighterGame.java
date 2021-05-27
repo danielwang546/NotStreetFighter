@@ -25,6 +25,7 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
     private boolean[] tapKeys;
     private BufferedImage back;
     private Player player1;
+    private Ground platform;
 
     private int[] keyCodes = {
         KeyEvent.VK_ENTER,
@@ -54,7 +55,9 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
         keys = new boolean[keyCodes.length];
         tapKeys = new boolean[tapKeyCodes.length];
 
-        player1 = new Player();
+        player1 = new Player(1);
+
+        platform = new Ground(0,500,1600,20);
 
         this.addKeyListener(this);
         new Thread(this).start();
@@ -67,13 +70,6 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
     }
 
     public void paint(Graphics window) {
-        Image im = null;
-        try {
-            URL url = getClass().getResource("Person.png");
-            im = ImageIO.read(url);
-        } catch(Exception e) {
-
-        }
         currTime = System.currentTimeMillis();
         deltaTime = currTime - beforeTime;
         double frameRate = ((int)(100000.0/deltaTime))/100.0; //magic to get the framerate in Hz, truncated to 2 decimals
@@ -89,22 +85,21 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
 
         graphToBack.setColor(Color.BLACK);
 
-        graphToBack.drawImage(im, 100, 100, 100, 100, null);
         graphToBack.drawString(frameRate + " FPS", 5, 10);
         
         
 
-        if(keys[0]){
-             player1.move(-player1.getXSpeed(), 0); 
-        }
-        if(keys[1]) {
-              player1.move(player1.getXSpeed(), 0);
-        }
-        if(keys[2]) {
-              player1.move(0, -player1.getYSpeed());
+        if(keys[2]){
+             player1.move(0, -player1.getYSpeed()); 
         }
         if(keys[3]) {
+              player1.move(-player1.getXSpeed(), 0);
+        }
+        if(keys[4]) {
               player1.move(0, player1.getYSpeed());
+        }
+        if(keys[5]) {
+              player1.move(player1.getXSpeed(), 0);
         }
 
         player1.draw(graphToBack);
@@ -142,8 +137,6 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
         for(int i = 0; i < tapKeyCodes.length; i++) {
             if(e.getKeyCode() == tapKeyCodes[i]) {
                 tapKeys[i] = true;
-            } else {
-                tapKeys[i] = false;
             }
         }
     }

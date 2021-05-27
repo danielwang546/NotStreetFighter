@@ -20,11 +20,12 @@ public class Player extends GameElement{
 
     public enum PlayerState {
         //values will be filled in when more animations are added
-        IDLE(0, ""),
+        IDLE(1, "Idle"),
         CROUCHING(0, ""),
-        WALKING(9, "newGuyWalk"),
+        IDLE_CROUCH(1, ""),
+        WALKING(9, "Walk"),
         JUMPING(0, ""),
-        ATTACKING(0, ""),
+        PUNCHING(9, "Punch"),
         BLOCKING(0, "");
 
 
@@ -48,18 +49,21 @@ public class Player extends GameElement{
     private int xSpeed;
     private int ySpeed;
     private int yAcceleration;
+    private int pID;
 
     private Image image;
     private int currFrame = 0;
     private PlayerState state;
 
-    public Player(){
-        super();
+    public Player(int id){
+        super(400, 400, 170, 200);
         xSpeed = 0;
         ySpeed = 0;
         yAcceleration = 1;
+
+        pID = id;
         
-        state = PlayerState.IDLE;
+        state = PlayerState.PUNCHING;
 
         try{
             URL url = getClass().getResource("");
@@ -77,15 +81,15 @@ public class Player extends GameElement{
     public void draw(Graphics window){
         //applyGravity();
         move(xSpeed, ySpeed);
-        //updateImage();
+        updateImage();
         window.drawImage(image,getX(),getY(),getWidth(),getHeight(),null);
     }
 
     private void updateImage() {
-        //increments currFrame, possible values 1 - state.frames
-        currFrame = currFrame % state.frames + 1;
+        //increments currFrame, possible values 0 - state.frames-1
+        currFrame = (currFrame + 1) % state.frames;
         try{
-            URL url = getClass().getResource("/Animations/" + state.fileName + "/" + state.fileName + ".png");
+            URL url = getClass().getResource("/Animations/Player" + pID + state.fileName + "/Player" + pID + state.fileName + "000" + currFrame + ".png");
             image = ImageIO.read(url);
         } catch(Exception e){
             e.printStackTrace();
