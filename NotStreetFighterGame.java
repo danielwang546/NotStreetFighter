@@ -55,7 +55,7 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
         keys = new boolean[keyCodes.length];
         tapKeys = new boolean[tapKeyCodes.length];
 
-        player1 = new Player(1);
+        player1 = new Player(2);
 
         platform = new Ground(0,600,1600,20);
 
