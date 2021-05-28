@@ -95,7 +95,7 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
         
         if(keys[2]) {
             player1.setXSpeed(-5);
-            player1.setFacing(true);
+            player1.setFacingRight(false);
             player1.setState(Player.PlayerState.WALKING);
             //player1.setState(Player.PlayerState.WALKING);
         }
@@ -103,7 +103,7 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
             player1.setYSpeed(1);
         }*/
         if(keys[4]) {
-            player1.setFacing(false);
+            player1.setFacingRight(true);
             player1.setXSpeed(5);
             player1.setState(Player.PlayerState.WALKING);
         }
@@ -114,17 +114,20 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
 
         if(keys[6]) {
             player2.setXSpeed(-5);
-            //player2.setState(Player.PlayerState.WALKING);
+            player2.setState(Player.PlayerState.WALKING);
+            player2.setFacingRight(false);
         }
         /*if(keys[7]) {
             player2.setYSpeed(1);
         }*/
         if(keys[8]) {
             player2.setXSpeed(5);
+            player2.setState(Player.PlayerState.WALKING);
+            player2.setFacingRight(true);
         }
         if (!keys[6] && !keys[8]) {
             player2.setXSpeed(0);
-            //player2.setState(Player.PlayerState.IDLE);
+            player2.setState(Player.PlayerState.IDLE);
         }
 
         

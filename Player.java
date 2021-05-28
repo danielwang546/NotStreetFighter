@@ -92,7 +92,7 @@ public class Player extends GameElement{
         //applyGravity();
         move(xSpeed, ySpeed);
         updateImage();
-        if(!facingRight) {
+        if(facingRight) {
             window.drawImage(image, getX(), getY(), getWidth(), getHeight(),null);
         } else {
             window.drawImage(image, getX() + getWidth(), getY(), -getWidth(), getHeight(), null);
@@ -139,7 +139,7 @@ public class Player extends GameElement{
         ySpeed += yAcceleration;
     }
 
-    public void setFacing(boolean isFacingRight) {
+    public void setFacingRight(boolean isFacingRight) {
         facingRight = isFacingRight;
     }
 
