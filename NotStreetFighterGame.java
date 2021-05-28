@@ -43,8 +43,8 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
     };
 
     private int[] tapKeyCodes = {
-        KeyEvent.VK_SPACE,
-        KeyEvent.VK_W
+        KeyEvent.VK_W,
+        KeyEvent.VK_UP
     };
 
     private ArrayList<Player.PlayerState> p1Queue;
@@ -108,14 +108,39 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
             //player1.setState(Player.PlayerState.IDLE);
         }
 
+        if(keys[6]) {
+            player2.setXSpeed(-5);
+            //player2.setState(Player.PlayerState.WALKING);
+        }
+        /*if(keys[7]) {
+            player2.setYSpeed(1);
+        }*/
+        if(keys[8]) {
+            player2.setXSpeed(5);
+        }
+        if (!keys[6] && !keys[8]) {
+            player2.setXSpeed(0);
+            //player2.setState(Player.PlayerState.IDLE);
+        }
+
         
 
         if (!player1.touching(platform)) {
             player1.applyGravity();
         } else {
             player1.setYSpeed(0);
-            if(tapKeys[1]){
+            if(tapKeys[0]){
                 player1.setYSpeed(-20);
+                tapKeys[0] = false;
+            }
+        }
+
+        if (!player2.touching(platform)) {
+            player2.applyGravity();
+        } else {
+            player2.setYSpeed(0);
+            if(tapKeys[1]){
+                player2.setYSpeed(-20);
                 tapKeys[1] = false;
             }
         }
