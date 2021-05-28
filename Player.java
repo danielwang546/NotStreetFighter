@@ -58,6 +58,7 @@ public class Player extends GameElement{
     private int xSpeed;
     private int ySpeed;
     private int yAcceleration;
+    private boolean facingRight = true;
     private int pID;
 
     private Image image;
@@ -83,15 +84,19 @@ public class Player extends GameElement{
     }
 
     public void move(int x, int y){
-       setX(getX()+x);
-       setY(getY()+y);
+       setX(getX() + x);
+       setY(getY() + y);
     }
 
     public void draw(Graphics window){
         //applyGravity();
         move(xSpeed, ySpeed);
         updateImage();
-        window.drawImage(image,getX(),getY(),getWidth(),getHeight(),null);
+        if(!facingRight) {
+            window.drawImage(image, getX(), getY(), getWidth(), getHeight(),null);
+        } else {
+            window.drawImage(image, getX() + getWidth(), getY(), -getWidth(), getHeight(), null);
+        }
     }
 
     private void updateImage() {
@@ -131,12 +136,11 @@ public class Player extends GameElement{
     }
 
     public void applyGravity(){
-        //if(touchingfloor){
-            //ySpeed = 0;
-        //}
-        //else{
-            ySpeed += yAcceleration;
-        //}
+        ySpeed += yAcceleration;
+    }
+
+    public void setFacing(boolean isFacingRight) {
+        facingRight = isFacingRight;
     }
 
     public void setState(PlayerState state) {
