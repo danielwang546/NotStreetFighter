@@ -24,11 +24,11 @@ public class Player extends GameElement{
     public static enum PlayerState {
         //values will be filled in when more animations are added
         IDLE(1, 1, "Idle"),
-        CROUCHING(0, 1, ""),
+        CROUCHING(9, 1, "Crouch"),
         IDLE_CROUCH(1, 1, ""),
-        WALKING(9, 1, "Walk"),
+        WALKING(9, 3, "Walk"),
         JUMPING(0, 1, ""),
-        PUNCHING(9, 1, "Punch"),
+        PUNCHING(9, 2, "Punch"),
         BLOCKING(0, 1, "");
 
 
@@ -46,6 +46,10 @@ public class Player extends GameElement{
             return frames;
         }
 
+        private int frameTime() {
+            return frameTime;
+        }
+
         private String fileName() {
             return fileName;
         }
@@ -61,15 +65,15 @@ public class Player extends GameElement{
     private int frameCount = 0;
     private PlayerState state;
 
-    public Player(int id){
-        super(400, 400, 170, 200);
+    public Player(int id, int x, int y){
+        super(x, y, 170, 200);
         xSpeed = 0;
         ySpeed = 0;
         yAcceleration = 1;
 
         pID = id;
         
-        state = PlayerState.WALKING;
+        state = PlayerState.IDLE;
 
         try{
             image = ImageIO.read(new FileInputStream(new File("Animations/Player" + pID + "Idle/Player" + pID + "Idle0000.png")));
@@ -93,7 +97,7 @@ public class Player extends GameElement{
     private void updateImage() {
         //increments currFrame, possible values 0 - state.frames-1
     	frameCount = (frameCount+1) % state.frameTime;
-    	if(frameCount%state.frameTime==0)
+    	if(frameCount%state.frameTime == 0)
     		currFrame = (currFrame + 1) % state.frames;
         try{
             image = ImageIO.read(new FileInputStream(new File("Animations/Player" + pID + state.fileName + "/Player" + pID + state.fileName + "000" + currFrame + ".png")));
@@ -136,8 +140,10 @@ public class Player extends GameElement{
     }
 
     public void setState(PlayerState state) {
-        this.state = state;
-        currFrame = 0;
+        if(state != this.state) {
+            this.state = state;
+            currFrame = 0;
+        }
     }
 
     public PlayerState getState() {

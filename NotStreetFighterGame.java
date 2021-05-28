@@ -27,6 +27,7 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
     private boolean[] stillPressed;
     private BufferedImage back;
     private Player player1;
+    private Player player2;
     private Ground platform;
 
     private int[] keyCodes = {
@@ -58,7 +59,9 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
         tapKeys = new boolean[tapKeyCodes.length];
         stillPressed = new boolean[tapKeyCodes.length];
 
-        player1 = new Player(1);
+        player1 = new Player(1, 400, 400);
+        player2 = new Player(2, 1000, 400);
+        player2.setState(Player.PlayerState.PUNCHING);
 
         platform = new Ground(0,600,1600,20);
 
@@ -105,8 +108,7 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
             //player1.setState(Player.PlayerState.IDLE);
         }
 
-        player1.draw(graphToBack);
-        platform.draw(graphToBack);
+        
 
         if (!player1.touching(platform)) {
             player1.applyGravity();
@@ -123,6 +125,10 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
         } else {
             graphToBack.drawString(counter + " frames in 10s", 5, 30);
         }
+
+        player1.draw(graphToBack);
+        player2.draw(graphToBack);
+        platform.draw(graphToBack);
 
         //draws everything from graphToBack to the image (put all draws before this line)
         twoDGraph.drawImage(back, null, 0, 0);
