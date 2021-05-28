@@ -1,3 +1,4 @@
+
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -30,7 +31,6 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
     private int[] keyCodes = {
         KeyEvent.VK_ENTER,
         KeyEvent.VK_SHIFT,
-        KeyEvent.VK_W,
         KeyEvent.VK_A,
         KeyEvent.VK_S,
         KeyEvent.VK_D,
@@ -41,7 +41,8 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
     };
 
     private int[] tapKeyCodes = {
-        KeyEvent.VK_SPACE
+        KeyEvent.VK_SPACE,
+        KeyEvent.VK_W
     };
 
     private ArrayList<Player.PlayerState> p1Queue;
@@ -87,26 +88,32 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
 
         graphToBack.drawString(frameRate + " FPS", 5, 10);
         
-        
-
-        /*if(keys[2]){
-            player1.setYSpeed(-1);
-        }*/
-        if(keys[3]) {
+        if(keys[2]) {
             player1.setXSpeed(-5);
         }
-        /*if(keys[4]) {
+        /*if(keys[3]) {
             player1.setYSpeed(1);
         }*/
-        if(keys[5]) {
+        if(keys[4]) {
             player1.setXSpeed(5);
         }
-        if (!keys[3] && !keys[5]) {
+        if (!keys[2] && !keys[4]) {
             player1.setXSpeed(0);
+            //player1.setState(PlayerState.IDLE);
         }
 
         player1.draw(graphToBack);
         platform.draw(graphToBack);
+
+        if (!player1.touching(platform)) {
+            player1.applyGravity();
+        } else {
+            player1.setYSpeed(0);
+            if(tapKeys[1]){
+                player1.setYSpeed(-20);
+                tapKeys[1] = false;
+            }
+        }
 
         if(currTime - initTime < 10000 && counter < 10000) {
             counter++;

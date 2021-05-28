@@ -63,7 +63,7 @@ public class Player extends GameElement{
 
         pID = id;
         
-        state = PlayerState.PUNCHING;
+        state = PlayerState.IDLE;
 
         try{
             URL url = getClass().getResource("");
@@ -126,6 +126,7 @@ public class Player extends GameElement{
         //}
         //else{
             ySpeed += yAcceleration;
+            System.out.println("hey"+ySpeed);
         //}
     }
 

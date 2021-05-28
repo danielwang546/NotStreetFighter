@@ -33,5 +33,11 @@ public class Ground extends GameElement {
         window.setColor(Color.GREEN);
         window.fillRect(getX(), getY(), getWidth(), getHeight());
     }
+
+    public boolean touching(Player other) {
+        Rectangle thisRect = new Rectangle(getX(), getY(), getWidth(), getHeight());
+        Rectangle otherRect = new Rectangle(other.getX(), other.getY() + other.getYSpeed(), other.getWidth(), other.getHeight());
+        return thisRect.intersects(otherRect);
+    }
     
 }
