@@ -132,7 +132,6 @@ public class Player extends GameElement{
         //}
         //else{
             ySpeed += yAcceleration;
-            System.out.println("hey"+ySpeed);
         //}
     }
 

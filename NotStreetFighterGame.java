@@ -114,7 +114,7 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
             player1.setYSpeed(0);
             if(tapKeys[1]){
                 player1.setYSpeed(-20);
-                //tapKeys[1] = false;
+                tapKeys[1] = false;
             }
         }
 
