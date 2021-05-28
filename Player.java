@@ -16,6 +16,9 @@ import java.awt.*;
 import javax.imageio.*;
 import java.util.Arrays;
 
+import java.io.File;
+import java.io.FileInputStream;
+
 public class Player extends GameElement{
 
     public enum PlayerState {
@@ -63,11 +66,10 @@ public class Player extends GameElement{
 
         pID = id;
         
-        state = PlayerState.IDLE;
+        state = PlayerState.WALKING;
 
         try{
-            URL url = getClass().getResource("");
-            image = ImageIO.read(url);
+            image = ImageIO.read(new FileInputStream(new File("Animations/Player" + pID + "Idle/Player" + pID + "Idle0000.png")));
         } catch(Exception e){
             e.printStackTrace();
         }
@@ -89,8 +91,7 @@ public class Player extends GameElement{
         //increments currFrame, possible values 0 - state.frames-1
         currFrame = (currFrame + 1) % state.frames;
         try{
-            URL url = getClass().getResource("/Animations/Player" + pID + state.fileName + "/Player" + pID + state.fileName + "000" + currFrame + ".png");
-            image = ImageIO.read(url);
+            image = ImageIO.read(new FileInputStream(new File("Animations/Player" + pID + state.fileName + "/Player" + pID + state.fileName + "000" + currFrame + ".png")));
         } catch(Exception e){
             e.printStackTrace();
         }
