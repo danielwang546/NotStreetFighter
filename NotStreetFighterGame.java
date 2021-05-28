@@ -24,6 +24,7 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
 
     private boolean[] keys;
     private boolean[] tapKeys;
+    private boolean[] stillPressed;
     private BufferedImage back;
     private Player player1;
     private Ground platform;
@@ -55,6 +56,7 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
 
         keys = new boolean[keyCodes.length];
         tapKeys = new boolean[tapKeyCodes.length];
+        stillPressed = new boolean[tapKeyCodes.length];
 
         player1 = new Player(1);
 
@@ -90,6 +92,7 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
         
         if(keys[2]) {
             player1.setXSpeed(-5);
+            //player1.setState(Player.PlayerState.WALKING);
         }
         /*if(keys[3]) {
             player1.setYSpeed(1);
@@ -99,7 +102,7 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
         }
         if (!keys[2] && !keys[4]) {
             player1.setXSpeed(0);
-            //player1.setState(PlayerState.IDLE);
+            //player1.setState(Player.PlayerState.IDLE);
         }
 
         player1.draw(graphToBack);
@@ -133,7 +136,17 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
             if(e.getKeyCode() == keyCodes[i]) {
                 keys[i] = true;
             }
-        }  
+        }
+        for(int i = 0; i < tapKeyCodes.length; i++) {
+        	
+            if(e.getKeyCode() == tapKeyCodes[i] && !stillPressed[i]) {
+                tapKeys[i] = true;
+            }
+            if(e.getKeyCode() == tapKeyCodes[i]) {
+                stillPressed[i] = true;
+            }
+            
+        }
 
     }
 
@@ -144,10 +157,13 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
                 keys[i] = false;
             }
         }
-
         for(int i = 0; i < tapKeyCodes.length; i++) {
             if(e.getKeyCode() == tapKeyCodes[i]) {
-                tapKeys[i] = true;
+            	System.out.print("hi");
+                tapKeys[i] = false;
+            }
+            if(e.getKeyCode() == tapKeyCodes[i]) {
+                stillPressed[i] = false;
             }
         }
     }

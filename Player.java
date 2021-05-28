@@ -16,24 +16,29 @@ import java.awt.*;
 import javax.imageio.*;
 import java.util.Arrays;
 
+import java.io.File;
+import java.io.FileInputStream;
+
 public class Player extends GameElement{
 
-    public enum PlayerState {
+    public static enum PlayerState {
         //values will be filled in when more animations are added
-        IDLE(1, "Idle"),
-        CROUCHING(0, ""),
-        IDLE_CROUCH(1, ""),
-        WALKING(9, "Walk"),
-        JUMPING(0, ""),
-        PUNCHING(9, "Punch"),
-        BLOCKING(0, "");
+        IDLE(1, 1, "Idle"),
+        CROUCHING(0, 1, ""),
+        IDLE_CROUCH(1, 1, ""),
+        WALKING(9, 1, "Walk"),
+        JUMPING(0, 1, ""),
+        PUNCHING(9, 1, "Punch"),
+        BLOCKING(0, 1, "");
 
 
         private final int frames;
+        private final int frameTime;
         private final String fileName;
 
-        PlayerState(int frames, String fileName) {
+        PlayerState(int frames, int frameTime, String fileName) {
             this.frames = frames;
+            this.frameTime = frameTime;
             this.fileName = fileName;
         }
 
@@ -53,6 +58,7 @@ public class Player extends GameElement{
 
     private Image image;
     private int currFrame = 0;
+    private int frameCount = 0;
     private PlayerState state;
 
     public Player(int id){
@@ -63,11 +69,10 @@ public class Player extends GameElement{
 
         pID = id;
         
-        state = PlayerState.IDLE;
+        state = PlayerState.WALKING;
 
         try{
-            URL url = getClass().getResource("");
-            image = ImageIO.read(url);
+            image = ImageIO.read(new FileInputStream(new File("Animations/Player" + pID + "Idle/Player" + pID + "Idle0000.png")));
         } catch(Exception e){
             e.printStackTrace();
         }
@@ -87,10 +92,11 @@ public class Player extends GameElement{
 
     private void updateImage() {
         //increments currFrame, possible values 0 - state.frames-1
-        currFrame = (currFrame + 1) % state.frames;
+    	frameCount = (frameCount+1) % state.frameTime;
+    	if(frameCount%state.frameTime==0)
+    		currFrame = (currFrame + 1) % state.frames;
         try{
-            URL url = getClass().getResource("/Animations/Player" + pID + state.fileName + "/Player" + pID + state.fileName + "000" + currFrame + ".png");
-            image = ImageIO.read(url);
+            image = ImageIO.read(new FileInputStream(new File("Animations/Player" + pID + state.fileName + "/Player" + pID + state.fileName + "000" + currFrame + ".png")));
         } catch(Exception e){
             e.printStackTrace();
         }
@@ -126,7 +132,6 @@ public class Player extends GameElement{
         //}
         //else{
             ySpeed += yAcceleration;
-            System.out.println("hey"+ySpeed);
         //}
     }
 

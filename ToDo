@@ -8,11 +8,11 @@ FRAMEWORK:
 
 PLAYER:
 
- 1) Player physics - James
+ 1) Cleaner physics
  
- 2) Player collision (ground, platforms, other players)
+ 2) Player collision (ground X, platforms, other players)
  
- 3) Player state
+ 3) Player 
  
 GAMEPLAY:
 
@@ -40,11 +40,11 @@ VISUALS:
  1) Draw animations - Nathan/James
 	- Walk X
 	- Jump
-	- Crouch
+	- Crouch X
 	- Punch X
 	- Block
 
- 2) ***Write animations in code*** - Nathan
+ 2) ***Write animations in code*** X
 
  3) Animation Queue - Daniel
  
