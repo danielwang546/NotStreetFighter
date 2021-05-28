@@ -15,8 +15,6 @@ import javax.swing.*;
 import java.awt.*;
 import javax.imageio.*;
 import java.util.Arrays;
-import java.io.File;
-import java.io.FileInputStream;
 
 public class Player extends GameElement{
 
@@ -65,11 +63,11 @@ public class Player extends GameElement{
 
         pID = id;
         
-        state = PlayerState.WALKING;
+        state = PlayerState.IDLE;
 
         try{
-            image = ImageIO.read(new FileInputStream(new File("Animations/Player" + pID + "Idle/Player" + pID + "Idle0000.png")));
-
+            URL url = getClass().getResource("");
+            image = ImageIO.read(url);
         } catch(Exception e){
             e.printStackTrace();
         }
@@ -81,7 +79,7 @@ public class Player extends GameElement{
     }
 
     public void draw(Graphics window){
-        
+        //applyGravity();
         move(xSpeed, ySpeed);
         updateImage();
         window.drawImage(image,getX(),getY(),getWidth(),getHeight(),null);
@@ -91,7 +89,8 @@ public class Player extends GameElement{
         //increments currFrame, possible values 0 - state.frames-1
         currFrame = (currFrame + 1) % state.frames;
         try{
-            image = ImageIO.read(new FileInputStream(new File("Animations/Player" + pID + state.fileName + "/Player" + pID + state.fileName + "000" + currFrame + ".png")));
+            URL url = getClass().getResource("/Animations/Player" + pID + state.fileName + "/Player" + pID + state.fileName + "000" + currFrame + ".png");
+            image = ImageIO.read(url);
         } catch(Exception e){
             e.printStackTrace();
         }
