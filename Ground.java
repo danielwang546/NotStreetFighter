@@ -1,5 +1,6 @@
-import java.awt.Graphics;
+
 import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Canvas;
 import java.awt.Rectangle;
@@ -15,6 +16,7 @@ import javax.swing.*;
 import java.awt.*;
 import javax.imageio.*;
 import java.util.Arrays;
+
 
 public class Ground extends GameElement {
 

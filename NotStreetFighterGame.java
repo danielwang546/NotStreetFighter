@@ -56,7 +56,7 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
         keys = new boolean[keyCodes.length];
         tapKeys = new boolean[tapKeyCodes.length];
 
-        player1 = new Player(1);
+        player1 = new Player(2);
 
         platform = new Ground(0,600,1600,20);
 
@@ -100,6 +100,12 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
         if (!keys[2] && !keys[4]) {
             player1.setXSpeed(0);
             //player1.setState(PlayerState.IDLE);
+        }
+
+        if(player1.getY() < 400) {
+            player1.applyGravity();
+        } else {
+            player1.setYSpeed(Math.min(player1.getYSpeed(), 0));
         }
 
         player1.draw(graphToBack);
