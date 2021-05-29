@@ -43,11 +43,10 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
     };
 
     private int[] tapKeyCodes = {
-        KeyEvent.VK_SPACE,
-        KeyEvent.VK_W
+        KeyEvent.VK_W,
+        KeyEvent.VK_UP,
+        KeyEvent.VK_SPACE
     };
-
-    private ArrayList<Player.PlayerState> p1Queue;
 
     public NotStreetFighterGame() {
         setBackground(Color.WHITE);
@@ -61,7 +60,7 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
 
         player1 = new Player(1, 400, 400);
         player2 = new Player(2, 1000, 400);
-        player2.setState(Player.PlayerState.PUNCHING);
+        player2.addState(Player.PlayerState.PUNCHING);
 
         platform = new Ground(0,600,1600,20);
 
@@ -95,17 +94,41 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
         
         if(keys[2]) {
             player1.setXSpeed(-5);
+            player1.setFacingRight(false);
+            player1.addState(Player.PlayerState.WALKING);
             //player1.setState(Player.PlayerState.WALKING);
         }
-        /*if(keys[3]) {
-            player1.setYSpeed(1);
-        }*/
         if(keys[4]) {
+            player1.setFacingRight(true);
             player1.setXSpeed(5);
+            player1.addState(Player.PlayerState.WALKING);
         }
         if (!keys[2] && !keys[4]) {
             player1.setXSpeed(0);
-            //player1.setState(Player.PlayerState.IDLE);
+            //player1.addState(Player.PlayerState.IDLE);
+        }
+
+        if(keys[6]) {
+            player2.setXSpeed(-5);
+            player2.addState(Player.PlayerState.WALKING);
+            player2.setFacingRight(false);
+        }
+        
+        if(tapKeys[2]) {
+        	player1.addState(Player.PlayerState.PUNCHING);
+        	tapKeys[2] = false;
+        }
+        /*if(keys[7]) {
+            player2.setYSpeed(1);
+        }*/
+        if(keys[8]) {
+            player2.setXSpeed(5);
+            player2.addState(Player.PlayerState.WALKING);
+            player2.setFacingRight(true);
+        }
+        if (!keys[6] && !keys[8]) {
+            player2.setXSpeed(0);
+            //player2.addState(Player.PlayerState.IDLE);
         }
 
         
@@ -114,10 +137,29 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
             player1.applyGravity();
         } else {
             player1.setYSpeed(0);
-            if(tapKeys[1]){
+            if(tapKeys[0]){
                 player1.setYSpeed(-20);
+                tapKeys[0] = false;
+            }
+        }
+
+        if (!player2.touching(platform)) {
+            player2.applyGravity();
+        } else {
+            player2.setYSpeed(0);
+            if(tapKeys[1]){
+                player2.setYSpeed(-20);
                 tapKeys[1] = false;
             }
+        }
+        
+        
+        //problems arise because these two need to be executed at the exact same time, not in sequence
+        if(player1.touching(player2)) {
+        	player1.setXSpeed(0);
+        }
+        if(player2.touching(player1)) {
+        	player2.setXSpeed(0);
         }
 
         if(currTime - initTime < 10000 && counter < 10000) {
@@ -132,6 +174,8 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
 
         //draws everything from graphToBack to the image (put all draws before this line)
         twoDGraph.drawImage(back, null, 0, 0);
+        
+        player1.printStates();
 
         beforeTime = currTime;
     }
@@ -165,7 +209,6 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
         }
         for(int i = 0; i < tapKeyCodes.length; i++) {
             if(e.getKeyCode() == tapKeyCodes[i]) {
-            	System.out.print("hi");
                 tapKeys[i] = false;
             }
             if(e.getKeyCode() == tapKeyCodes[i]) {
