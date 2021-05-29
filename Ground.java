@@ -5,7 +5,7 @@ import java.awt.Rectangle;
 public class Ground extends GameElement {
 
     public Ground(int x, int y, int w, int h) {
-        super(x,y,w,h);
+        super(x,y,0,0,w,h);
     }
 
     @Override

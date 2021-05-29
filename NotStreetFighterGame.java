@@ -152,6 +152,15 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
                 tapKeys[1] = false;
             }
         }
+        
+        
+        //problems arise because these two need to be executed at the exact same time, not in sequence
+        if(player1.touching(player2)) {
+        	player1.setXSpeed(0);
+        }
+        if(player2.touching(player1)) {
+        	player2.setXSpeed(0);
+        }
 
         if(currTime - initTime < 10000 && counter < 10000) {
             counter++;

@@ -4,31 +4,28 @@ public abstract class GameElement
 {
   private int x;
   private int y;
+  private int xSpeed;
+  private int ySpeed;
   private int width;
   private int height;
   private boolean isPerm;
 
   public GameElement()
   {
-    x = 10;
-    y = 10;
-    width = 10;
-    height = 10;
+    this(10,10,0,0,10,10);
   }
 
   public GameElement(int x, int y)
   {
-    this.x = x;
-    this.y = y;
-    width = 10;
-    height = 10;
-    isPerm = false;
+    this(x,y,0,0,10,10);
   }
 
-  public GameElement(int x, int y, int w, int h)
+  public GameElement(int x, int y, int xS, int yS, int w, int h)
   {
     this.x = x;
     this.y = y;
+    xSpeed = xS;
+    ySpeed = yS;
     width = w;
     height = h;
   }
@@ -78,9 +75,45 @@ public abstract class GameElement
   {
     return height;
   }
+  
+  public void setXSpeed(int s){
+      xSpeed = s;
+  }
 
+  public void setYSpeed(int s){
+      ySpeed = s;
+  }
+  
+  public int getXSpeed(){
+      return xSpeed;
+  }
+
+  public int getYSpeed(){
+      return ySpeed;
+  }
+  
   public boolean touching(GameElement other) {
-    Rectangle thisRect = new Rectangle(x, y, width, height);
+	Rectangle thisRect = new Rectangle();
+	
+	thisRect.width= width;
+	thisRect.x = x;
+	
+	if(xSpeed > 0) {
+		thisRect.width= width+xSpeed;
+	} else if(xSpeed < 0) {
+		thisRect.x = x+xSpeed;
+	}
+	
+	thisRect.height = height;
+	thisRect.y = y;
+	
+	if(ySpeed > 0) {
+		thisRect.height= height+ySpeed;
+	//should not ever happen realistically
+	} else if(ySpeed < 0) {
+		thisRect.y = y+ySpeed;
+	}
+	
     Rectangle otherRect = new Rectangle(other.x, other.y, other.width, other.height);
     return thisRect.intersects(otherRect);
     // return ((this.x >= other.x && this.x <= other.x + other.width) ||
@@ -89,8 +122,10 @@ public abstract class GameElement
     //     (this.y + this.height >= other.y && this.y <= other.y));
   }
 
-  
-  public abstract void move(int x, int y);
+  public void move(int x, int y){
+      this.x+=x;
+      this.y+=y;
+   }
   public abstract void draw(Graphics window);
 
   public String toString()
