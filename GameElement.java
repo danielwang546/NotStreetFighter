@@ -6,6 +6,7 @@ public abstract class GameElement
   private int y;
   private int width;
   private int height;
+  private boolean isPerm;
 
   public GameElement()
   {
@@ -21,6 +22,7 @@ public abstract class GameElement
     this.y = y;
     width = 10;
     height = 10;
+    isPerm = false;
   }
 
   public GameElement(int x, int y, int w, int h)

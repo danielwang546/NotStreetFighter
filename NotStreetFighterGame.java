@@ -61,7 +61,7 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
 
         player1 = new Player(1, 400, 400);
         player2 = new Player(2, 1000, 400);
-        player2.setState(Player.PlayerState.PUNCHING);
+        player2.addState(Player.PlayerState.PUNCHING);
 
         platform = new Ground(0,600,1600,20);
 
@@ -96,25 +96,22 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
         if(keys[2]) {
             player1.setXSpeed(-5);
             player1.setFacingRight(false);
-            player1.setState(Player.PlayerState.WALKING);
+            player1.addState(Player.PlayerState.WALKING);
             //player1.setState(Player.PlayerState.WALKING);
         }
-        /*if(keys[3]) {
-            player1.setYSpeed(1);
-        }*/
         if(keys[4]) {
             player1.setFacingRight(true);
             player1.setXSpeed(5);
-            player1.setState(Player.PlayerState.WALKING);
+            player1.addState(Player.PlayerState.WALKING);
         }
         if (!keys[2] && !keys[4]) {
             player1.setXSpeed(0);
-            player1.setState(Player.PlayerState.IDLE);
+            //player1.addState(Player.PlayerState.IDLE);
         }
 
         if(keys[6]) {
             player2.setXSpeed(-5);
-            player2.setState(Player.PlayerState.WALKING);
+            player2.addState(Player.PlayerState.WALKING);
             player2.setFacingRight(false);
         }
         /*if(keys[7]) {
@@ -122,12 +119,12 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
         }*/
         if(keys[8]) {
             player2.setXSpeed(5);
-            player2.setState(Player.PlayerState.WALKING);
+            player2.addState(Player.PlayerState.WALKING);
             player2.setFacingRight(true);
         }
         if (!keys[6] && !keys[8]) {
             player2.setXSpeed(0);
-            player2.setState(Player.PlayerState.IDLE);
+            //player2.addState(Player.PlayerState.IDLE);
         }
 
         
@@ -164,6 +161,8 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
 
         //draws everything from graphToBack to the image (put all draws before this line)
         twoDGraph.drawImage(back, null, 0, 0);
+        
+        player1.printStates();
 
         beforeTime = currTime;
     }
@@ -197,7 +196,6 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
         }
         for(int i = 0; i < tapKeyCodes.length; i++) {
             if(e.getKeyCode() == tapKeyCodes[i]) {
-            	System.out.print("hi");
                 tapKeys[i] = false;
             }
             if(e.getKeyCode() == tapKeyCodes[i]) {
