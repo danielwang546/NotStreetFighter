@@ -45,7 +45,8 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
     private int[] tapKeyCodes = {
         KeyEvent.VK_W,
         KeyEvent.VK_UP,
-        KeyEvent.VK_SPACE
+        KeyEvent.VK_SPACE,
+        KeyEvent.VK_ENTER
     };
 
     public NotStreetFighterGame() {
@@ -60,7 +61,6 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
 
         player1 = new Player(1, 400, 400);
         player2 = new Player(2, 1000, 400);
-        player2.addState(Player.PlayerState.PUNCHING);
 
         platform = new Ground(0,600,1600,20);
 
@@ -92,47 +92,58 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
 
         graphToBack.drawString(frameRate + " FPS", 5, 10);
         
+        //player1.openQueue();
+        
+        //movement determination is first
         if(keys[2]) {
             player1.setXSpeed(-5);
             player1.setFacingRight(false);
             player1.addState(Player.PlayerState.WALKING);
-            //player1.setState(Player.PlayerState.WALKING);
         }
         if(keys[4]) {
             player1.setFacingRight(true);
             player1.setXSpeed(5);
             player1.addState(Player.PlayerState.WALKING);
         }
-        if (!keys[2] && !keys[4]) {
-            player1.setXSpeed(0);
-            //player1.addState(Player.PlayerState.IDLE);
-        }
-
+        
         if(keys[6]) {
             player2.setXSpeed(-5);
             player2.addState(Player.PlayerState.WALKING);
             player2.setFacingRight(false);
         }
-        
-        if(tapKeys[2]) {
-        	player1.addState(Player.PlayerState.PUNCHING);
-        	tapKeys[2] = false;
-        }
-        /*if(keys[7]) {
-            player2.setYSpeed(1);
-        }*/
         if(keys[8]) {
             player2.setXSpeed(5);
             player2.addState(Player.PlayerState.WALKING);
             player2.setFacingRight(true);
         }
-        if (!keys[6] && !keys[8]) {
-            player2.setXSpeed(0);
-            //player2.addState(Player.PlayerState.IDLE);
-        }
-
         
-
+        
+        //then comes non-interruptible states with attacking taking higher priority
+        if(keys[3]) {
+        	player1.setXSpeed(0);
+            player1.crouch();
+        }else {
+        	player1.uncrouch();
+        }
+        if(keys[7]) {
+        	player2.setXSpeed(0);
+            player2.crouch();
+        }else {
+        	player2.uncrouch();
+        }
+        	
+        
+        if(tapKeys[2]) {
+        	player1.addState(Player.PlayerState.PUNCHING);
+        	tapKeys[2] = false;
+        }
+        if(tapKeys[3]) {
+        	player2.addState(Player.PlayerState.PUNCHING);
+        	tapKeys[3] = false;
+        }
+        
+        
+        //after that comes idle which depend on everything else that happened  
         if (!player1.touching(platform)) {
             player1.applyGravity();
         } else {
@@ -142,7 +153,6 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
                 tapKeys[0] = false;
             }
         }
-
         if (!player2.touching(platform)) {
             player2.applyGravity();
         } else {
@@ -152,13 +162,24 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
                 tapKeys[1] = false;
             }
         }
+        if (!keys[2] && !keys[4]) {
+            player1.setXSpeed(0);
+            //player1.addState(Player.PlayerState.IDLE);
+        }
+        if (!keys[6] && !keys[8]) {
+            player2.setXSpeed(0);
+            //player2.addState(Player.PlayerState.IDLE);
+        }
+        
+        player1.updateHitBox();
+        player2.updateHitBox();
         
         
-        //problems arise because these two need to be executed at the exact same time, not in sequence
-        if(player1.touching(player2)) {
+        //problems arise because these need to all be executed at the exact same time, not in sequence
+        if(player1.getHitBox().touching(player2.getHitBox())) {
         	player1.setXSpeed(0);
         }
-        if(player2.touching(player1)) {
+        if(player2.getHitBox().touching(player1.getHitBox())) {
         	player2.setXSpeed(0);
         }
 

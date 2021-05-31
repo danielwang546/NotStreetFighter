@@ -25,11 +25,12 @@ public class Player extends GameElement{
         //values will be filled in when more animations are added
         IDLE(1, 1, true, "Idle"),
         CROUCHING(9, 1, false, "Crouch"),
-        IDLE_CROUCH(1, 1, true, ""),
+        IDLE_CROUCH(1, 1, false, "Idle_Crouch"),
         WALKING(9, 3, true, "Walk"),
         JUMPING(0, 1, true, ""),
         PUNCHING(9, 2, false, "Punch"),
-        BLOCKING(9, 1, false, ""),
+        BLOCKING(9, 1, false, "Block"),
+        IDLE_BLOCK(1, 1, true, "Idle_Block"),
     	STUNNED(9, 1, false, "Stunned");
 
 
@@ -76,6 +77,8 @@ public class Player extends GameElement{
 
         pID = id;
         
+        hitBox = new HitBox(getX()+40,getY()+20,getXSpeed(), getYSpeed(), getWidth()-80,getHeight()-20);
+       
         stateQueue = new ArrayList<PlayerState>();
 
         try{
@@ -95,6 +98,7 @@ public class Player extends GameElement{
         } else {
             window.drawImage(image, getX() + getWidth(), getY(), -getWidth(), getHeight(), null);
         }
+        hitBox.draw(window);
     }
 
     private void updateImage() {
@@ -110,9 +114,17 @@ public class Player extends GameElement{
         } catch(Exception e){
             e.printStackTrace();
         }
+        
+        
     }
 
+    public HitBox getHitBox() {
+    	return hitBox;
+    }
     
+    public void updateHitBox() {
+    	hitBox = new HitBox(getX()+40,getY()+20,getXSpeed(), getYSpeed(), getWidth()-80,getHeight()-20);
+    }
 
     public void setYAcelleration(int s){
         yAcceleration = s;
@@ -130,6 +142,22 @@ public class Player extends GameElement{
         facingRight = isFacingRight;
     }
     
+    //very bad crouch implementation
+    public void crouch() {
+    	if(currState().fileName.equals("Crouch")  || currState().fileName.equals("Idle_Crouch")) {
+			stateQueue.add(PlayerState.IDLE_CROUCH);
+    	} else {
+    		addState(PlayerState.CROUCHING);
+    	}
+    }
+    
+    
+    //I don't know why this has to exist
+    public void uncrouch() {
+    	stateQueue.remove(PlayerState.IDLE_CROUCH);
+    	stateQueue.remove(PlayerState.CROUCHING);
+    }
+    
     public void printStates() {
     	for(int i=0; i < stateQueue.size(); i++)
     		System.out.println(stateQueue.get(i).fileName+" "+i);
@@ -139,16 +167,16 @@ public class Player extends GameElement{
     	return stateQueue.size() < 1;
     }
 
-    //this logic can definitely be improved
+    //this logic can definitely be improved and the size causes extraneous problems that I do not understand
     public void addState(PlayerState state) {
-    	if(stateQueue.size() < 5) {
+    	if(stateQueue.size() < 5 && !stateQueue.contains(state)) {
     		if(state.interruptible) {
     			if(currState().interruptible) {
     				if(emptyQueue())
     					stateQueue.add(state);
     				else
     					stateQueue.set(0,state);
-    			}
+    			} 
     		} else {
     			if(currState().interruptible) {
     				if(emptyQueue())
