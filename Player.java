@@ -3,6 +3,7 @@ import java.awt.Image;
 import java.io.File;
 import java.io.FileInputStream;
 import java.util.ArrayList;
+import java.awt.Color;
 
 import javax.imageio.ImageIO;
 
@@ -33,15 +34,15 @@ public class Player extends GameElement{
             this.fileName = fileName;
         }
 
-        private int frames() {
+        public int frames() {
             return frames;
         }
 
-        private int frameTime() {
+        public int frameTime() {
             return frameTime;
         }
 
-        private String fileName() {
+        public String fileName() {
             return fileName;
         }
     }
@@ -57,8 +58,8 @@ public class Player extends GameElement{
     private int frameCount = 0;
     private HitBox hitBox;
     private AttackBox attackBox;
-    private ArrayList<PlayerState> stateQueue;
     private PlayerState currState;
+    private ArrayList<PlayerState> stateQueue;
     
 
     public Player(int id, int x, int y){
@@ -74,6 +75,8 @@ public class Player extends GameElement{
         currState = PlayerState.PUNCHING;
 
         stateQueue = new ArrayList<PlayerState>();
+        
+        currState = PlayerState.IDLE;
 
         try{
             image = ImageIO.read(new FileInputStream(new File("Animations/Player" + pID + "Idle/Player" + pID + "Idle0000.png")));
@@ -106,14 +109,15 @@ public class Player extends GameElement{
 
     private void updateImage() {
         //increments currFrame, possible values 0 - state.frames-1
-    	frameCount = (frameCount+1) % currState().frameTime;
-    	if(frameCount%currState().frameTime == 0) {
-    		currFrame = (currFrame + 1) % currState().frames;
-    		if(currFrame==0 && !emptyQueue())
-    			stateQueue.remove(0);
+    	frameCount = (frameCount+1) % currState.frameTime;
+    	if(frameCount%currState.frameTime == 0) {
+    		currFrame = (currFrame + 1) % currState.frames;
+    		if(currFrame==0) {
+    			currState = nextState();
+    		}
     	}
         try{
-            image = ImageIO.read(new FileInputStream(new File("Animations/Player" + pID + currState().fileName + "/Player" + pID + currState().fileName + "000" + currFrame + ".png")));
+            image = ImageIO.read(new FileInputStream(new File("Animations/Player" + pID + currState.fileName + "/Player" + pID + currState.fileName + "000" + currFrame + ".png")));
         } catch(Exception e){
             e.printStackTrace();
         }
@@ -127,7 +131,7 @@ public class Player extends GameElement{
     
     public void updateHitBox() {
     	hitBox = new HitBox(getX()+40,getY()+20,getXSpeed(), getYSpeed(), getWidth()-80,getHeight()-20);
-    	if(currState().fileName.equals("Idle_Crouch"))
+    	if(currState.fileName.equals("Idle_Crouch"))
     			hitBox = new HitBox(getX()+40,getY()+120,getXSpeed(), getYSpeed(), getWidth()-80,getHeight()-120);
     }
 
@@ -157,10 +161,10 @@ public class Player extends GameElement{
     
     //very bad crouch implementation
     public void crouch() {
-    	if(currState().fileName.equals("Crouch")  || currState().fileName.equals("Idle_Crouch")) {
-			stateQueue.add(PlayerState.IDLE_CROUCH);
+    	if(currState.fileName.equals("Crouch")  || currState.fileName.equals("Idle_Crouch")) {
+			fillQueue(PlayerState.IDLE_CROUCH);
     	} else {
-    		addState(PlayerState.CROUCHING);
+    		setCurrState(PlayerState.CROUCHING);
     	}
     }
     
@@ -172,12 +176,28 @@ public class Player extends GameElement{
     }
     
     public void printStates() {
-    	for(int i=0; i < stateQueue.size(); i++)
+    	System.out.println(currState.fileName + " curr");
+    	for(int i=0; i < stateQueue.size(); i++) 
     		System.out.println(stateQueue.get(i).fileName+" "+i);
     }
     
     public boolean emptyQueue() {
     	return stateQueue.size() < 1;
+    }
+    
+    public void setCurrState(PlayerState ps) {
+    	currState = ps;
+    }
+    
+    public PlayerState getCurrState() {
+    	return currState;
+    }
+    
+    public void fillQueue(PlayerState ps) {
+    	for(int i = 0; i < stateQueue.size(); i++)
+			stateQueue.set(i, ps);
+    	for(int i = 0; i < 5 - stateQueue.size(); i++)
+    		stateQueue.add(ps);
     }
 
     public int getHealth(){
@@ -190,32 +210,22 @@ public class Player extends GameElement{
 
     //this logic can definitely be improved and the size causes extraneous problems that I do not understand
     public void addState(PlayerState state) {
-    	if(stateQueue.size() < 5 && !stateQueue.contains(state)) {
-    		if(state.interruptible) {
-    			if(currState().interruptible) {
-    				if(emptyQueue())
-    					stateQueue.add(state);
-    				else
-    					stateQueue.set(0,state);
-    			} 
-    		} else {
-    			if(currState().interruptible) {
-    				if(emptyQueue())
-    					stateQueue.add(state);
-    				else
-    					stateQueue.set(0,state);
-    			} else {
-    				stateQueue.add(state);
-    			}
+    	if(currState.interruptible && !state.fileName.equals(currState.fileName)) {
+    		System.out.println(state.fileName +" is interrupting " + currState.fileName);
+    		setCurrState(state);
+    	} else {
+    		if(stateQueue.size() < 5 && !(stateQueue.contains(state) && state.fileName.equals(currState.fileName))) {
+    			stateQueue.add(state);
     		}
     	}
     }
     
-    public PlayerState currState() {
-    	if(emptyQueue())
+    public PlayerState nextState() {
+    	if(emptyQueue()) {
     		return PlayerState.IDLE;
-    	else
-    		return stateQueue.get(0);
+    	} else {
+    		return stateQueue.remove(0);
+    	}
     }
     
     public void punch() {

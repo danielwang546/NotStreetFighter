@@ -89,7 +89,7 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
 
         graphToBack.drawString(frameRate + " FPS", 5, 10);
         
-        //player1.openQueue();
+        //player1.setQueue(false);
         
         //movement determination is first
         if(keys[2]) {
@@ -159,13 +159,13 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
                 tapKeys[1] = false;
             }
         }
-        if (!keys[2] && !keys[4]) {
+        if (!keys[2] && !keys[4] && player1.getCurrState().fileName().equals("Walk")) {
             player1.setXSpeed(0);
-            //player1.addState(Player.PlayerState.IDLE);
+            player1.setCurrState(Player.PlayerState.IDLE);
         }
         if (!keys[6] && !keys[8]) {
             player2.setXSpeed(0);
-            //player2.addState(Player.PlayerState.IDLE);
+            //player2.setCurrState(Player.PlayerState.IDLE);
         }
         
         player1.updateHitBox();
