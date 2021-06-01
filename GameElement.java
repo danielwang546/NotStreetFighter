@@ -92,27 +92,31 @@ public abstract class GameElement
       return ySpeed;
   }
   
-  public boolean touching(GameElement other) {
+  public boolean touching(GameElement other, double dT) {
 	Rectangle thisRect = new Rectangle();
 	
 	thisRect.width= width;
 	thisRect.x = x;
 	
+  /*
 	if(xSpeed > 0) {
-		thisRect.width= width+xSpeed;
+		thisRect.width= (int)(width + xSpeed * dT);
 	} else if(xSpeed < 0) {
-		thisRect.x = x+xSpeed;
+		thisRect.x = (int)(x + xSpeed * dT);
 	}
+  */
 	
 	thisRect.height = height;
 	thisRect.y = y;
 	
+  /*
 	if(ySpeed > 0) {
-		thisRect.height= height+ySpeed;
+		thisRect.height= (int)(height + ySpeed * dT);
 	//should not ever happen realistically
 	} else if(ySpeed < 0) {
-		thisRect.y = y+ySpeed;
+		thisRect.y = (int)(y + ySpeed * dT);
 	}
+  */
 	
     Rectangle otherRect = new Rectangle(other.x, other.y, other.width, other.height);
     return thisRect.intersects(otherRect);
@@ -122,9 +126,9 @@ public abstract class GameElement
     //     (this.y + this.height >= other.y && this.y <= other.y));
   }
 
-  public void move(int x, int y){
-      this.x+=x;
-      this.y+=y;
+  public void move(int x, int y, double dT){
+      this.x += x * dT;
+      this.y += y * dT;
    }
   public abstract void draw(Graphics window);
 

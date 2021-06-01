@@ -1,23 +1,10 @@
-import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Canvas;
-import java.awt.Rectangle;
-import java.awt.event.ActionEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.KeyEvent;
-import java.awt.image.BufferedImage;
-import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.net.URL;
-import javax.swing.*;
-
-import java.awt.*;
-import javax.imageio.*;
-import java.util.Arrays;
-
+import java.awt.Image;
 import java.io.File;
 import java.io.FileInputStream;
+import java.util.ArrayList;
+
+import javax.imageio.ImageIO;
 
 public class Player extends GameElement{
 
@@ -77,7 +64,7 @@ public class Player extends GameElement{
     public Player(int id, int x, int y){
         super(x, y, 0, 0, 170, 200);
         
-        yAcceleration = 1;
+        yAcceleration = 30;
 
         pID = id;
         
@@ -96,9 +83,9 @@ public class Player extends GameElement{
     }
 
 
-    public void draw(Graphics window){
+    public void draw(Graphics window, double dT){
         //applyGravity();
-        move(getXSpeed(), getYSpeed());
+        move(getXSpeed(), getYSpeed(), dT);
         updateImage();
         if(facingRight) {
             window.drawImage(image, getX(), getY(), getWidth(), getHeight(),null);
@@ -110,6 +97,11 @@ public class Player extends GameElement{
         window.setColor(Color.RED);
         attackBox.draw(window);
         window.setColor(Color.BLACK);
+    }
+
+    @Override
+    public void draw(Graphics window) {
+        
     }
 
     private void updateImage() {
@@ -139,11 +131,11 @@ public class Player extends GameElement{
     			hitBox = new HitBox(getX()+40,getY()+120,getXSpeed(), getYSpeed(), getWidth()-80,getHeight()-120);
     }
 
-    public void setYAcelleration(int s){
+    public void setYAccel(int s){
         yAcceleration = s;
     }
 
-    public int getYAccelteration(){
+    public int getYAccel(){
         return yAcceleration;
     }
 

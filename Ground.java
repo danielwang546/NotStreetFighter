@@ -9,9 +9,8 @@ public class Ground extends GameElement {
     }
 
     @Override
-    public void move(int x, int y) {
-        // TODO Auto-generated method stub
-        
+    public void move(int x, int y, double dT) {
+        //ground does not move
     }
 
     @Override
@@ -22,7 +21,7 @@ public class Ground extends GameElement {
 
     public boolean touching(Player other) {
         Rectangle thisRect = new Rectangle(getX(), getY(), getWidth(), getHeight());
-        Rectangle otherRect = new Rectangle(other.getX(), other.getY() + other.getYSpeed(), other.getWidth(), other.getHeight());
+        Rectangle otherRect = new Rectangle(other.getX(), other.getY()/* + other.getYSpeed()*/, other.getWidth(), other.getHeight());
         return thisRect.intersects(otherRect);
     }
     

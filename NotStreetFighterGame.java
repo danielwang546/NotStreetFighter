@@ -1,21 +1,10 @@
-
+import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Canvas;
-import java.awt.Rectangle;
-import java.awt.event.ActionEvent;
-import java.awt.event.KeyListener;
 import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
-import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.net.URL;
-import javax.swing.*;
-
-import java.awt.*;
-import javax.imageio.*;
-import java.util.Arrays;
 
 public class NotStreetFighterGame extends Canvas implements KeyListener, Runnable 
 {
@@ -55,7 +44,7 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
     public NotStreetFighterGame() {
         setBackground(Color.WHITE);
 
-        beforeTime = 0;
+        beforeTime = System.currentTimeMillis();
         initTime = System.currentTimeMillis();
 
         keys = new boolean[keyCodes.length];
@@ -84,6 +73,7 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
     public void paint(Graphics window) {
         currTime = System.currentTimeMillis();
         deltaTime = currTime - beforeTime;
+        double dT = deltaTime/1000.0; //change in time between frames, in seconds
         double frameRate = ((int)(100000.0/deltaTime))/100.0; //magic to get the framerate in Hz, truncated to 2 decimals
 
         Graphics2D twoDGraph = (Graphics2D) window;
@@ -103,23 +93,23 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
         
         //movement determination is first
         if(keys[2]) {
-            player1.setXSpeed(-5);
+            player1.setXSpeed(-150);
             player1.setFacingRight(false);
             player1.addState(Player.PlayerState.WALKING);
         }
         if(keys[4]) {
             player1.setFacingRight(true);
-            player1.setXSpeed(5);
+            player1.setXSpeed(150);
             player1.addState(Player.PlayerState.WALKING);
         }
         
         if(keys[6]) {
-            player2.setXSpeed(-5);
+            player2.setXSpeed(-150);
             player2.addState(Player.PlayerState.WALKING);
             player2.setFacingRight(false);
         }
         if(keys[8]) {
-            player2.setXSpeed(5);
+            player2.setXSpeed(150);
             player2.addState(Player.PlayerState.WALKING);
             player2.setFacingRight(true);
         }
@@ -151,21 +141,21 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
         
         
         //after that comes idle which depend on everything else that happened  
-        if (!player1.touching(platform)) {
+        if (!player1.touching(platform, dT)) {
             player1.applyGravity();
         } else {
             player1.setYSpeed(0);
             if(tapKeys[0]){
-                player1.setYSpeed(-20);
+                player1.setYSpeed(-650);
                 tapKeys[0] = false;
             }
         }
-        if (!player2.touching(platform)) {
+        if (!player2.touching(platform, dT)) {
             player2.applyGravity();
         } else {
             player2.setYSpeed(0);
             if(tapKeys[1]){
-                player2.setYSpeed(-20);
+                player2.setYSpeed(-650);
                 tapKeys[1] = false;
             }
         }
@@ -183,10 +173,10 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
         
         
         //problems arise because these need to all be executed at the exact same time, not in sequence
-        if(player1.getHitBox().touching(player2.getHitBox())) {
+        if(player1.getHitBox().touching(player2.getHitBox(), dT)) {
         	player1.setXSpeed(0);
         }
-        if(player2.getHitBox().touching(player1.getHitBox())) {
+        if(player2.getHitBox().touching(player1.getHitBox(), dT)) {
         	player2.setXSpeed(0);
         }
 
@@ -196,8 +186,8 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
             graphToBack.drawString(counter + " frames in 10s", 5, 30);
         }
 
-        player1.draw(graphToBack);
-        player2.draw(graphToBack);
+        player1.draw(graphToBack, dT);
+        player2.draw(graphToBack, dT);
         platform.draw(graphToBack);
         wall1.draw(graphToBack);
         wall2.draw(graphToBack);

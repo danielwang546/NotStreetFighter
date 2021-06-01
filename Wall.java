@@ -1,20 +1,6 @@
-import java.awt.Graphics;
 import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.Canvas;
+import java.awt.Graphics;
 import java.awt.Rectangle;
-import java.awt.event.ActionEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.KeyEvent;
-import java.awt.image.BufferedImage;
-import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.net.URL;
-import javax.swing.*;
-
-import java.awt.*;
-import javax.imageio.*;
-import java.util.Arrays;
 
 public class Wall extends GameElement {
     public Wall(int x, int y, int w, int h) {
@@ -22,9 +8,8 @@ public class Wall extends GameElement {
     }
 
     @Override
-    public void move(int x, int y) {
-        // TODO Auto-generated method stub
-        
+    public void move(int x, int y, double dT) {
+        //empty method
     }
 
     @Override
