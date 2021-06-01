@@ -62,6 +62,8 @@ public class Player extends GameElement{
     private int yAcceleration;
     private boolean facingRight = true;
     private int pID;
+    private int health = 100;
+    private int score = 0;
 
     private Image image;
     private int currFrame = 0;
@@ -143,6 +145,14 @@ public class Player extends GameElement{
     public void setFacingRight(boolean isFacingRight) {
         facingRight = isFacingRight;
     }
+
+    public void decreaseHealth(int h){
+        health -= h;
+    }
+
+    public void increaseScore(int s){
+        score += s;
+    }
     
     //very bad crouch implementation
     public void crouch() {
@@ -167,6 +177,14 @@ public class Player extends GameElement{
     
     public boolean emptyQueue() {
     	return stateQueue.size() < 1;
+    }
+
+    public int getHealth(){
+        return health;
+    }
+
+    public int getScore(){
+        return score;
     }
 
     //this logic can definitely be improved and the size causes extraneous problems that I do not understand
