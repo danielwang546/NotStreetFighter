@@ -253,7 +253,7 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
     public void run() {
         try {
             while(true) {
-                Thread.sleep(5);
+                Thread.sleep(10);
                 repaint();
             }
         } catch (Exception e) {

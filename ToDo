@@ -4,15 +4,13 @@ FRAMEWORK:
  
  1) Time based frames (On backburner)
 
- 2) DEFINITIVELY outline basic class framework - Everyone
-
 PLAYER:
 
  1) Cleaner physics
  
- 2) Player collision (ground X, platforms, other players)
+ 2) Overhaul collision (left right up down)
  
- 3) Player 
+ 3) Dynamic hitbox shifting during animations
  
 GAMEPLAY:
 
@@ -37,7 +35,7 @@ GAMEPLAY:
  
 VISUALS:
 
- 1) Draw animations - Nathan/James
+ 1) Draw animation
 	- Walk X
 	- Jump
 	- Crouch X
@@ -46,5 +44,5 @@ VISUALS:
 
  2) ***Write animations in code*** X
 
- 3) Animation Queue - Daniel
+ 3) Queue engoodening 
  

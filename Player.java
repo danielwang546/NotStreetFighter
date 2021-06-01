@@ -124,6 +124,8 @@ public class Player extends GameElement{
     
     public void updateHitBox() {
     	hitBox = new HitBox(getX()+40,getY()+20,getXSpeed(), getYSpeed(), getWidth()-80,getHeight()-20);
+    	if(currState().fileName.equals("Idle_Crouch"))
+    			hitBox = new HitBox(getX()+40,getY()+120,getXSpeed(), getYSpeed(), getWidth()-80,getHeight()-120);
     }
 
     public void setYAcelleration(int s){
