@@ -29,6 +29,8 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
     private Player player1;
     private Player player2;
     private Ground platform;
+    private Wall wall1;
+    private Wall wall2;
 
     private int[] keyCodes = {
         KeyEvent.VK_ENTER,
@@ -64,6 +66,8 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
         player2.setState(Player.PlayerState.PUNCHING);
 
         platform = new Ground(0,600,1600,20);
+        wall1 = new Wall(30,0,20,1200);
+        wall2 = new Wall(1200,0,20,1200);
 
         this.addKeyListener(this);
         new Thread(this).start();
@@ -129,6 +133,8 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
         player1.draw(graphToBack);
         player2.draw(graphToBack);
         platform.draw(graphToBack);
+        wall1.draw(graphToBack);
+        wall2.draw(graphToBack);
 
         //draws everything from graphToBack to the image (put all draws before this line)
         twoDGraph.drawImage(back, null, 0, 0);
@@ -165,7 +171,6 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
         }
         for(int i = 0; i < tapKeyCodes.length; i++) {
             if(e.getKeyCode() == tapKeyCodes[i]) {
-            	System.out.print("hi");
                 tapKeys[i] = false;
             }
             if(e.getKeyCode() == tapKeyCodes[i]) {
