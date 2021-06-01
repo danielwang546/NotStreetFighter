@@ -18,7 +18,7 @@ import java.util.Arrays;
 
 public class Wall extends GameElement {
     public Wall(int x, int y, int w, int h) {
-        super(x,y,w,h);
+        super(x,y,0,0,w,h);
     }
 
     @Override
