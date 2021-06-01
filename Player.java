@@ -67,7 +67,9 @@ public class Player extends GameElement{
     private int currFrame = 0;
     private int frameCount = 0;
     private HitBox hitBox;
+    private AttackBox attackBox;
     private ArrayList<PlayerState> stateQueue;
+    private PlayerState currState;
     
 
     public Player(int id, int x, int y){
@@ -78,7 +80,10 @@ public class Player extends GameElement{
         pID = id;
         
         hitBox = new HitBox(getX()+40,getY()+20,getXSpeed(), getYSpeed(), getWidth()-80,getHeight()-20);
-       
+        attackBox = new AttackBox(0,0,getXSpeed(), getYSpeed(),0,0);
+
+        currState = PlayerState.PUNCHING;
+
         stateQueue = new ArrayList<PlayerState>();
 
         try{
@@ -99,6 +104,10 @@ public class Player extends GameElement{
             window.drawImage(image, getX() + getWidth(), getY(), -getWidth(), getHeight(), null);
         }
         hitBox.draw(window);
+        punch();
+        window.setColor(Color.RED);
+        attackBox.draw(window);
+        window.setColor(Color.BLACK);
     }
 
     private void updateImage() {
@@ -198,4 +207,18 @@ public class Player extends GameElement{
     	else
     		return stateQueue.get(0);
     }
+    
+    public void punch() {
+        if (currState == PlayerState.PUNCHING /*&& currFrame >= 4 && currFrame <= 6*/) {
+            if (facingRight) {
+                attackBox.setPos(getX()+getWidth()-10, getY()+100);
+            } else {
+                attackBox.setPos(getX(), getY()+100);
+            }
+            
+            attackBox.setWidth(10);
+            attackBox.setHeight(10);
+        }
+    }
 }
+
