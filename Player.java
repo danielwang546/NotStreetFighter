@@ -18,7 +18,7 @@ public class Player extends GameElement{
         JUMPING(0, 1, true, ""),
         PUNCHING(9, 2, false, "Punch"),
         BLOCKING(9, 1, false, "Block"),
-        IDLE_BLOCK(1, 1, true, "Idle_Block"),
+        IDLE_BLOCK(1, 1, false, "Idle_Block"),
     	STUNNED(9, 1, false, "Stunned");
 
 
@@ -160,19 +160,19 @@ public class Player extends GameElement{
     }
     
     //very bad crouch implementation
-    public void crouch() {
-    	if(currState.fileName.equals("Crouch")  || currState.fileName.equals("Idle_Crouch")) {
-			fillQueue(PlayerState.IDLE_CROUCH);
+    public void enableState(PlayerState ps, PlayerState idlePs) {
+    	if(currState.fileName.equals(ps.fileName)  || currState.fileName.equals(idlePs.fileName)) {
+			fillQueue(idlePs);
     	} else {
-    		setCurrState(PlayerState.CROUCHING);
+    		setCurrState(ps);
     	}
     }
     
     
     //I don't know why this has to exist
-    public void uncrouch() {
-    	stateQueue.remove(PlayerState.IDLE_CROUCH);
-    	stateQueue.remove(PlayerState.CROUCHING);
+    public void disableState(PlayerState ps, PlayerState idlePs) {
+    	stateQueue.remove(idlePs);
+    	stateQueue.remove(ps);
     }
     
     public void printStates() {

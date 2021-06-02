@@ -25,6 +25,7 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
     private int[] keyCodes = {
         KeyEvent.VK_ENTER,
         KeyEvent.VK_SHIFT,
+        KeyEvent.VK_CONTROL,
         KeyEvent.VK_A,
         KeyEvent.VK_S,
         KeyEvent.VK_D,
@@ -92,23 +93,23 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
         //player1.setQueue(false);
         
         //movement determination is first
-        if(keys[2]) {
+        if(keys[3]) {
             player1.setXSpeed(-150);
             player1.setFacingRight(false);
             player1.addState(Player.PlayerState.WALKING);
         }
-        if(keys[4]) {
+        if(keys[5]) {
             player1.setFacingRight(true);
             player1.setXSpeed(150);
             player1.addState(Player.PlayerState.WALKING);
         }
         
-        if(keys[6]) {
+        if(keys[7]) {
             player2.setXSpeed(-150);
             player2.addState(Player.PlayerState.WALKING);
             player2.setFacingRight(false);
         }
-        if(keys[8]) {
+        if(keys[9]) {
             player2.setXSpeed(150);
             player2.addState(Player.PlayerState.WALKING);
             player2.setFacingRight(true);
@@ -116,20 +117,6 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
         
         
         //then comes non-interruptible states with attacking taking higher priority
-        if(keys[3]) {
-        	player1.setXSpeed(0);
-            player1.crouch();
-        }else {
-        	player1.uncrouch();
-        }
-        if(keys[7]) {
-        	player2.setXSpeed(0);
-            player2.crouch();
-        }else {
-        	player2.uncrouch();
-        }
-        	
-        
         if(tapKeys[2]) {
         	player1.addState(Player.PlayerState.PUNCHING);
         	tapKeys[2] = false;
@@ -139,8 +126,43 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
         	tapKeys[3] = false;
         }
         
+        //finally come the hold states, of which only one can be active at a time
+        boolean p1holdUsed = false;
+        boolean p2holdUsed = false;
         
-        //after that comes idle which depend on everything else that happened  
+        if(keys[4] && !p1holdUsed) {
+        	player1.setXSpeed(0);
+        	p1holdUsed = true;
+            player1.enableState(Player.PlayerState.CROUCHING, Player.PlayerState.IDLE_CROUCH);
+        }else {
+        	player1.disableState(Player.PlayerState.CROUCHING, Player.PlayerState.IDLE_CROUCH);
+        }
+        
+        if(keys[1] && !p1holdUsed) {
+        	player1.setXSpeed(0);
+        	p1holdUsed = true;
+            player1.enableState(Player.PlayerState.BLOCKING, Player.PlayerState.IDLE_BLOCK);
+        }else {
+        	player1.disableState(Player.PlayerState.BLOCKING, Player.PlayerState.IDLE_BLOCK);
+        }
+        
+        if(keys[8] && !p2holdUsed) {
+        	player2.setXSpeed(0);
+        	p2holdUsed = true;
+        	player2.enableState(Player.PlayerState.CROUCHING, Player.PlayerState.IDLE_CROUCH);
+        }else {
+        	player2.disableState(Player.PlayerState.CROUCHING, Player.PlayerState.IDLE_CROUCH);
+        }
+        
+        if(keys[2] && !p2holdUsed) {
+        	player2.setXSpeed(0);
+        	p2holdUsed = true;
+        	player2.enableState(Player.PlayerState.BLOCKING, Player.PlayerState.IDLE_BLOCK);
+        }else {
+        	player2.disableState(Player.PlayerState.BLOCKING, Player.PlayerState.IDLE_BLOCK);
+        }
+        	
+        
         if (!player1.touching(platform, dT)) {
             player1.applyGravity();
         } else {
@@ -159,18 +181,21 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
                 tapKeys[1] = false;
             }
         }
-        if (!keys[2] && !keys[4] && player1.getCurrState().fileName().equals("Walk")) {
+        
+        //prettier walk animations
+        if (!keys[3] && !keys[5] && player1.getCurrState().fileName().equals("Walk")) {
             player1.setXSpeed(0);
             player1.setCurrState(Player.PlayerState.IDLE);
         }
-        if (!keys[6] && !keys[8]) {
+        if (!keys[7] && !keys[9] && player2.getCurrState().fileName().equals("Walk")) {
             player2.setXSpeed(0);
-            //player2.setCurrState(Player.PlayerState.IDLE);
+            player2.setCurrState(Player.PlayerState.IDLE);
         }
         
         player1.updateHitBox();
         player2.updateHitBox();
         
+        //calculate collision
         
         //problems arise because these need to all be executed at the exact same time, not in sequence
         if(player1.getHitBox().touching(player2.getHitBox(), dT)) {
