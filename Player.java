@@ -183,8 +183,8 @@ public class Player extends GameElement{
     		super.setYSpeed(s);
     }
 
-    public void applyGravity(double dT){
-        super.setYSpeed((int)(getYSpeed() + yAcceleration * dT));
+    public void applyGravity(){
+        super.setYSpeed(getYSpeed() + 1);
     }
 
     public void setFacingRight(boolean isFacingRight) {

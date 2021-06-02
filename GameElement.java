@@ -129,7 +129,7 @@ public abstract class GameElement
       this.x += x;
       this.y += y;
   }
-  public boolean touchingTop(GameElement other, double dT){
+  public boolean touchingTop(GameElement other){
     Rectangle thisRect = new Rectangle();
 	
     thisRect.width= width;
@@ -137,9 +137,9 @@ public abstract class GameElement
     
     
     if(xSpeed > 0) {
-      thisRect.width= (int)(width + xSpeed * dT);
+      thisRect.width = width + xSpeed;
     } else if(xSpeed < 0) {
-      thisRect.x = (int)(x + xSpeed * dT);
+      thisRect.x = x + xSpeed;
     }
     
     
@@ -148,15 +148,15 @@ public abstract class GameElement
     
     
     if(ySpeed > 0) {
-      thisRect.height= (int)(height + ySpeed * dT);
+      thisRect.height = height + ySpeed;
     } else if(ySpeed < 0) {
-      thisRect.y = (int)(y + ySpeed * dT);
+      thisRect.y = y + ySpeed;
     }
 
     return thisRect.intersectsLine(other.x, other.y, other.x + other.width, other.y);
   }
 
-  public boolean touchingSide(GameElement other, double dT){
+  public boolean touchingSide(GameElement other){
     Rectangle thisRect = new Rectangle();
 	
     thisRect.width= width;
@@ -164,9 +164,9 @@ public abstract class GameElement
     
     
     if(xSpeed > 0) {
-      thisRect.width= (int)(width + xSpeed * dT);
+      thisRect.width = width + xSpeed;
     } else if(xSpeed < 0) {
-      thisRect.x = (int)(x + xSpeed * dT);
+      thisRect.x = x + xSpeed;
     }
     
     
@@ -175,9 +175,9 @@ public abstract class GameElement
     
     
     if(ySpeed > 0) {
-      thisRect.height= (int)(height + ySpeed * dT);
+      thisRect.height= height + ySpeed;
     } else if(ySpeed < 0) {
-      thisRect.y = (int)(y + ySpeed * dT);
+      thisRect.y = y + ySpeed;
     }
 
     return thisRect.intersectsLine(other.x, other.y, other.x, other.y + other.height) || thisRect.intersectsLine(other.x + other.width, other.y, other.x + other.width , other.y + other.height);

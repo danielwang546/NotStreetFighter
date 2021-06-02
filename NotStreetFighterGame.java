@@ -80,7 +80,6 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
     public void paint(Graphics window) {
         currTime = System.currentTimeMillis();
         deltaTime = currTime - beforeTime;
-        double dT = deltaTime/1000.0; //change in time between frames, in seconds
         double frameRate = ((int)(100000.0/deltaTime))/100.0; //magic to get the framerate in Hz, truncated to 2 decimals
 
         Graphics2D twoDGraph = (Graphics2D) window;
@@ -192,16 +191,16 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
         //calculate collision
         
         if (!player1.touching(platform) && player1.getY() + player1.getHeight() < platform.getY()) {
-            player1.applyGravity(dT);
+            player1.applyGravity();
         } else {
             player1.setYSpeed(0);
             if(tapKeys[0]){
-                player1.setYSpeed(-20);
+                player1.setYSpeed(-15);
                 tapKeys[0] = false;
             }
         }
         if (!player2.touching(platform) && player2.getY() + player2.getHeight() < platform.getY()) {
-            player2.applyGravity(dT);
+            player2.applyGravity();
         } else {
             player2.setYSpeed(0);
             if(tapKeys[1]){
@@ -210,19 +209,19 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
             }
         }
 
-        if(player1.getHitBox().touchingTop(player2.getHitBox(), dT)){
+        if(player1.getHitBox().touchingTop(player2.getHitBox())){
             player1.setYSpeed(0);
         }
 
-        if(player2.getHitBox().touchingTop(player1.getHitBox(), dT)){
+        if(player2.getHitBox().touchingTop(player1.getHitBox())){
             player2.setYSpeed(0);
         }
         
         //problems arise because these need to all be executed at the exact same time, not in sequence
-        if(player1.getHitBox().touchingSide(player2.getHitBox(), dT)) {
+        if(player1.getHitBox().touchingSide(player2.getHitBox())) {
         	player1.setXSpeed(0);
         }
-        if(player2.getHitBox().touchingSide(player1.getHitBox(), dT)) {
+        if(player2.getHitBox().touchingSide(player1.getHitBox())) {
         	player2.setXSpeed(0);
         }
 
