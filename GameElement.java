@@ -125,6 +125,60 @@ public abstract class GameElement
     //     (this.y + this.height >= other.y && this.y <= other.y));
   }
 
+  public boolean touchingTop(GameElement other, double dT){
+    Rectangle thisRect = new Rectangle();
+	
+    thisRect.width= width;
+    thisRect.x = x;
+    
+    
+    if(xSpeed > 0) {
+      thisRect.width= (int)(width + xSpeed * dT);
+    } else if(xSpeed < 0) {
+      thisRect.x = (int)(x + xSpeed * dT);
+    }
+    
+    
+    thisRect.height = height;
+    thisRect.y = y;
+    
+    
+    if(ySpeed > 0) {
+      thisRect.height= (int)(height + ySpeed * dT);
+    } else if(ySpeed < 0) {
+      thisRect.y = (int)(y + ySpeed * dT);
+    }
+
+    return thisRect.intersectsLine(other.x, other.y, other.x + other.width, other.y);
+  }
+
+  public boolean touchingSide(GameElement other, double dT){
+    Rectangle thisRect = new Rectangle();
+	
+    thisRect.width= width;
+    thisRect.x = x;
+    
+    
+    if(xSpeed > 0) {
+      thisRect.width= (int)(width + xSpeed * dT);
+    } else if(xSpeed < 0) {
+      thisRect.x = (int)(x + xSpeed * dT);
+    }
+    
+    
+    thisRect.height = height;
+    thisRect.y = y;
+    
+    
+    if(ySpeed > 0) {
+      thisRect.height= (int)(height + ySpeed * dT);
+    } else if(ySpeed < 0) {
+      thisRect.y = (int)(y + ySpeed * dT);
+    }
+
+    return thisRect.intersectsLine(other.x, other.y, other.x, other.y + other.height) || thisRect.intersectsLine(other.x + other.width, other.y, other.x + other.width , other.y + other.height);
+  }
+
   public void move(int x, int y, double dT){
       this.x += x * dT;
       this.y += y * dT;
