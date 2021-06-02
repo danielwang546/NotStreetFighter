@@ -43,7 +43,9 @@ public class GraphicsUserInterface {
         window.setColor(Color.RED);
         window.fillRect(25, 10, healthBarWidthP1, 30);
         window.fillRect(825, 10, healthBarWidthP2, 30);
-        //window.drawString("Player 1 health: " + healthBarWidthP1/7, 725, 20);
+        window.setColor(Color.BLACK);
+        window.drawString("Player 1 health: " + healthBarWidthP1/7, 25, 55);
+        window.drawString("Player 2 health: " + healthBarWidthP2/7, 825, 55);
     }
 
 }
