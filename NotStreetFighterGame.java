@@ -5,6 +5,7 @@ import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 public class NotStreetFighterGame extends Canvas implements KeyListener, Runnable 
 {
@@ -15,6 +16,7 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
     private boolean[] tapKeys;
     private boolean[] stillPressed;
     private BufferedImage back;
+    private ArrayList<GameElement> objects;
     private Player player1;
     private Player player2;
     int p1holdUsed;
@@ -64,6 +66,11 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
         platform = new Ground(0,600,1600,20);
         wall1 = new Wall(30,0,20,1200);
         wall2 = new Wall(1200,0,20,1200);
+        
+        objects = new ArrayList<GameElement>();
+        objects.add(platform);
+        objects.add(wall1);
+        objects.add(wall2);
 
         GUI = new GraphicsUserInterface(player1.getHealth(), player2.getHealth());
 
@@ -190,32 +197,30 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
         
         //calculate collision
         
-        if (!player1.touching(platform) && player1.getY() + player1.getHeight() < platform.getY()) {
-            player1.applyGravity();
+        if(player1.isSupported(objects) || player1.getHitBox().touchingTop(player2.getHitBox())) {
+        	player1.setYSpeed(0);
         } else {
-            player1.setYSpeed(0);
-            if(tapKeys[0]){
-                player1.setYSpeed(-15);
-                tapKeys[0] = false;
-            }
-        }
-        if (!player2.touching(platform) && player2.getY() + player2.getHeight() < platform.getY()) {
-            player2.applyGravity();
-        } else {
-            player2.setYSpeed(0);
-            if(tapKeys[1]){
-                player2.setYSpeed(-20);
-                tapKeys[1] = false;
-            }
+        	player1.applyGravity();
         }
 
-        if(player1.getHitBox().touchingTop(player2.getHitBox())){
-            player1.setYSpeed(0);
+        if(player2.isSupported(objects) || player2.getHitBox().touchingTop(player1.getHitBox())) {
+        	player2.setYSpeed(0);
+        } else {
+        	player2.applyGravity();
+        }
+        
+        if(tapKeys[0]){
+            if(player1.isSupported(objects)|| player1.getHitBox().touchingTop(player2.getHitBox()))
+            	player1.setYSpeed(-15);
+            tapKeys[0] = false;
+        }
+        
+        if(tapKeys[1]){
+            if(player2.isSupported(objects) || player2.getHitBox().touchingTop(player1.getHitBox()))
+            	player2.setYSpeed(-15);
+            tapKeys[1] = false;
         }
 
-        if(player2.getHitBox().touchingTop(player1.getHitBox())){
-            player2.setYSpeed(0);
-        }
         
         //problems arise because these need to all be executed at the exact same time, not in sequence
         if(player1.getHitBox().touchingSide(player2.getHitBox())) {
@@ -225,6 +230,7 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
         	player2.setXSpeed(0);
         }
 
+        //attack collision
         if (player1.getAttackBox().touching(player2.getHitBox())) {
             player1.deleteAttackBox();
             player2.decreaseHealth(10);

@@ -75,9 +75,7 @@ public class Player extends GameElement{
         attackBox = new AttackBox(0,0,getXSpeed(), getYSpeed(),0,0);
         attacked = false;
         movementDisabled = false;
-
-        currState = PlayerState.PUNCHING;
-
+        
         stateQueue = new ArrayList<PlayerState>();
         
         currState = PlayerState.IDLE;
@@ -182,6 +180,14 @@ public class Player extends GameElement{
     	if(!movementDisabled || s==0)
     		super.setYSpeed(s);
     }
+    
+    public boolean isSupported(ArrayList<GameElement> objects) {
+    	for(GameElement ge : objects) 
+    		if(hitBox.touchingTop(ge)) 
+    			return true;
+		return false;
+    }
+   
 
     public void applyGravity(){
         super.setYSpeed(getYSpeed() + 1);

@@ -1,4 +1,5 @@
 import java.awt.*;
+import java.util.ArrayList;
 
 public abstract class GameElement
 {
@@ -134,23 +135,17 @@ public abstract class GameElement
 	
     thisRect.width= width;
     thisRect.x = x;
-    
-    
-    if(xSpeed > 0) {
-      thisRect.width = width + xSpeed;
-    } else if(xSpeed < 0) {
-      thisRect.x = x + xSpeed;
-    }
+  
     
     
     thisRect.height = height;
-    thisRect.y = y;
+    thisRect.y = y-1;
     
     
     if(ySpeed > 0) {
-      thisRect.height = height + ySpeed;
+      thisRect.height+=ySpeed;
     } else if(ySpeed < 0) {
-      thisRect.y = y + ySpeed;
+      thisRect.y+=ySpeed;
     }
 
     return thisRect.intersectsLine(other.x, other.y, other.x + other.width, other.y);
