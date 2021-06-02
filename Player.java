@@ -17,6 +17,7 @@ public class Player extends GameElement{
         WALKING(9, 3, true, "Walk"),
         JUMPING(0, 1, true, ""),
         PUNCHING(9, 2, false, "Punch"),
+        KICKING(9, 2, false, "Kick"),
         BLOCKING(9, 1, false, "Block"),
         IDLE_BLOCK(1, 1, false, "Idle_Block"),
     	STUNNED(9, 1, false, "Stunned");

@@ -45,7 +45,7 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
         KeyEvent.VK_1,
         KeyEvent.VK_PERIOD,
         KeyEvent.VK_2,
-        KeyEvent.VK_BACK_SLASH
+        KeyEvent.VK_SLASH
     };
 
     public NotStreetFighterGame() {
@@ -131,9 +131,17 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
         	player1.addState(Player.PlayerState.PUNCHING);
         	tapKeys[2] = false;
         }
+        if(tapKeys[4]) {
+        	player1.addState(Player.PlayerState.KICKING);
+        	tapKeys[4] = false;
+        }
         if(tapKeys[3]) {
         	player2.addState(Player.PlayerState.PUNCHING);
         	tapKeys[3] = false;
+        }
+        if(tapKeys[5]) {
+        	player2.addState(Player.PlayerState.KICKING);
+        	tapKeys[5] = false;
         }
         
         //finally come the hold states, of which only one can be active at a time
@@ -171,9 +179,11 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
         
         if(keys[2] && (p2holdUsed==2 || p2holdUsed==0)) {
         	player2.setXSpeed(0);
+        	player2.setMovementDis(true);
         	p2holdUsed = 2;
         	player2.enableState(Player.PlayerState.BLOCKING, Player.PlayerState.IDLE_BLOCK);
         }else {
+        	player2.setMovementDis(false);
         	player2.disableState(Player.PlayerState.BLOCKING, Player.PlayerState.IDLE_BLOCK);
         }
         
