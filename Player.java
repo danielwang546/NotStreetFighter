@@ -90,9 +90,9 @@ public class Player extends GameElement{
     }
 
 
-    public void draw(Graphics window, double dT){
+    public void draw(Graphics window){
         //applyGravity();
-        move(getXSpeed(), getYSpeed(), dT);
+        move(getXSpeed(), getYSpeed());
         updateImage();
         if(facingRight) {
             window.drawImage(image, getX(), getY(), getWidth(), getHeight(),null);
@@ -104,11 +104,6 @@ public class Player extends GameElement{
         window.setColor(Color.RED);
         attackBox.draw(window);
         window.setColor(Color.BLACK);
-    }
-
-    @Override
-    public void draw(Graphics window) {
-        
     }
 
     private void updateImage() {
@@ -188,8 +183,8 @@ public class Player extends GameElement{
     		super.setYSpeed(s);
     }
 
-    public void applyGravity(){
-        super.setYSpeed(getYSpeed() + yAcceleration);
+    public void applyGravity(double dT){
+        super.setYSpeed((int)(getYSpeed() + yAcceleration * dT));
     }
 
     public void setFacingRight(boolean isFacingRight) {
