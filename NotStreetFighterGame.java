@@ -17,6 +17,8 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
     private BufferedImage back;
     private Player player1;
     private Player player2;
+    int p1holdUsed;
+    int p2holdUsed;
     private Ground platform;
     private Wall wall1;
     private Wall wall2;
@@ -54,6 +56,8 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
 
         player1 = new Player(1, 400, 400);
         player2 = new Player(2, 1000, 400);
+        p1holdUsed = 0;
+        p2holdUsed = 0;
 
         platform = new Ground(0,600,1600,20);
         wall1 = new Wall(30,0,20,1200);
@@ -127,41 +131,63 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
         }
         
         //finally come the hold states, of which only one can be active at a time
-        boolean p1holdUsed = false;
-        boolean p2holdUsed = false;
-        
-        if(keys[4] && !p1holdUsed) {
+        //player 1
+        if(keys[4] && (p1holdUsed==4 || p1holdUsed==0)) {
         	player1.setXSpeed(0);
-        	p1holdUsed = true;
+        	p1holdUsed = 4;
             player1.enableState(Player.PlayerState.CROUCHING, Player.PlayerState.IDLE_CROUCH);
         }else {
         	player1.disableState(Player.PlayerState.CROUCHING, Player.PlayerState.IDLE_CROUCH);
         }
         
-        if(keys[1] && !p1holdUsed) {
+        if(keys[1] && (p1holdUsed==1 || p1holdUsed==0)) {
         	player1.setXSpeed(0);
-        	p1holdUsed = true;
+        	p1holdUsed = 1;
             player1.enableState(Player.PlayerState.BLOCKING, Player.PlayerState.IDLE_BLOCK);
         }else {
         	player1.disableState(Player.PlayerState.BLOCKING, Player.PlayerState.IDLE_BLOCK);
         }
         
-        if(keys[8] && !p2holdUsed) {
+        if(!keys[4] && !keys[1]) {
+        	p1holdUsed = 0;
+        }
+        
+        //player 2
+        if(keys[8] && (p2holdUsed==8 || p2holdUsed==0)) {
         	player2.setXSpeed(0);
-        	p2holdUsed = true;
+        	p2holdUsed = 8;
         	player2.enableState(Player.PlayerState.CROUCHING, Player.PlayerState.IDLE_CROUCH);
         }else {
         	player2.disableState(Player.PlayerState.CROUCHING, Player.PlayerState.IDLE_CROUCH);
         }
         
-        if(keys[2] && !p2holdUsed) {
+        if(keys[2] && (p2holdUsed==2 || p2holdUsed==0)) {
         	player2.setXSpeed(0);
-        	p2holdUsed = true;
+        	p2holdUsed = 2;
         	player2.enableState(Player.PlayerState.BLOCKING, Player.PlayerState.IDLE_BLOCK);
         }else {
         	player2.disableState(Player.PlayerState.BLOCKING, Player.PlayerState.IDLE_BLOCK);
         }
+        
+        if(!keys[8] && !keys[2]) {
+            p2holdUsed = 0;
+        }
         	
+        
+        //prettier walk animations
+        if (!keys[3] && !keys[5] && player1.getCurrState().fileName().equals("Walk")) {
+            player1.setXSpeed(0);
+            player1.setCurrState(Player.PlayerState.IDLE);
+        }
+        if (!keys[7] && !keys[9] && player2.getCurrState().fileName().equals("Walk")) {
+            player2.setXSpeed(0);
+            player2.setCurrState(Player.PlayerState.IDLE);
+        }
+        
+        player1.updateHitBox();
+        player2.updateHitBox();    
+        
+        //calculate collision
         
         if (!player1.touching(platform, dT)) {
             player1.applyGravity();
@@ -181,21 +207,6 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
                 tapKeys[1] = false;
             }
         }
-        
-        //prettier walk animations
-        if (!keys[3] && !keys[5] && player1.getCurrState().fileName().equals("Walk")) {
-            player1.setXSpeed(0);
-            player1.setCurrState(Player.PlayerState.IDLE);
-        }
-        if (!keys[7] && !keys[9] && player2.getCurrState().fileName().equals("Walk")) {
-            player2.setXSpeed(0);
-            player2.setCurrState(Player.PlayerState.IDLE);
-        }
-        
-        player1.updateHitBox();
-        player2.updateHitBox();
-        
-        //calculate collision
         
         //problems arise because these need to all be executed at the exact same time, not in sequence
         if(player1.getHitBox().touching(player2.getHitBox(), dT)) {
