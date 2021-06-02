@@ -98,23 +98,23 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
         
         //movement determination is first
         if(keys[3]) {
-            player1.setXSpeed(-150);
+            player1.setXSpeed(-5);
             player1.setFacingRight(false);
             player1.addState(Player.PlayerState.WALKING);
         }
         if(keys[5]) {
             player1.setFacingRight(true);
-            player1.setXSpeed(150);
+            player1.setXSpeed(5);
             player1.addState(Player.PlayerState.WALKING);
         }
         
         if(keys[7]) {
-            player2.setXSpeed(-150);
+            player2.setXSpeed(-5);
             player2.addState(Player.PlayerState.WALKING);
             player2.setFacingRight(false);
         }
         if(keys[9]) {
-            player2.setXSpeed(150);
+            player2.setXSpeed(5);
             player2.addState(Player.PlayerState.WALKING);
             player2.setFacingRight(true);
         }
@@ -191,21 +191,21 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
         
         //calculate collision
         
-        if (!player1.touching(platform, dT)) {
-            player1.applyGravity();
+        if (!player1.touching(platform) && player1.getY() + player1.getHeight() < platform.getY()) {
+            player1.applyGravity(dT);
         } else {
             player1.setYSpeed(0);
             if(tapKeys[0]){
-                player1.setYSpeed(-650);
+                player1.setYSpeed(-20);
                 tapKeys[0] = false;
             }
         }
-        if (!player2.touching(platform, dT)) {
-            player2.applyGravity();
+        if (!player2.touching(platform) && player2.getY() + player2.getHeight() < platform.getY()) {
+            player2.applyGravity(dT);
         } else {
             player2.setYSpeed(0);
             if(tapKeys[1]){
-                player2.setYSpeed(-650);
+                player2.setYSpeed(-20);
                 tapKeys[1] = false;
             }
         }
@@ -226,12 +226,12 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
         	player2.setXSpeed(0);
         }
 
-        if (player1.getAttackBox().touching(player2.getHitBox(),dT)) {
+        if (player1.getAttackBox().touching(player2.getHitBox())) {
             player1.deleteAttackBox();
             player2.decreaseHealth(10);
             GUI.setHealthBar(player1.getHealth(),player2.getHealth());
         }
-        if (player2.getAttackBox().touching(player1.getHitBox(),dT)) {
+        if (player2.getAttackBox().touching(player1.getHitBox())) {
             player2.deleteAttackBox();
             player1.decreaseHealth(10);
             GUI.setHealthBar(player1.getHealth(),player2.getHealth());
@@ -243,8 +243,8 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
             graphToBack.drawString(counter + " frames in 10s", 5, 30);
         }
 
-        player1.draw(graphToBack, dT);
-        player2.draw(graphToBack, dT);
+        player1.draw(graphToBack);
+        player2.draw(graphToBack);
         platform.draw(graphToBack);
         wall1.draw(graphToBack);
         wall2.draw(graphToBack);

@@ -8,7 +8,7 @@ public class Wall extends GameElement {
     }
 
     @Override
-    public void move(int x, int y, double dT) {
+    public void move(int x, int y) {
         //empty method
     }
 

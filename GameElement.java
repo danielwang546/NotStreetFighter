@@ -92,7 +92,7 @@ public abstract class GameElement
       return ySpeed;
   }
   
-  public boolean touching(GameElement other, double dT) {
+  public boolean touching(GameElement other) {
 	Rectangle thisRect = new Rectangle();
 	
 	thisRect.width= width;
@@ -100,9 +100,9 @@ public abstract class GameElement
 	
   
 	if(xSpeed > 0) {
-		thisRect.width= (int)(width + xSpeed * dT);
+		thisRect.width= width + xSpeed;
 	} else if(xSpeed < 0) {
-		thisRect.x = (int)(x + xSpeed * dT);
+		thisRect.x = x + xSpeed;
 	}
   
 	
@@ -111,9 +111,9 @@ public abstract class GameElement
 	
   
 	if(ySpeed > 0) {
-		thisRect.height= (int)(height + ySpeed * dT);
+		thisRect.height= height + ySpeed;
 	} else if(ySpeed < 0) {
-		thisRect.y = (int)(y + ySpeed * dT);
+		thisRect.y = y + ySpeed;
 	}
   
 	
@@ -125,6 +125,10 @@ public abstract class GameElement
     //     (this.y + this.height >= other.y && this.y <= other.y));
   }
 
+  public void move(int x, int y){
+      this.x += x;
+      this.y += y;
+  }
   public boolean touchingTop(GameElement other, double dT){
     Rectangle thisRect = new Rectangle();
 	
@@ -178,11 +182,7 @@ public abstract class GameElement
 
     return thisRect.intersectsLine(other.x, other.y, other.x, other.y + other.height) || thisRect.intersectsLine(other.x + other.width, other.y, other.x + other.width , other.y + other.height);
   }
-
-  public void move(int x, int y, double dT){
-      this.x += x * dT;
-      this.y += y * dT;
-   }
+  
   public abstract void draw(Graphics window);
 
   public String toString()

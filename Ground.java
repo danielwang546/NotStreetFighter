@@ -9,7 +9,7 @@ public class Ground extends GameElement {
     }
 
     @Override
-    public void move(int x, int y, double dT) {
+    public void move(int x, int y) {
         //ground does not move
     }
 
