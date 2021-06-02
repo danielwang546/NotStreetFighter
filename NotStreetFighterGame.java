@@ -96,8 +96,6 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
 
         graphToBack.drawString(frameRate + " FPS", 5, 10);
         
-        //player1.setQueue(false);
-        
         //movement determination is first
         if(keys[3]) {
             player1.setXSpeed(-150);
@@ -144,9 +142,11 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
         
         if(keys[1] && (p1holdUsed==1 || p1holdUsed==0)) {
         	player1.setXSpeed(0);
+        	player1.setMovementDis(true);
         	p1holdUsed = 1;
             player1.enableState(Player.PlayerState.BLOCKING, Player.PlayerState.IDLE_BLOCK);
         }else {
+        	player1.setMovementDis(false);
         	player1.disableState(Player.PlayerState.BLOCKING, Player.PlayerState.IDLE_BLOCK);
         }
         

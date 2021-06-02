@@ -98,25 +98,24 @@ public abstract class GameElement
 	thisRect.width= width;
 	thisRect.x = x;
 	
-  /*
+  
 	if(xSpeed > 0) {
 		thisRect.width= (int)(width + xSpeed * dT);
 	} else if(xSpeed < 0) {
 		thisRect.x = (int)(x + xSpeed * dT);
 	}
-  */
+  
 	
 	thisRect.height = height;
 	thisRect.y = y;
 	
-  /*
+  
 	if(ySpeed > 0) {
 		thisRect.height= (int)(height + ySpeed * dT);
-	//should not ever happen realistically
 	} else if(ySpeed < 0) {
 		thisRect.y = (int)(y + ySpeed * dT);
 	}
-  */
+  
 	
     Rectangle otherRect = new Rectangle(other.x, other.y, other.width, other.height);
     return thisRect.intersects(otherRect);

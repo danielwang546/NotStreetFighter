@@ -59,6 +59,7 @@ public class Player extends GameElement{
     private HitBox hitBox;
     private AttackBox attackBox;
     private boolean attacked;
+    private boolean movementDisabled;
     private PlayerState currState;
     private ArrayList<PlayerState> stateQueue;
     
@@ -73,6 +74,7 @@ public class Player extends GameElement{
         hitBox = new HitBox(getX()+40,getY()+20,getXSpeed(), getYSpeed(), getWidth()-80,getHeight()-20);
         attackBox = new AttackBox(0,0,getXSpeed(), getYSpeed(),0,0);
         attacked = false;
+        movementDisabled = false;
 
         currState = PlayerState.PUNCHING;
 
@@ -134,7 +136,9 @@ public class Player extends GameElement{
     public void updateHitBox() {
     	hitBox = new HitBox(getX()+40,getY()+20,getXSpeed(), getYSpeed(), getWidth()-80,getHeight()-20);
     	if(currState.fileName.equals("Idle_Crouch"))
-    			hitBox = new HitBox(getX()+40,getY()+120,getXSpeed(), getYSpeed(), getWidth()-80,getHeight()-120);
+			hitBox = new HitBox(getX()+40,getY()+120,getXSpeed(), getYSpeed(), getWidth()-80,getHeight()-120);
+    	else if(currState.fileName.equals("Idle_Block"))
+    		hitBox = new HitBox(getX()+40,getY()+40,getXSpeed(), getYSpeed(), getWidth()-80,getHeight()-40);
     }
 
     public AttackBox getAttackBox() {
@@ -171,9 +175,21 @@ public class Player extends GameElement{
     public int getYAccel(){
         return yAcceleration;
     }
+    
+    @Override
+    public void setXSpeed(int s) {
+    	if(!movementDisabled || s==0)
+    		super.setXSpeed(s);
+    }
+    
+    @Override
+    public void setYSpeed(int s) {
+    	if(!movementDisabled || s==0)
+    		super.setYSpeed(s);
+    }
 
     public void applyGravity(){
-        setYSpeed(getYSpeed() + yAcceleration);
+        super.setYSpeed(getYSpeed() + yAcceleration);
     }
 
     public void setFacingRight(boolean isFacingRight) {
@@ -188,7 +204,6 @@ public class Player extends GameElement{
         score += s;
     }
     
-    //very bad crouch implementation
     public void enableState(PlayerState ps, PlayerState idlePs) {
     	if(currState.fileName.equals(ps.fileName)  || currState.fileName.equals(idlePs.fileName)) {
 			fillQueue(idlePs);
@@ -197,8 +212,10 @@ public class Player extends GameElement{
     	}
     }
     
+    public void setMovementDis(boolean b) {
+    	movementDisabled = b;
+    }
     
-    //I don't know why this has to exist
     public void disableState(PlayerState ps, PlayerState idlePs) {
     	stateQueue.remove(idlePs);
     	stateQueue.remove(ps);
@@ -237,7 +254,6 @@ public class Player extends GameElement{
         return score;
     }
 
-    //this logic can definitely be improved and the size causes extraneous problems that I do not understand
     public void addState(PlayerState state) {
     	if(currState.interruptible && !state.fileName.equals(currState.fileName)) {
     		System.out.println(state.fileName +" is interrupting " + currState.fileName);
