@@ -22,12 +22,12 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
     private Ground platform;
     private Wall wall1;
     private Wall wall2;
-    private Interface GUI;
+    private GraphicsUserInterface GUI;
 
     private int[] keyCodes = {
         KeyEvent.VK_ENTER,
-        KeyEvent.VK_SHIFT,
-        KeyEvent.VK_CONTROL,
+        KeyEvent.VK_BACK_QUOTE,
+        KeyEvent.VK_COMMA,
         KeyEvent.VK_A,
         KeyEvent.VK_S,
         KeyEvent.VK_D,
@@ -40,8 +40,10 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
     private int[] tapKeyCodes = {
         KeyEvent.VK_W,
         KeyEvent.VK_UP,
-        KeyEvent.VK_SPACE,
-        KeyEvent.VK_ENTER
+        KeyEvent.VK_1,
+        KeyEvent.VK_PERIOD,
+        KeyEvent.VK_2,
+        KeyEvent.VK_BACK_SLASH
     };
 
     public NotStreetFighterGame() {
@@ -63,7 +65,7 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
         wall1 = new Wall(30,0,20,1200);
         wall2 = new Wall(1200,0,20,1200);
 
-        GUI = new Interface(player1.getHealth(), player2.getHealth());
+        GUI = new GraphicsUserInterface(player1.getHealth(), player2.getHealth());
 
         this.addKeyListener(this);
         new Thread(this).start();
@@ -214,6 +216,17 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
         }
         if(player2.getHitBox().touching(player1.getHitBox(), dT)) {
         	player2.setXSpeed(0);
+        }
+
+        if (player1.getAttackBox().touching(player2.getHitBox(),dT)) {
+            player1.deleteAttackBox();
+            player2.decreaseHealth(10);
+            GUI.setHealthBar(player1.getHealth(),player2.getHealth());
+        }
+        if (player2.getAttackBox().touching(player1.getHitBox(),dT)) {
+            player2.deleteAttackBox();
+            player1.decreaseHealth(10);
+            GUI.setHealthBar(player1.getHealth(),player2.getHealth());
         }
 
         if(currTime - initTime < 10000 && counter < 10000) {

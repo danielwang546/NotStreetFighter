@@ -16,12 +16,12 @@ import java.awt.*;
 import javax.imageio.*;
 import java.util.Arrays;
 
-public class Interface {
+public class GraphicsUserInterface {
 
     private int healthBarWidthP1;
     private int healthBarWidthP2;
     
-    public Interface(int h1, int h2 ){
+    public GraphicsUserInterface(int h1, int h2 ){
         healthBarWidthP1 = h1 * 7;
         healthBarWidthP2 = h2 * 7;
     }
@@ -29,6 +29,14 @@ public class Interface {
     public void setHealthBar(int p1, int p2){
         healthBarWidthP1 = p1 * 7;
         healthBarWidthP2 = p2 * 7;
+    }
+    
+    public int getHealthBar1() {
+        return healthBarWidthP1;
+    }
+
+    public int getHealthBar2() {
+        return healthBarWidthP2;
     }
 
     public void drawHealth(Graphics window){

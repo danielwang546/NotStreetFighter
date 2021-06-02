@@ -58,6 +58,7 @@ public class Player extends GameElement{
     private int frameCount = 0;
     private HitBox hitBox;
     private AttackBox attackBox;
+    private boolean attacked;
     private PlayerState currState;
     private ArrayList<PlayerState> stateQueue;
     
@@ -71,6 +72,7 @@ public class Player extends GameElement{
         
         hitBox = new HitBox(getX()+40,getY()+20,getXSpeed(), getYSpeed(), getWidth()-80,getHeight()-20);
         attackBox = new AttackBox(0,0,getXSpeed(), getYSpeed(),0,0);
+        attacked = false;
 
         currState = PlayerState.PUNCHING;
 
@@ -133,6 +135,33 @@ public class Player extends GameElement{
     	hitBox = new HitBox(getX()+40,getY()+20,getXSpeed(), getYSpeed(), getWidth()-80,getHeight()-20);
     	if(currState.fileName.equals("Idle_Crouch"))
     			hitBox = new HitBox(getX()+40,getY()+120,getXSpeed(), getYSpeed(), getWidth()-80,getHeight()-120);
+    }
+
+    public AttackBox getAttackBox() {
+    	return attackBox;
+    }
+
+    public void deleteAttackBox() {
+        attacked = true;
+    }
+    
+    public void punch() {
+        if (currState == PlayerState.PUNCHING && currFrame == 0) {
+            attacked = false;
+        }
+        if (currState == PlayerState.PUNCHING && currFrame >= 4 && currFrame <= 6 && !attacked) {
+            if (facingRight) {
+                attackBox.setPos(getX()+getWidth()-10, getY()+100);
+            } else {
+                attackBox.setPos(getX(), getY()+100);
+            }
+            
+            attackBox.setWidth(10);
+            attackBox.setHeight(10);
+        } else {
+            attackBox.setWidth(0);
+            attackBox.setHeight(0);
+        }
     }
 
     public void setYAccel(int s){
@@ -226,19 +255,6 @@ public class Player extends GameElement{
     	} else {
     		return stateQueue.remove(0);
     	}
-    }
-    
-    public void punch() {
-        if (currState == PlayerState.PUNCHING /*&& currFrame >= 4 && currFrame <= 6*/) {
-            if (facingRight) {
-                attackBox.setPos(getX()+getWidth()-10, getY()+100);
-            } else {
-                attackBox.setPos(getX(), getY()+100);
-            }
-            
-            attackBox.setWidth(10);
-            attackBox.setHeight(10);
-        }
     }
 }
 
