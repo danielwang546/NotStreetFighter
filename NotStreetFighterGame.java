@@ -72,7 +72,7 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
         objects.add(wall1);
         objects.add(wall2);
 
-        GUI = new GraphicsUserInterface(player1.getHealth(), player2.getHealth());
+        GUI = new GraphicsUserInterface(player1.getHealth(), player2.getHealth(), player1.getScore(), player2.getScore());
 
         this.addKeyListener(this);
         new Thread(this).start();
@@ -263,7 +263,7 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
         platform.draw(graphToBack);
         wall1.draw(graphToBack);
         wall2.draw(graphToBack);
-        GUI.drawHealth(graphToBack);
+        GUI.draw(graphToBack);
 
         //draws everything from graphToBack to the image (put all draws before this line)
         twoDGraph.drawImage(back, null, 0, 0);
