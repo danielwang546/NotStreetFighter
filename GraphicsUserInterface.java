@@ -30,7 +30,7 @@ public class GraphicsUserInterface {
     private int scoreP1;
     private int scoreP2;
     
-    public GraphicsUserInterface(int h1, int h2, int s1, int s2){
+    public GraphicsUserInterface(int h1, int h2,int s1,int s2 ){
         healthBarWidthP1 = h1 * 7;
         healthBarWidthP2 = h2 * 7;
         scoreP1 = s1;
@@ -41,7 +41,7 @@ public class GraphicsUserInterface {
         healthBarWidthP1 = p1 * 7;
         healthBarWidthP2 = p2 * 7;
     }
-
+    
     public void setScore(int p1, int p2){
         scoreP1 = p1;
         scoreP2 = p2;
@@ -59,7 +59,7 @@ public class GraphicsUserInterface {
         return scoreP1;
     }
 
-    public int getScore2() {
+    public int getHScofre2() {
         return scoreP2;
     }
 
