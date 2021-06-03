@@ -100,6 +100,11 @@ public class Player extends GameElement{
         }
         hitBox.draw(window);
         punch();
+        kick();
+        if (attacked || currState != PlayerState.PUNCHING && currState != PlayerState.KICKING) {
+            attackBox.setWidth(0);
+            attackBox.setHeight(0);
+        }
         window.setColor(Color.RED);
         attackBox.draw(window);
         window.setColor(Color.BLACK);
@@ -156,9 +161,23 @@ public class Player extends GameElement{
             
             attackBox.setWidth(10);
             attackBox.setHeight(10);
-        } else {
-            attackBox.setWidth(0);
-            attackBox.setHeight(0);
+        }
+    }
+
+    public void kick() {
+        if (currState == PlayerState.KICKING && currFrame == 0) {
+            attacked = false;
+        }
+        if (currState == PlayerState.KICKING && currFrame >= 4 && currFrame <= 5 && !attacked) {
+            System.out.println("KICK");
+            if (facingRight) {
+                attackBox.setPos(getX()+getWidth()-20, getY()+180);
+            } else {
+                attackBox.setPos(getX()+10, getY()+180);
+            }
+            
+            attackBox.setWidth(10);
+            attackBox.setHeight(10);
         }
     }
 

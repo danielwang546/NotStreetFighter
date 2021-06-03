@@ -7,6 +7,8 @@ import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
+//import Player.PlayerState;
+
 public class NotStreetFighterGame extends Canvas implements KeyListener, Runnable 
 {
     private long beforeTime, deltaTime, currTime, initTime;
@@ -243,12 +245,36 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
         //attack collision
         if (player1.getAttackBox().touching(player2.getHitBox())) {
             player1.deleteAttackBox();
-            player2.decreaseHealth(10);
+            if (player1.getCurrState() == Player.PlayerState.PUNCHING) {
+                if (player2.getCurrState() == Player.PlayerState.IDLE_BLOCK) {
+                    player2.decreaseHealth(5);
+                } else {
+                    player2.decreaseHealth(10);
+                }
+            } else {
+                if (player2.getCurrState() == Player.PlayerState.IDLE_BLOCK) {
+                    player2.decreaseHealth(2);
+                } else {
+                    player2.decreaseHealth(5);
+                }
+            }
             GUI.setHealthBar(player1.getHealth(),player2.getHealth());
         }
         if (player2.getAttackBox().touching(player1.getHitBox())) {
             player2.deleteAttackBox();
-            player1.decreaseHealth(10);
+            if (player2.getCurrState() == Player.PlayerState.PUNCHING) {
+                if (player1.getCurrState() == Player.PlayerState.IDLE_BLOCK) {
+                    player1.decreaseHealth(5);
+                } else {
+                    player1.decreaseHealth(10);
+                }
+            } else {
+                if (player1.getCurrState() == Player.PlayerState.IDLE_BLOCK) {
+                    player1.decreaseHealth(2);
+                } else {
+                    player1.decreaseHealth(5);
+                }
+            }
             GUI.setHealthBar(player1.getHealth(),player2.getHealth());
         }
 
@@ -268,7 +294,7 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
         //draws everything from graphToBack to the image (put all draws before this line)
         twoDGraph.drawImage(back, null, 0, 0);
         
-        player1.printStates();
+        //player1.printStates();
 
         beforeTime = currTime;
     }
