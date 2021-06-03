@@ -19,12 +19,14 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
     private ArrayList<GameElement> objects;
     private Player player1;
     private Player player2;
-    int p1holdUsed;
-    int p2holdUsed;
+    private int p1holdUsed;
+    private int p2holdUsed;
     private Ground platform;
     private Wall wall1;
     private Wall wall2;
     private GraphicsUserInterface GUI;
+    private boolean isStart = true;
+    private boolean isEnd = false;
 
     private int[] keyCodes = {
         KeyEvent.VK_ENTER,
@@ -85,192 +87,210 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
     }
 
     public void paint(Graphics window) {
-        currTime = System.currentTimeMillis();
-        deltaTime = currTime - beforeTime;
-        double frameRate = ((int)(100000.0/deltaTime))/100.0; //magic to get the framerate in Hz, truncated to 2 decimals
 
         Graphics2D twoDGraph = (Graphics2D) window;
-        if(back == null)
-            back = (BufferedImage)(createImage(getWidth(), getHeight()));
+            if(back == null)
+                back = (BufferedImage)(createImage(getWidth(), getHeight()));
 
-        Graphics graphToBack = back.createGraphics();
-        //Overwrites screen with white every frame
-        graphToBack.setColor(Color.WHITE);
-        graphToBack.fillRect(0, 0, getWidth(), getHeight());
+            Graphics graphToBack = back.createGraphics();
+        if(isStart){
+            
+            GUI.start(window);
 
-        graphToBack.setColor(Color.BLACK);
+        } else if(!isEnd){
 
-        graphToBack.drawString(frameRate + " FPS", 5, 10);
-        
-        //movement determination is first
-        if(keys[3]) {
-            player1.setXSpeed(-5);
-            player1.setFacingRight(false);
-            player1.addState(Player.PlayerState.WALKING);
-        }
-        if(keys[5]) {
-            player1.setFacingRight(true);
-            player1.setXSpeed(5);
-            player1.addState(Player.PlayerState.WALKING);
-        }
-        
-        if(keys[7]) {
-            player2.setXSpeed(-5);
-            player2.addState(Player.PlayerState.WALKING);
-            player2.setFacingRight(false);
-        }
-        if(keys[9]) {
-            player2.setXSpeed(5);
-            player2.addState(Player.PlayerState.WALKING);
-            player2.setFacingRight(true);
-        }
-        
-        
-        //then comes non-interruptible states with attacking taking higher priority
-        if(tapKeys[2]) {
-        	player1.addState(Player.PlayerState.PUNCHING);
-        	tapKeys[2] = false;
-        }
-        if(tapKeys[4]) {
-        	player1.addState(Player.PlayerState.KICKING);
-        	tapKeys[4] = false;
-        }
-        if(tapKeys[3]) {
-        	player2.addState(Player.PlayerState.PUNCHING);
-        	tapKeys[3] = false;
-        }
-        if(tapKeys[5]) {
-        	player2.addState(Player.PlayerState.KICKING);
-        	tapKeys[5] = false;
-        }
-        
-        //finally come the hold states, of which only one can be active at a time
-        //player 1
-        if(keys[4] && (p1holdUsed==4 || p1holdUsed==0)) {
-        	player1.setXSpeed(0);
-        	p1holdUsed = 4;
-            player1.enableState(Player.PlayerState.CROUCHING, Player.PlayerState.IDLE_CROUCH);
-        }else {
-        	player1.disableState(Player.PlayerState.CROUCHING, Player.PlayerState.IDLE_CROUCH);
-        }
-        
-        if(keys[1] && (p1holdUsed==1 || p1holdUsed==0)) {
-        	player1.setXSpeed(0);
-        	player1.setMovementDis(true);
-        	p1holdUsed = 1;
-            player1.enableState(Player.PlayerState.BLOCKING, Player.PlayerState.IDLE_BLOCK);
-        }else {
-        	player1.setMovementDis(false);
-        	player1.disableState(Player.PlayerState.BLOCKING, Player.PlayerState.IDLE_BLOCK);
-        }
-        
-        if(!keys[4] && !keys[1]) {
-        	p1holdUsed = 0;
-        }
-        
-        //player 2
-        if(keys[8] && (p2holdUsed==8 || p2holdUsed==0)) {
-        	player2.setXSpeed(0);
-        	p2holdUsed = 8;
-        	player2.enableState(Player.PlayerState.CROUCHING, Player.PlayerState.IDLE_CROUCH);
-        }else {
-        	player2.disableState(Player.PlayerState.CROUCHING, Player.PlayerState.IDLE_CROUCH);
-        }
-        
-        if(keys[2] && (p2holdUsed==2 || p2holdUsed==0)) {
-        	player2.setXSpeed(0);
-        	player2.setMovementDis(true);
-        	p2holdUsed = 2;
-        	player2.enableState(Player.PlayerState.BLOCKING, Player.PlayerState.IDLE_BLOCK);
-        }else {
-        	player2.setMovementDis(false);
-        	player2.disableState(Player.PlayerState.BLOCKING, Player.PlayerState.IDLE_BLOCK);
-        }
-        
-        if(!keys[8] && !keys[2]) {
-            p2holdUsed = 0;
-        }
-        	
-        
-        //prettier walk animations
-        if (!keys[3] && !keys[5] && player1.getCurrState().fileName().equals("Walk")) {
-            player1.setXSpeed(0);
-            player1.setCurrState(Player.PlayerState.IDLE);
-        }
-        if (!keys[7] && !keys[9] && player2.getCurrState().fileName().equals("Walk")) {
-            player2.setXSpeed(0);
-            player2.setCurrState(Player.PlayerState.IDLE);
-        }
-        
-        player1.updateHitBox();
-        player2.updateHitBox();    
-        
-        //calculate collision
-        
-        if(player1.isSupported(objects) || player1.getHitBox().touchingTop(player2.getHitBox())) {
-        	player1.setYSpeed(0);
-        } else {
-        	player1.applyGravity();
-        }
+            /*
+            currTime = System.currentTimeMillis();
+            deltaTime = currTime - beforeTime;
+            double frameRate = ((int)(100000.0/deltaTime))/100.0; //magic to get the framerate in Hz, truncated to 2 decimals
+            */
 
-        if(player2.isSupported(objects) || player2.getHitBox().touchingTop(player1.getHitBox())) {
-        	player2.setYSpeed(0);
-        } else {
-        	player2.applyGravity();
+            
+            //Overwrites screen with white every frame
+            graphToBack.setColor(Color.WHITE);
+            graphToBack.fillRect(0, 0, getWidth(), getHeight());
+
+            graphToBack.setColor(Color.BLACK);
+
+            //graphToBack.drawString(frameRate + " FPS", 5, 10);
+            
+            //movement determination is first
+            if(keys[3]) {
+                player1.setXSpeed(-5);
+                player1.setFacingRight(false);
+                player1.addState(Player.PlayerState.WALKING);
+            }
+            if(keys[5]) {
+                player1.setFacingRight(true);
+                player1.setXSpeed(5);
+                player1.addState(Player.PlayerState.WALKING);
+            }
+            
+            if(keys[7]) {
+                player2.setXSpeed(-5);
+                player2.addState(Player.PlayerState.WALKING);
+                player2.setFacingRight(false);
+            }
+            if(keys[9]) {
+                player2.setXSpeed(5);
+                player2.addState(Player.PlayerState.WALKING);
+                player2.setFacingRight(true);
+            }
+            
+            
+            //then comes non-interruptible states with attacking taking higher priority
+            if(tapKeys[2]) {
+                player1.addState(Player.PlayerState.PUNCHING);
+                tapKeys[2] = false;
+            }
+            if(tapKeys[4]) {
+                player1.addState(Player.PlayerState.KICKING);
+                tapKeys[4] = false;
+            }
+            if(tapKeys[3]) {
+                player2.addState(Player.PlayerState.PUNCHING);
+                tapKeys[3] = false;
+            }
+            if(tapKeys[5]) {
+                player2.addState(Player.PlayerState.KICKING);
+                tapKeys[5] = false;
+            }
+            
+            //finally come the hold states, of which only one can be active at a time
+            //player 1
+            if(keys[4] && (p1holdUsed==4 || p1holdUsed==0)) {
+                player1.setXSpeed(0);
+                p1holdUsed = 4;
+                player1.enableState(Player.PlayerState.CROUCHING, Player.PlayerState.IDLE_CROUCH);
+            }else {
+                player1.disableState(Player.PlayerState.CROUCHING, Player.PlayerState.IDLE_CROUCH);
+            }
+            
+            if(keys[1] && (p1holdUsed==1 || p1holdUsed==0)) {
+                player1.setXSpeed(0);
+                player1.setMovementDis(true);
+                p1holdUsed = 1;
+                player1.enableState(Player.PlayerState.BLOCKING, Player.PlayerState.IDLE_BLOCK);
+            }else {
+                player1.setMovementDis(false);
+                player1.disableState(Player.PlayerState.BLOCKING, Player.PlayerState.IDLE_BLOCK);
+            }
+            
+            if(!keys[4] && !keys[1]) {
+                p1holdUsed = 0;
+            }
+            
+            //player 2
+            if(keys[8] && (p2holdUsed==8 || p2holdUsed==0)) {
+                player2.setXSpeed(0);
+                p2holdUsed = 8;
+                player2.enableState(Player.PlayerState.CROUCHING, Player.PlayerState.IDLE_CROUCH);
+            }else {
+                player2.disableState(Player.PlayerState.CROUCHING, Player.PlayerState.IDLE_CROUCH);
+            }
+            
+            if(keys[2] && (p2holdUsed==2 || p2holdUsed==0)) {
+                player2.setXSpeed(0);
+                player2.setMovementDis(true);
+                p2holdUsed = 2;
+                player2.enableState(Player.PlayerState.BLOCKING, Player.PlayerState.IDLE_BLOCK);
+            }else {
+                player2.setMovementDis(false);
+                player2.disableState(Player.PlayerState.BLOCKING, Player.PlayerState.IDLE_BLOCK);
+            }
+            
+            if(!keys[8] && !keys[2]) {
+                p2holdUsed = 0;
+            }
+                
+            
+            //prettier walk animations
+            if (!keys[3] && !keys[5] && player1.getCurrState().fileName().equals("Walk")) {
+                player1.setXSpeed(0);
+                player1.setCurrState(Player.PlayerState.IDLE);
+            }
+            if (!keys[7] && !keys[9] && player2.getCurrState().fileName().equals("Walk")) {
+                player2.setXSpeed(0);
+                player2.setCurrState(Player.PlayerState.IDLE);
+            }
+            
+            player1.updateHitBox();
+            player2.updateHitBox();    
+            
+            //calculate collision
+            
+            if(player1.isSupported(objects) || player1.getHitBox().touchingTop(player2.getHitBox())) {
+                player1.setYSpeed(0);
+            } else {
+                player1.applyGravity();
+            }
+
+            if(player2.isSupported(objects) || player2.getHitBox().touchingTop(player1.getHitBox())) {
+                player2.setYSpeed(0);
+            } else {
+                player2.applyGravity();
+            }
+            
+            if(tapKeys[0]){
+                if(player1.isSupported(objects)|| player1.getHitBox().touchingTop(player2.getHitBox()))
+                    player1.setYSpeed(-15);
+                tapKeys[0] = false;
+            }
+            
+            if(tapKeys[1]){
+                if(player2.isSupported(objects) || player2.getHitBox().touchingTop(player1.getHitBox()))
+                    player2.setYSpeed(-15);
+                tapKeys[1] = false;
+            }
+
+            
+            //problems arise because these need to all be executed at the exact same time, not in sequence
+            if(player1.getHitBox().touchingSide(player2.getHitBox())) {
+                player1.setXSpeed(0);
+            }
+            if(player2.getHitBox().touchingSide(player1.getHitBox())) {
+                player2.setXSpeed(0);
+            }
+
+            //attack collision
+            if (player1.getAttackBox().touching(player2.getHitBox())) {
+                player1.deleteAttackBox();
+                player2.decreaseHealth(10);
+                GUI.setHealthBar(player1.getHealth(),player2.getHealth());
+            }
+            if (player2.getAttackBox().touching(player1.getHitBox())) {
+                player2.deleteAttackBox();
+                player1.decreaseHealth(10);
+                GUI.setHealthBar(player1.getHealth(),player2.getHealth());
+            }
+
+            /*
+            if(currTime - initTime < 10000 && counter < 10000) {
+                counter++;
+            } else {
+                graphToBack.drawString(counter + " frames in 10s", 5, 30);
+            }
+            */
+
+            player1.draw(graphToBack);
+            player2.draw(graphToBack);
+            platform.draw(graphToBack);
+            wall1.draw(graphToBack);
+            wall2.draw(graphToBack);
+            GUI.draw(graphToBack);
+
+            //draws everything from graphToBack to the image (put all draws before this line)
+            twoDGraph.drawImage(back, null, 0, 0);
+            
+            player1.printStates();
+
+            beforeTime = currTime;
+
+        } else{
+            
+            GUI.end(window);
         }
         
-        if(tapKeys[0]){
-            if(player1.isSupported(objects)|| player1.getHitBox().touchingTop(player2.getHitBox()))
-            	player1.setYSpeed(-15);
-            tapKeys[0] = false;
-        }
-        
-        if(tapKeys[1]){
-            if(player2.isSupported(objects) || player2.getHitBox().touchingTop(player1.getHitBox()))
-            	player2.setYSpeed(-15);
-            tapKeys[1] = false;
-        }
-
-        
-        //problems arise because these need to all be executed at the exact same time, not in sequence
-        if(player1.getHitBox().touchingSide(player2.getHitBox())) {
-        	player1.setXSpeed(0);
-        }
-        if(player2.getHitBox().touchingSide(player1.getHitBox())) {
-        	player2.setXSpeed(0);
-        }
-
-        //attack collision
-        if (player1.getAttackBox().touching(player2.getHitBox())) {
-            player1.deleteAttackBox();
-            player2.decreaseHealth(10);
-            GUI.setHealthBar(player1.getHealth(),player2.getHealth());
-        }
-        if (player2.getAttackBox().touching(player1.getHitBox())) {
-            player2.deleteAttackBox();
-            player1.decreaseHealth(10);
-            GUI.setHealthBar(player1.getHealth(),player2.getHealth());
-        }
-
-        if(currTime - initTime < 10000 && counter < 10000) {
-            counter++;
-        } else {
-            graphToBack.drawString(counter + " frames in 10s", 5, 30);
-        }
-
-        player1.draw(graphToBack);
-        player2.draw(graphToBack);
-        platform.draw(graphToBack);
-        wall1.draw(graphToBack);
-        wall2.draw(graphToBack);
-        GUI.draw(graphToBack);
-
-        //draws everything from graphToBack to the image (put all draws before this line)
-        twoDGraph.drawImage(back, null, 0, 0);
-        
-        player1.printStates();
-
-        beforeTime = currTime;
     }
 
     @Override
