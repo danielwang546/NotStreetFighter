@@ -207,6 +207,13 @@ public class Player extends GameElement{
     			return true;
 		return false;
     }
+    
+    public boolean isObstructed(ArrayList<GameElement> objects) {
+    	for(GameElement ge : objects) 
+    		if(hitBox.touchingSide(ge)) 
+    			return true;
+		return false;
+    }
    
 
     public void applyGravity(){
