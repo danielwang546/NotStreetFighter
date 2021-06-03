@@ -7,6 +7,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.net.URL;
@@ -15,6 +17,10 @@ import javax.swing.*;
 import java.awt.*;
 import javax.imageio.*;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Scanner;
+import java.util.StringTokenizer;
+import java.util.TreeMap;
 
 public class GraphicsUserInterface {
 
@@ -73,7 +79,36 @@ public class GraphicsUserInterface {
     }
 
     public void end(Graphics window){
-
+        
     }
 
+    public void writeToFile(int points, String name) {
+        try {
+            //file in format: [int score] [string w/ length-3]
+            File scores = new File("scores.txt");
+            if(scores.createNewFile()) {
+                //file does not already exist
+            } else {
+                //file already exists, read file
+                Scanner scan = new Scanner(scores);
+                HashMap<Integer, String> unsorted = new HashMap<Integer, String>();
+                while(scan.hasNextLine()) {
+                    String line = scan.nextLine();
+                    StringTokenizer st = new StringTokenizer(line);
+                    int highScore = Integer.valueOf(st.nextToken());
+                    String hsName = String.valueOf(st.nextToken());
+                    unsorted.put(highScore, hsName);
+                }
+                unsorted.put(points, name);
+
+                TreeMap<Integer, String> sorted = new TreeMap<Integer, String>();
+
+                scan.close();
+            }
+            
+            
+        } catch(IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
