@@ -109,6 +109,23 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
             //Overwrites screen with white every frame
             graphToBack.setColor(Color.WHITE);
             graphToBack.fillRect(0, 0, getWidth(), getHeight());
+        if(player2.isSupported(objects) || player2.getHitBox().touchingTop(player1.getHitBox())) {
+        	player2.setYSpeed(0);
+        } else {
+        	player2.applyGravity();
+        }
+        
+        if(tapKeys[0]){
+            if((player1.isSupported(objects)|| player1.getHitBox().touchingTop(player2.getHitBox())) && !player1.getHitBox().touchingBottom(player2.getHitBox()))
+            	player1.setYSpeed(-15);
+            tapKeys[0] = false;
+        }
+        
+        if(tapKeys[1]){
+            if((player2.isSupported(objects) || player2.getHitBox().touchingTop(player1.getHitBox())) && !player2.getHitBox().touchingBottom(player1.getHitBox()))
+            	player2.setYSpeed(-15);
+            tapKeys[1] = false;
+        }
 
             graphToBack.setColor(Color.BLACK);
 
