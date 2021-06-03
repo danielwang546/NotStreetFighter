@@ -220,13 +220,13 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
         }
         
         if(tapKeys[0]){
-            if(player1.isSupported(objects)|| player1.getHitBox().touchingTop(player2.getHitBox()))
+            if((player1.isSupported(objects)|| player1.getHitBox().touchingTop(player2.getHitBox())) && !player1.getHitBox().touchingBottom(player2.getHitBox()))
             	player1.setYSpeed(-15);
             tapKeys[0] = false;
         }
         
         if(tapKeys[1]){
-            if(player2.isSupported(objects) || player2.getHitBox().touchingTop(player1.getHitBox()))
+            if((player2.isSupported(objects) || player2.getHitBox().touchingTop(player1.getHitBox())) && !player2.getHitBox().touchingBottom(player1.getHitBox()))
             	player2.setYSpeed(-15);
             tapKeys[1] = false;
         }

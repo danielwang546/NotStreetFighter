@@ -135,11 +135,9 @@ public abstract class GameElement
 	
     thisRect.width= width;
     thisRect.x = x;
-  
-    
     
     thisRect.height = height;
-    thisRect.y = y-1;
+    thisRect.y = y+1;
     
     
     if(ySpeed > 0) {
@@ -149,6 +147,25 @@ public abstract class GameElement
     }
 
     return thisRect.intersectsLine(other.x, other.y, other.x + other.width, other.y);
+  }
+  
+  public boolean touchingBottom(GameElement other) {
+	  	Rectangle thisRect = new Rectangle();
+		
+	    thisRect.width= width;
+	    thisRect.x = x;
+	    
+	    thisRect.height = height;
+	    thisRect.y = y-1;
+	    
+	    
+	    if(ySpeed > 0) {
+	      thisRect.height+=ySpeed;
+	    } else if(ySpeed < 0) {
+	      thisRect.y+=ySpeed;
+	    }
+	
+	    return thisRect.intersectsLine(other.x, other.y+ other.height, other.x + other.width, other.y + other.height);
   }
 
   public boolean touchingSide(GameElement other){
