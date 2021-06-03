@@ -8,6 +8,7 @@ import java.awt.event.KeyListener;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -88,6 +89,9 @@ public class GraphicsUserInterface {
             File scores = new File("scores.txt");
             if(scores.createNewFile()) {
                 //file does not already exist
+                FileWriter fw = new FileWriter(scores);
+                fw.write(points + " " + name);
+                fw.close();
             } else {
                 //file already exists, read file
                 Scanner scan = new Scanner(scores);
@@ -102,6 +106,9 @@ public class GraphicsUserInterface {
                 unsorted.put(points, name);
 
                 TreeMap<Integer, String> sorted = new TreeMap<Integer, String>();
+                sorted.putAll(unsorted);
+
+                FileWriter fw = new FileWriter(scores);
 
                 scan.close();
             }
