@@ -99,12 +99,8 @@ public class Player extends GameElement{
             window.drawImage(image, getX() + getWidth(), getY(), -getWidth(), getHeight(), null);
         }
         hitBox.draw(window);
-        punch();
-        kick();
-        if (attacked || currState != PlayerState.PUNCHING && currState != PlayerState.KICKING) {
-            attackBox.setWidth(0);
-            attackBox.setHeight(0);
-        }
+
+        updateAttackBox();
         window.setColor(Color.RED);
         attackBox.draw(window);
         window.setColor(Color.BLACK);
@@ -133,14 +129,22 @@ public class Player extends GameElement{
     }
     
     public void updateHitBox() {
-    	hitBox = new HitBox(getX()+40,getY()+20,getXSpeed(), getYSpeed(), getWidth()-80,getHeight()-20);
-    	if(currState.fileName.equals("Idle_Crouch"))
-			hitBox = new HitBox(getX()+40,getY()+120,getXSpeed(), getYSpeed(), getWidth()-80,getHeight()-120);
-    	else if(currState.fileName.equals("Idle_Block"))
-    		hitBox = new HitBox(getX()+40,getY()+40,getXSpeed(), getYSpeed(), getWidth()-80,getHeight()-40);
+    	hitBox.setX(getX()+40);
+    	hitBox.setY(getY()+20);
+    	hitBox.setXSpeed(getXSpeed());
+    	hitBox.setYSpeed(getYSpeed());
+    	hitBox.setWidth(getWidth()-80);
+    	hitBox.setHeight(getHeight()-20);
+    	if(currState == PlayerState.IDLE_CROUCH) {
+    		hitBox.setY(getY()+120);
+    		hitBox.setHeight(getHeight()-120);
+    	} else if(currState == PlayerState.IDLE_BLOCK) {
+    		hitBox.setY(getY()+40);
+    		hitBox.setHeight(getHeight()-40);
+    	}
     }
 
-    public AttackBox getAttackBox() {
+    public AttackBox attackBox() {
     	return attackBox;
     }
 
@@ -148,45 +152,43 @@ public class Player extends GameElement{
         attacked = true;
     }
     
-    public void punch() {
-        if (currState == PlayerState.PUNCHING && currFrame == 0) {
-            attacked = false;
+    public void updateAttackBox() {
+    	attackBox.setWidth(0);
+        attackBox.setHeight(0);
+        
+        if ((currState == PlayerState.PUNCHING || currState == PlayerState.KICKING) && currFrame == 0) {
+        	attacked = false;
         }
-        if (currState == PlayerState.PUNCHING && currFrame >= 4 && currFrame <= 6 && !attacked) {
+        
+        if ((currState == PlayerState.PUNCHING || currState == PlayerState.KICKING) && currFrame >= 4 && currFrame <= 6 && !attacked) {
+        	
             if (facingRight) {
-                attackBox.setPos(getX()+getWidth()-10, getY()+100);
+            	if(currState == PlayerState.PUNCHING)
+            		attackBox.setPos(getX()+getWidth()-10, getY()+100);
+            	else if(currState == PlayerState.KICKING)
+            		attackBox.setPos(getX()+getWidth()-20, getY()+180);
             } else {
-                attackBox.setPos(getX(), getY()+100);
+            	if(currState == PlayerState.PUNCHING)
+            		attackBox.setPos(getX(), getY()+100);
+            	else if(currState == PlayerState.KICKING)
+            		attackBox.setPos(getX()+10, getY()+180);
             }
             
             attackBox.setWidth(10);
             attackBox.setHeight(10);
         }
     }
-
-    public void kick() {
-        if (currState == PlayerState.KICKING && currFrame == 0) {
-            attacked = false;
-        }
-        if (currState == PlayerState.KICKING && currFrame >= 4 && currFrame <= 5 && !attacked) {
-            System.out.println("KICK");
-            if (facingRight) {
-                attackBox.setPos(getX()+getWidth()-20, getY()+180);
-            } else {
-                attackBox.setPos(getX()+10, getY()+180);
-            }
-            
-            attackBox.setWidth(10);
-            attackBox.setHeight(10);
-        }
-    }
-
+    
     public void setYAccel(int s){
         yAcceleration = s;
     }
 
     public int getYAccel(){
         return yAcceleration;
+    }
+    
+    public void setCurrFrame(int i) {
+    	currFrame = i;
     }
     
     @Override

@@ -68,8 +68,8 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
         p2holdUsed = 0;
 
         platform = new Ground(0,600,1600,20);
-        wall1 = new Wall(30,0,20,1200);
-        wall2 = new Wall(1200,0,20,1200);
+        wall1 = new Wall(-1,0,1,1200);
+        wall2 = new Wall(1601,0,1,1200);
         
         objects = new ArrayList<GameElement>();
         objects.add(platform);
@@ -257,7 +257,7 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
          
             //attack collision
             
-            if (player1.getAttackBox().touching(player2.getHitBox())) {
+            if (player1.attackBox().touching(player2.getHitBox())) {
                 player1.deleteAttackBox();
                 if (player1.getCurrState() == Player.PlayerState.PUNCHING) {
                     if (player2.getCurrState() == Player.PlayerState.IDLE_BLOCK) {
@@ -274,7 +274,7 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
                 }
                 GUI.setHealthBar(player1.getHealth(),player2.getHealth());
             }
-            if (player2.getAttackBox().touching(player1.getHitBox())) {
+            if (player2.attackBox().touching(player1.getHitBox())) {
                 player2.deleteAttackBox();
                 if (player2.getCurrState() == Player.PlayerState.PUNCHING) {
                     if (player1.getCurrState() == Player.PlayerState.IDLE_BLOCK) {
