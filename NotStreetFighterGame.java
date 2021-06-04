@@ -30,6 +30,11 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
     private boolean isStart = false;
     private boolean isEnd = false;
 
+    private int combo1 = 0;
+    private int combo2 = 0;
+    private boolean p1Hit = false;
+    private boolean p2Hit = false;
+
     private int[] keyCodes = {
         KeyEvent.VK_ENTER,
         KeyEvent.VK_BACK_QUOTE,
@@ -254,40 +259,82 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
             //player1.printStates();
          
             //attack collision
-            
+
             if (player1.attackBox().touching(player2.getHitBox())) {
+                p1Hit = true;
                 player1.deleteAttackBox();
                 if (player1.getCurrState() == Player.PlayerState.PUNCHING) {
                     if (player2.getCurrState() == Player.PlayerState.IDLE_BLOCK) {
                         player2.decreaseHealth(5);
                     } else {
                         player2.decreaseHealth(10);
+                        if (combo1 < 2)
+                            combo1++;
                     }
                 } else {
                     if (player2.getCurrState() == Player.PlayerState.IDLE_BLOCK) {
                         player2.decreaseHealth(2);
                     } else {
                         player2.decreaseHealth(5);
+                        if (combo1 == 2)
+                            combo1++;
                     }
                 }
-                GUI.setHealthBar(player1.getHealth(),player2.getHealth());
+            } else {
+                if (!player1.attacked() && player1.getCurrFrame() == 6) {
+                    if (!p1Hit)
+                        combo1 = 0;
+                    p1Hit = false;
+                }
             }
             if (player2.attackBox().touching(player1.getHitBox())) {
                 player2.deleteAttackBox();
+                p2Hit = true;
                 if (player2.getCurrState() == Player.PlayerState.PUNCHING) {
                     if (player1.getCurrState() == Player.PlayerState.IDLE_BLOCK) {
                         player1.decreaseHealth(5);
                     } else {
                         player1.decreaseHealth(10);
+                        if (combo1 < 2)
+                            combo1++;
                     }
                 } else {
                     if (player1.getCurrState() == Player.PlayerState.IDLE_BLOCK) {
                         player1.decreaseHealth(2);
                     } else {
                         player1.decreaseHealth(5);
+                        if (combo1 == 2)
+                            combo1++;
                     }
                 }
-                GUI.setHealthBar(player1.getHealth(),player2.getHealth());
+            }  else {
+                if (!player2.attacked()) {
+                    if (!p2Hit)
+                        combo2 = 0;
+                    p2Hit = false;
+                }
+            }
+            GUI.setHealthBar(player1.getHealth(),player2.getHealth());
+
+            if (combo1 == 3) {
+                player2.addState(Player.PlayerState.STUNNED);
+                combo1 = 0;
+            }
+            if (combo2 == 3) {
+                player1.addState(Player.PlayerState.STUNNED);
+                combo2 = 0;
+            }
+
+            if (player1.getCurrState() == Player.PlayerState.STUNNED) {
+                player1.setMovementDis(true);
+            } else {
+                player1.setMovementDis(false);
+            }
+
+            if (player2.getCurrState() == Player.PlayerState.STUNNED) {
+                player2.setMovementDis(true);
+            } else {
+                player2.setMovementDis(false);
             }
             
             // if(currTime - initTime < 10000 && counter < 10000) {
@@ -298,6 +345,7 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
             
             
             graphToBack.setColor(Color.BLACK);
+            graphToBack.drawString("Player 1 Combo: " + combo1, 100, 100);
 
             player1.draw(graphToBack);
             player2.draw(graphToBack);

@@ -20,7 +20,7 @@ public class Player extends GameElement{
         KICKING(9, 2, false, "Kick"),
         BLOCKING(9, 1, false, "Block"),
         IDLE_BLOCK(1, 1, false, "Idle_Block"),
-    	STUNNED(9, 1, false, "Stunned");
+    	STUNNED(9, 5, false, "Stun");
 
 
         private final int frames;
@@ -151,11 +151,16 @@ public class Player extends GameElement{
     public void deleteAttackBox() {
         attacked = true;
     }
+
+    public boolean attacked() {
+        return attacked;
+    }
     
     public void updateAttackBox() {
     	attackBox.setWidth(0);
         attackBox.setHeight(0);
-        
+        attackBox.setPos(-100,-100);
+            
         if ((currState == PlayerState.PUNCHING || currState == PlayerState.KICKING) && currFrame == 0) {
         	attacked = false;
         }
@@ -189,6 +194,10 @@ public class Player extends GameElement{
     
     public void setCurrFrame(int i) {
     	currFrame = i;
+    }
+
+    public int getCurrFrame() {
+        return currFrame;
     }
     
     @Override
