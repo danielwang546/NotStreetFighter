@@ -176,7 +176,7 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
                 player1.setMovementDis(true);
                 p1holdUsed = 1;
                 player1.enableState(Player.PlayerState.BLOCKING, Player.PlayerState.IDLE_BLOCK);
-            }else if(player1.getCurrState() != Player.PlayerState.STUNNED){
+            }else {
                 player1.setMovementDis(false);
                 player1.disableState(Player.PlayerState.BLOCKING, Player.PlayerState.IDLE_BLOCK);
             }
@@ -199,7 +199,7 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
                 player2.setMovementDis(true);
                 p2holdUsed = 2;
                 player2.enableState(Player.PlayerState.BLOCKING, Player.PlayerState.IDLE_BLOCK);
-            }else if(player2.getCurrState() != Player.PlayerState.STUNNED){
+            }else {
                 player2.setMovementDis(false);
                 player2.disableState(Player.PlayerState.BLOCKING, Player.PlayerState.IDLE_BLOCK);
             }
@@ -267,20 +267,16 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
                 if (player1.getCurrState() == Player.PlayerState.PUNCHING) {
                     if (player2.getCurrState() == Player.PlayerState.IDLE_BLOCK) {
                         player2.decreaseHealth(5);
-                        player1.increaseScore(20);
                     } else {
                         player2.decreaseHealth(10);
-                        player1.increaseScore(100);
                         if (combo1 < 2)
                             combo1++;
                     }
-                } else if(player1.getCurrState() == Player.PlayerState.KICKING){
+                } else {
                     if (player2.getCurrState() == Player.PlayerState.IDLE_BLOCK) {
                         player2.decreaseHealth(2);
-                        player1.increaseScore(10);
                     } else {
                         player2.decreaseHealth(5);
-                        player1.increaseScore(50);
                         if (combo1 == 2)
                             combo1++;
                     }
@@ -292,52 +288,54 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
                     p1Hit = false;
                 }
             }
-            
-            //player 2
             if (player2.attackBox().touching(player1.getHitBox())) {
                 player2.deleteAttackBox();
                 p2Hit = true;
                 if (player2.getCurrState() == Player.PlayerState.PUNCHING) {
                     if (player1.getCurrState() == Player.PlayerState.IDLE_BLOCK) {
                         player1.decreaseHealth(5);
-                        player2.increaseScore(20);
                     } else {
                         player1.decreaseHealth(10);
-                        player2.increaseScore(100);
-                        if (combo2 < 2)
-                            combo2++;
+                        if (combo1 < 2)
+                            combo1++;
                     }
-                } else if(player2.getCurrState() == Player.PlayerState.KICKING){
+                } else {
                     if (player1.getCurrState() == Player.PlayerState.IDLE_BLOCK) {
                         player1.decreaseHealth(2);
-                        player2.increaseScore(10);
                     } else {
                         player1.decreaseHealth(5);
-                        player2.increaseScore(50);
-                        if (combo2 == 2)
-                            combo2++;
+                        if (combo1 == 2)
+                            combo1++;
                     }
                 }
             }  else {
-                if (!player2.attacked() && player2.getCurrFrame() == 6) {
+                if (!player2.attacked()) {
                     if (!p2Hit)
                         combo2 = 0;
                     p2Hit = false;
                 }
             }
-            
+            GUI.setHealthBar(player1.getHealth(),player2.getHealth());
 
             if (combo1 == 3) {
-                player2.setCurrState(Player.PlayerState.STUNNED);
-                player2.setMovementDis(true);
-                player1.increaseScore(1000);
+                player2.addState(Player.PlayerState.STUNNED);
                 combo1 = 0;
             }
             if (combo2 == 3) {
-                player1.setCurrState(Player.PlayerState.STUNNED);
-                player1.setMovementDis(true);
-                player2.increaseScore(1000);
+                player1.addState(Player.PlayerState.STUNNED);
                 combo2 = 0;
+            }
+
+            if (player1.getCurrState() == Player.PlayerState.STUNNED) {
+                player1.setMovementDis(true);
+            } else {
+                player1.setMovementDis(false);
+            }
+
+            if (player2.getCurrState() == Player.PlayerState.STUNNED) {
+                player2.setMovementDis(true);
+            } else {
+                player2.setMovementDis(false);
             }
             
             // if(currTime - initTime < 10000 && counter < 10000) {
@@ -346,13 +344,9 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
             //     graphToBack.drawString(counter + " frames in 10s", 5, 30);
             // }
             
-            GUI.setHealthBar(player1.getHealth(),player2.getHealth());
-            GUI.setScore(player1.getScore(), player2.getScore());
-            
             
             graphToBack.setColor(Color.BLACK);
-            graphToBack.drawString("Player 1 Combo: " + combo1, 10, 100);
-            graphToBack.drawString("Player 2 Combo: " + combo2, 500, 100);
+            graphToBack.drawString("Player 1 Combo: " + combo1, 100, 100);
 
             player1.draw(graphToBack);
             player2.draw(graphToBack);
@@ -363,6 +357,10 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
 
             //draws everything from graphToBack to the image (put all draws before this line)
             twoDGraph.drawImage(back, null, 0, 0);
+
+            if(player1.getHealth() <= 0 || player2.getHealth() <= 0) {
+                isEnd = true;
+            }
             
             // player1.printStates();
 

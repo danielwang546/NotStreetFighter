@@ -33,6 +33,7 @@ public class GraphicsUserInterface extends JFrame implements ActionListener{
     private int scoreP2;
     private boolean startCalled;
     private boolean startScreen = true;
+    private ScoreFileWriter scoreFW;
 
     
     public GraphicsUserInterface(int h1, int h2, int s1, int s2){
@@ -40,6 +41,7 @@ public class GraphicsUserInterface extends JFrame implements ActionListener{
         healthBarWidthP2 = h2 * 7;
         scoreP1 = s1;
         scoreP2 = s2;
+        scoreFW = new ScoreFileWriter();
     }
 
     public void setHealthBar(int p1, int p2){
@@ -95,52 +97,27 @@ public class GraphicsUserInterface extends JFrame implements ActionListener{
     }
 
     public void end(Graphics window){
-        
+
+        if(healthBarWidthP1 <= 0) {
+            window.drawString("Player 2 wins!", 800, 200);
+        }
+        if(healthBarWidthP2 <= 0) {
+            window.drawString("Player 1 wins!", 800, 200);
+        }
+
+        String[] topScores = scoreFW.getTopScores();
+        window.drawString("High Scores:", 300, 400);
+        for(int i = 0; i < topScores.length; i++) {
+            window.drawString(String.valueOf(i+1) + ". " + topScores[i], 300, 400 + 20*(i+1));
+        }
     }
 
     public void writeToFile(int points, String name) {
-        try {
-            //file in format: [int score] [string w/ length-3]
-            File scores = new File("scores.txt");
-            if(scores.createNewFile()) {
-                //file does not already exist
-                FileWriter fw = new FileWriter(scores);
-                fw.write(points + " " + name);
-                fw.close();
-            } else {
-                //file already exists, read file
-                Scanner scan = new Scanner(scores);
-                HashMap<Integer, String> unsorted = new HashMap<Integer, String>();
-                while(scan.hasNextLine()) {
-                    String line = scan.nextLine();
-                    StringTokenizer st = new StringTokenizer(line);
-                    int highScore = Integer.valueOf(st.nextToken());
-                    String hsName = String.valueOf(st.nextToken());
-                    unsorted.put(highScore, hsName);
-                }
-                unsorted.put(points, name);
-
-                Map<Integer, String> sorted = new TreeMap<Integer, String>();
-                sorted.putAll(unsorted);
-
-                FileWriter fw = new FileWriter(scores, false);
-                for(Map.Entry<Integer, String> entry : sorted.entrySet()) {
-                    fw.write(entry.getKey() + " " + entry.getValue() + "\n");
-                }
-
-                fw.close();
-                scan.close();
-            }
-            
-            
-        } catch(IOException e) {
-            e.printStackTrace();
-        }
+        scoreFW.writePtsToFile(points, name);
     }
     
     @Override
     public void actionPerformed(ActionEvent e) {
-        // TODO Auto-generated method stub
         if(e.getActionCommand() == "Click To Play"){
             startScreen = false;
             dispose();
