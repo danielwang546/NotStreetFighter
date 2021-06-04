@@ -296,6 +296,7 @@ public class Player extends GameElement{
     public void addState(PlayerState state) {
     	if(currState.interruptible && state != currState) {
     		System.out.println(state.fileName +" is interrupting " + currState.fileName);
+    		currFrame=0;
     		setCurrState(state);
     	} else if(stateQueue.size() < 5 && !(stateQueue.contains(state) && state == currState)){
     		stateQueue.add(state);

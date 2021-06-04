@@ -176,9 +176,9 @@ public abstract class GameElement
     
     
     if(xSpeed > 0) {
-      thisRect.width = width + xSpeed;
+      thisRect.width = width + xSpeed + 5;
     } else if(xSpeed < 0) {
-      thisRect.x = x + xSpeed;
+      thisRect.x = x + xSpeed - 5;
     }
     
     
