@@ -235,7 +235,7 @@ public class Player extends GameElement{
     }
     
     public void enableState(PlayerState ps, PlayerState idlePs) {
-    	if(currState.fileName.equals(ps.fileName)  || currState.fileName.equals(idlePs.fileName)) {
+    	if(currState == ps || currState == idlePs) {
 			fillQueue(idlePs);
     	} else {
     		setCurrState(ps);
@@ -285,13 +285,11 @@ public class Player extends GameElement{
     }
 
     public void addState(PlayerState state) {
-    	if(currState.interruptible && !state.fileName.equals(currState.fileName)) {
+    	if(currState.interruptible && state != currState) {
     		System.out.println(state.fileName +" is interrupting " + currState.fileName);
     		setCurrState(state);
-    	} else {
-    		if(stateQueue.size() < 5 && !(stateQueue.contains(state) && state.fileName.equals(currState.fileName))) {
-    			stateQueue.add(state);
-    		}
+    	} else if(stateQueue.size() < 5 && !(stateQueue.contains(state) && state == currState)){
+    		stateQueue.add(state);
     	}
     }
     

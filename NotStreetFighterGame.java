@@ -11,8 +11,8 @@ import java.util.ArrayList;
 
 public class NotStreetFighterGame extends Canvas implements KeyListener, Runnable 
 {
-    private long beforeTime, deltaTime, currTime, initTime;
-    private int counter = 0;
+    // private long beforeTime, deltaTime, currTime, initTime;
+    // private int counter = 0;
 
     private boolean[] keys;
     private boolean[] tapKeys;
@@ -55,8 +55,8 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
     public NotStreetFighterGame() {
         setBackground(Color.WHITE);
 
-        beforeTime = System.currentTimeMillis();
-        initTime = System.currentTimeMillis();
+        // beforeTime = System.currentTimeMillis();
+        // initTime = System.currentTimeMillis();
 
         keys = new boolean[keyCodes.length];
         tapKeys = new boolean[tapKeyCodes.length];
@@ -105,15 +105,13 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
             GUI.end(window);
         } 
         else {
-            /*
-            currTime = System.currentTimeMillis();
-            deltaTime = currTime - beforeTime;
-            double frameRate = ((int)(100000.0/deltaTime))/100.0; //magic to get the framerate in Hz, truncated to 2 decimals
-            */
-
 
             
-            //graphToBack.drawString(frameRate + " FPS", 5, 10);
+            // currTime = System.currentTimeMillis();
+            // deltaTime = currTime - beforeTime;
+            // double frameRate = ((int)(100000.0/deltaTime))/100.0; //magic to get the framerate in Hz, truncated to 2 decimals
+            
+            // //graphToBack.drawString(frameRate + " FPS", 5, 10);
             
             //movement determination is first
             if(keys[3]) {
@@ -206,11 +204,11 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
                 
             
             //prettier walk animations
-            if (!keys[3] && !keys[5] && player1.getCurrState().fileName().equals("Walk")) {
+            if (!keys[3] && !keys[5] && player1.getCurrState() == Player.PlayerState.WALKING) {
                 player1.setXSpeed(0);
                 player1.setCurrState(Player.PlayerState.IDLE);
             }
-            if (!keys[7] && !keys[9] && player2.getCurrState().fileName().equals("Walk")) {
+            if (!keys[7] && !keys[9] && player2.getCurrState() == Player.PlayerState.WALKING) {
                 player2.setXSpeed(0);
                 player2.setCurrState(Player.PlayerState.IDLE);
             }
@@ -291,13 +289,13 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
                 }
                 GUI.setHealthBar(player1.getHealth(),player2.getHealth());
             }
-            /*
-            if(currTime - initTime < 10000 && counter < 10000) {
-                counter++;
-            } else {
-                graphToBack.drawString(counter + " frames in 10s", 5, 30);
-            }
-            */
+            
+            // if(currTime - initTime < 10000 && counter < 10000) {
+            //     counter++;
+            // } else {
+            //     graphToBack.drawString(counter + " frames in 10s", 5, 30);
+            // }
+            
             
             graphToBack.setColor(Color.BLACK);
 
@@ -311,9 +309,9 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
             //draws everything from graphToBack to the image (put all draws before this line)
             twoDGraph.drawImage(back, null, 0, 0);
             
-            player1.printStates();
+            // player1.printStates();
 
-            beforeTime = currTime;
+            // beforeTime = currTime;
         }
         
     }
