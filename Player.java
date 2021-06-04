@@ -271,6 +271,7 @@ public class Player extends GameElement{
     }
     
     public void setCurrState(PlayerState ps) {
+    	currFrame = 0;
     	currState = ps;
     }
     

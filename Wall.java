@@ -3,8 +3,12 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 
 public class Wall extends GameElement {
-    public Wall(int x, int y, int w, int h) {
+	
+	Color color;
+	
+    public Wall(int x, int y, int w, int h, Color c) {
         super(x,y,0,0,w,h);
+        color = c;
     }
 
     @Override
@@ -14,13 +18,7 @@ public class Wall extends GameElement {
 
     @Override
     public void draw(Graphics window) {
-        window.setColor(Color.BLACK);
+        window.setColor(color);
         window.fillRect(getX(), getY(), getWidth(), getHeight());
-    }
-
-    public boolean touching(Player other) {
-        Rectangle thisRect = new Rectangle(getX(), getY(), getWidth(), getHeight());
-        Rectangle otherRect = new Rectangle(other.getX() + other.getXSpeed(), other.getY(), other.getWidth(), other.getHeight());
-        return thisRect.intersects(otherRect);
     }
 }
