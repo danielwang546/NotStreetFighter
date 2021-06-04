@@ -247,6 +247,14 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
                     player2.setYSpeed(-15);
                 tapKeys[1] = false;
             }
+            
+            if(player1.getHitBox().touchingTop(player2.getHitBox()) && player1.getHitBox().touchingSide(player2.getHitBox())) {
+            	player1.setYSpeed(player1.getYSpeed()-5);
+            }
+            
+            if(player2.getHitBox().touchingTop(player1.getHitBox()) && player2.getHitBox().touchingSide(player1.getHitBox())) {
+            	player2.setYSpeed(player2.getYSpeed()-5);
+            }
 
             
             //problems arise because these need to all be executed at the exact same time, not in sequence
