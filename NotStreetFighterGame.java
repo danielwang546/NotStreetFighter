@@ -7,9 +7,10 @@ import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
+
 //import Player.PlayerState;
 
-public class NotStreetFighterGame extends Canvas implements KeyListener, Runnable 
+public class NotStreetFighterGame extends Canvas implements KeyListener, Runnable
 {
     // private long beforeTime, deltaTime, currTime, initTime;
     // private int counter = 0;
@@ -27,7 +28,7 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
     private Wall wall1;
     private Wall wall2;
     private GraphicsUserInterface GUI;
-    private boolean isStart = false;
+    private boolean isStart = true;
     private boolean isEnd = false;
 
     private int combo1 = 0;
@@ -104,7 +105,7 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
         graphToBack.fillRect(0, 0, getWidth(), getHeight());
 
         if(isStart){
-            GUI.start(window);
+            isStart = GUI.start(window);
         } 
         else if(isEnd){
             GUI.end(window);
@@ -364,6 +365,7 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
         
     }
 
+
     @Override
     public void keyPressed(KeyEvent e) {
         for(int i = 0; i < keyCodes.length; i++) {
@@ -417,4 +419,5 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
             e.printStackTrace();
         }
     }
+
 }

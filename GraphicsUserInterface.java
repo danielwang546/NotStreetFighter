@@ -14,6 +14,7 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.net.URL;
 import javax.swing.*;
+import javax.swing.plaf.ButtonUI;
 
 import java.awt.*;
 import javax.imageio.*;
@@ -24,12 +25,15 @@ import java.util.Scanner;
 import java.util.StringTokenizer;
 import java.util.TreeMap;
 
-public class GraphicsUserInterface {
+public class GraphicsUserInterface extends JFrame implements ActionListener{
 
     private int healthBarWidthP1;
     private int healthBarWidthP2;
     private int scoreP1;
     private int scoreP2;
+    private boolean startCalled;
+    private boolean startScreen = true;
+
     
     public GraphicsUserInterface(int h1, int h2, int s1, int s2){
         healthBarWidthP1 = h1 * 7;
@@ -76,7 +80,17 @@ public class GraphicsUserInterface {
         
     }
 
-    public void start(Graphics window){
+    public boolean start(Graphics window){
+        if(!startCalled){
+            JButton b = new JButton("Click To Play");  
+            setSize(1600,1200);
+            b.setBounds(50,100,95,30);
+            b.addActionListener(this);  
+            add(b);
+            setVisible(true); 
+            startCalled = true;
+        } 
+        return startScreen;
 
     }
 
@@ -123,4 +137,16 @@ public class GraphicsUserInterface {
             e.printStackTrace();
         }
     }
+    
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        // TODO Auto-generated method stub
+        if(e.getActionCommand() == "Click To Play"){
+            startScreen = false;
+            dispose();
+        }
+        
+        
+    }
+    
 }
