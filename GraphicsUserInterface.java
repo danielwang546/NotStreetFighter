@@ -118,7 +118,7 @@ public class GraphicsUserInterface extends JFrame implements ActionListener{
     
     @Override
     public void actionPerformed(ActionEvent e) {
-        if(e.getActionCommand() == "Click To Play"){
+        if(e.getActionCommand().equals("Click To Play")){
             startScreen = false;
             dispose();
         }
