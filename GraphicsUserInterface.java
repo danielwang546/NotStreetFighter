@@ -108,6 +108,8 @@ public class GraphicsUserInterface extends JFrame implements ActionListener{
         String[] topScores = scoreFW.getTopScores();
         window.drawString("High Scores:", 300, 400);
         for(int i = 0; i < topScores.length; i++) {
+            if(topScores[i] == null)
+                break;
             window.drawString(String.valueOf(i+1) + ". " + topScores[i], 300, 400 + 20*(i+1));
         }
     }

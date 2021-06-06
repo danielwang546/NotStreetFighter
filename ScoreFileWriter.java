@@ -4,6 +4,8 @@ import java.util.TreeMap;
 import java.util.StringTokenizer;
 import java.util.Scanner;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
@@ -19,36 +21,28 @@ public class ScoreFileWriter implements Writer{
             scores.createNewFile();
         } catch(IOException e) {
             e.printStackTrace();
-        }     
+        }
     }
 
     public void writePtsToFile(int points, String name) {
-        try {
-            FileWriter scoresFW = new FileWriter(scores, false);
-            Scanner scan = new Scanner(scores);
-            HashMap<Integer, String> unsorted = new HashMap<Integer, String>();
-            while(scan.hasNextLine()) {
-                String line = scan.nextLine();
-                StringTokenizer st = new StringTokenizer(line);
-                int highScore = Integer.valueOf(st.nextToken());
-                String hsName = String.valueOf(st.nextToken());
-                unsorted.put(highScore, hsName);
-            }
-            unsorted.put(points, name);
+        HashMap<Integer, String> unsorted = new HashMap<Integer, String>();
+        String[] fileLines = readFromFile();
 
-            Map<Integer, String> sorted = new TreeMap<Integer, String>();
-            sorted.putAll(unsorted);
-
-            for(Map.Entry<Integer, String> entry : sorted.entrySet()) {
-                scoresFW.write(entry.getKey() + " " + entry.getValue() + "\n");
-            }
-            
-            scoresFW.close();
-            scan.close();
-        } catch(IOException e) {
-            e.printStackTrace();
+        for(String line : fileLines) {
+            StringTokenizer st = new StringTokenizer(line);
+            unsorted.put(Integer.valueOf(st.nextToken()), st.nextToken());
         }
-        
+        unsorted.put(points, name);
+
+        Map<Integer, String> sorted = new TreeMap<Integer, String>(Collections.reverseOrder());
+        sorted.putAll(unsorted);
+
+        String sortedStr = "";
+        for(Map.Entry<Integer, String> entry : sorted.entrySet()) {
+            sortedStr += entry.getKey() + " " + entry.getValue() + "\n";
+        }
+
+        writeToFile(sortedStr);
     }
 
     public String[] getTopScores() {
@@ -71,8 +65,13 @@ public class ScoreFileWriter implements Writer{
 
     @Override
     public void writeToFile(String str) {
-
-        
+        try {
+            FileWriter fw = new FileWriter(scores, false);
+            fw.write(str);
+            fw.close();
+        } catch(IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -87,7 +86,7 @@ public class ScoreFileWriter implements Writer{
         } catch(FileNotFoundException e) {
             e.printStackTrace();
         }
-        return (String[])fileContents.toArray();
+        return Arrays.copyOf(fileContents.toArray(), fileContents.size(), String[].class);
     }
 }
     
