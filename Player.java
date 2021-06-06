@@ -98,6 +98,7 @@ public class Player extends GameElement{
         } else {
             window.drawImage(image, getX() + getWidth(), getY(), -getWidth(), getHeight(), null);
         }
+        
         hitBox.draw(window);
 
         updateAttackBox();

@@ -246,25 +246,50 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
                 player2.applyGravity();
             }
             
+            
+            //terrible horrible garbage { 
+            if(player1.getHitBox().touchingTop(player2.getHitBox())){
+            	int offset = 21;
+            	if(player1.getCurrState() == Player.PlayerState.IDLE_CROUCH)
+        			offset = 121;
+            	else if(player1.getCurrState() == Player.PlayerState.IDLE_BLOCK)
+            		offset = 41;
+            	
+            	player1.setY(player2.getHitBox().getY()-player1.getHitBox().getHeight()-offset);
+            }
+            
+            if(player2.getHitBox().touchingTop(player1.getHitBox())){
+            	int offset = 21;
+            	if(player2.getCurrState() == Player.PlayerState.IDLE_CROUCH)
+        			offset = 121;
+            	else if(player2.getCurrState() == Player.PlayerState.IDLE_BLOCK)
+            		offset = 41;
+            	
+            	player2.setY(player1.getHitBox().getY()-player2.getHitBox().getHeight()-offset);
+            }
+            // }
+            
             if(tapKeys[0]){
-                if((player1.isSupported(objects)|| player1.getHitBox().touchingTop(player2.getHitBox())) && !player1.getHitBox().touchingBottom(player2.getHitBox()))
+                if((player1.isSupported(objects)|| player1.getHitBox().touchingTop(player2.getHitBox())))
                     player1.setYSpeed(-20);
                 tapKeys[0] = false;
             }
             
             if(tapKeys[1]){
-                if((player2.isSupported(objects) || player2.getHitBox().touchingTop(player1.getHitBox())) && !player2.getHitBox().touchingBottom(player1.getHitBox()))
+                if((player2.isSupported(objects) || player2.getHitBox().touchingTop(player1.getHitBox())))
                     player2.setYSpeed(-20);
                 tapKeys[1] = false;
             }
             
+            /*
             if(player1.getHitBox().touchingTop(player2.getHitBox()) && player1.getHitBox().touchingSide(player2.getHitBox())) {
-            	player1.setYSpeed(player1.getYSpeed()-5);
+            	player1.setYSpeed(player1.getYSpeed()-10);
             }
             
             if(player2.getHitBox().touchingTop(player1.getHitBox()) && player2.getHitBox().touchingSide(player1.getHitBox())) {
-            	player2.setYSpeed(player2.getYSpeed()-5);
+            	player2.setYSpeed(player2.getYSpeed()-10);
             }
+            */
 
             
             //problems arise because these need to all be executed at the exact same time, not in sequence
