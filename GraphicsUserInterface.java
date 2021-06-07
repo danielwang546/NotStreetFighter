@@ -37,6 +37,10 @@ public class GraphicsUserInterface extends JFrame implements ActionListener{
     private ScoreFileWriter scoreFW;
     private boolean endCalled;
     private boolean endScreen = true;
+    private JTextField t1;
+    private JTextField t2;
+
+    private String p1Name, p2Name;
 
     
     public GraphicsUserInterface(int h1, int h2, int s1, int s2){
@@ -73,6 +77,14 @@ public class GraphicsUserInterface extends JFrame implements ActionListener{
         return scoreP2;
     }
 
+    public String getP1Name() {
+        return p1Name;
+    }
+
+    public String getP2Name() {
+        return p2Name;
+    }
+
     public void draw(Graphics window){
     	
     	window.setFont(new Font("Impact", 0, 30));
@@ -101,11 +113,18 @@ public class GraphicsUserInterface extends JFrame implements ActionListener{
             setContentPane(new JLabel(new ImageIcon("Background.jpg")));
 
             JButton b = new JButton("Click To Play");
+            t1 = new JTextField("Player 1");
+            t2 = new JTextField("Player 2");
+
+            t1.setBounds(500,450 ,150 ,40);
+            t2.setBounds(500,500 ,150 ,40);  
             b.setOpaque(true);
             b.setBorderPainted(false);
             b.setBackground(Color.red);
             b.setBounds(25,450,300,60);  
-            add(b);  
+            add(b); 
+            add(t1);
+            add(t2); 
             setSize(800,600);  
             setLayout(null);  
             setVisible(true);
@@ -121,18 +140,16 @@ public class GraphicsUserInterface extends JFrame implements ActionListener{
 
         if(!endCalled){
 
+
             if(healthBarWidthP1 <= 0) {
                 //window.drawString("Player 2 wins!", 800, 200);
                 setContentPane(new JLabel(new ImageIcon("Player2Win.jpg")));
+                writeToFile(scoreP2, p2Name);
                 
             } else{
                 setContentPane(new JLabel(new ImageIcon("Player1Win.jpg")));
+                writeToFile(scoreP1, p1Name);
             }
-            
-
-            
-
-            
             
             String[] topScores = scoreFW.getTopScores();
             
@@ -187,6 +204,8 @@ public class GraphicsUserInterface extends JFrame implements ActionListener{
     public void actionPerformed(ActionEvent e) {
         if(e.getActionCommand().equals("Click To Play")) {
             startScreen = false;
+            p1Name = t1.getText();
+            p2Name = t2.getText();
             dispose();
         }
         if(e.getActionCommand().equals("Click To Reset")){
