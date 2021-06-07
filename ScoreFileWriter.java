@@ -29,8 +29,9 @@ public class ScoreFileWriter implements Writer{
         String[] fileLines = readFromFile();
 
         for(String line : fileLines) {
-            StringTokenizer st = new StringTokenizer(line);
-            unsorted.put(Integer.valueOf(st.nextToken()), st.nextToken());
+
+            int space = line.indexOf(" ");
+            unsorted.put(Integer.valueOf(line.substring(0, space)), line.substring(space + 1));
         }
         unsorted.put(points, name);
 
