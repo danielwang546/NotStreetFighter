@@ -5,6 +5,7 @@ import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.ArrayList;
 
 
@@ -108,7 +109,13 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
         graphToBack.fillRect(0, 0, getWidth(), getHeight());
 
         if(isStart){
-            isStart = GUI.start(window);
+            try {
+                isStart = GUI.start(window);
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+                System.out.println("error");
+            }
         } 
         else if(isEnd){
             GUI.end(window);

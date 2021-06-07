@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.net.URL;
 import javax.swing.*;
 import javax.swing.plaf.ButtonUI;
+import java.io.IOException;
 
 import java.awt.*;
 import javax.imageio.*;
@@ -82,17 +83,23 @@ public class GraphicsUserInterface extends JFrame implements ActionListener{
         
     }
 
-    public boolean start(Graphics window){
+    public boolean start(Graphics window) throws IOException{
         if(!startCalled){
-            JButton b = new JButton("Click To Play");  
-            setSize(1600,1200);
-            b.setBounds(50,100,95,30);
+            URL url = getClass().getResource("Background.jpg");
+            setContentPane(new JLabel(new ImageIcon(url)));
+
+            JButton b = new JButton("Click To Play");
+            b.setBackground(Color.red);
+            b.setBounds(200,800,200,40);  
+            add(b);  
+            setSize(1600,1200);  
+            setLayout(null);  
+            setVisible(true);
             b.addActionListener(this);  
-            add(b);
-            setVisible(true); 
             startCalled = true;
         } 
         return startScreen;
+        
 
     }
 
@@ -120,7 +127,7 @@ public class GraphicsUserInterface extends JFrame implements ActionListener{
     
     @Override
     public void actionPerformed(ActionEvent e) {
-        if(e.getActionCommand().equals("Click To Play")){
+        if(e.getActionCommand().equals("Click To Play")) {
             startScreen = false;
             dispose();
         }
