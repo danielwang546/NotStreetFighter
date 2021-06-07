@@ -30,7 +30,7 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
     private Wall wall1;
     private Wall wall2;
     private GraphicsUserInterface GUI;
-    private boolean isStart = true;
+    private boolean isStart = true ;
     private boolean isEnd = false;
 
     private int combo1 = 0;
@@ -109,16 +109,29 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
         graphToBack.fillRect(0, 0, getWidth(), getHeight());
 
         if(isStart){
-            try {
-                isStart = GUI.start(window);
-            } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-                System.out.println("error");
-            }
+           
+            isStart = GUI.start();
+     
         } 
         else if(isEnd){
-            GUI.end(window);
+            isEnd = GUI.end();
+            if(!isEnd){
+                //Player 1 reset
+                player1.setPos(400, 400);
+                player1.setHealth(100);
+                player1.setScore(0);
+                combo1 = 0;
+
+                //player 2 reset
+                player2.setPos(1000, 400);
+                player2.setHealth(100);
+                player2.setScore(0);
+                combo2 = 0;
+
+                //reset end
+                GUI.resetEnd();
+
+            }
         } 
         else {
 

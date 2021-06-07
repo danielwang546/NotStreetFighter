@@ -35,6 +35,8 @@ public class GraphicsUserInterface extends JFrame implements ActionListener{
     private boolean startCalled;
     private boolean startScreen = true;
     private ScoreFileWriter scoreFW;
+    private boolean endCalled;
+    private boolean endScreen = true;
 
     
     public GraphicsUserInterface(int h1, int h2, int s1, int s2){
@@ -83,7 +85,7 @@ public class GraphicsUserInterface extends JFrame implements ActionListener{
         
     }
 
-    public boolean start(Graphics window) throws IOException{
+    public boolean start(){
         if(!startCalled){
             URL url = getClass().getResource("Background.jpg");
             setContentPane(new JLabel(new ImageIcon(url)));
@@ -105,49 +107,82 @@ public class GraphicsUserInterface extends JFrame implements ActionListener{
 
     }
 
-    public void end(Graphics window){
+    public boolean end(){
 
-        if(startCalled){
-            URL url = getClass().getResource("Background.jpg");
+        if(!endCalled){
+
+            URL url;
+
+            if(healthBarWidthP1 <= 0) {
+                //window.drawString("Player 2 wins!", 800, 200);
+                url = getClass().getResource("Player2Win.jpg");
+                
+            } else{
+                url = getClass().getResource("Player1Win.jpg");
+            }
+            
+
+            
+
             setContentPane(new JLabel(new ImageIcon(url)));
+            
+            String[] topScores = scoreFW.getTopScores();
+            
 
-            JButton b = new JButton("Click To Play");
+            JLabel labelM = new JLabel("High Scores:");
+            labelM.setBounds(1000, 500, 200, 30);
+
+
+            for(int i = 0; i < topScores.length; i++) {
+                if(topScores[i] == null)
+                    break;
+                JLabel test = new JLabel(String.valueOf(i+1) + ". " + topScores[i]);
+                test.setBounds(1000, 400 + 400 + 20*(i+1), 200, 30);
+                add(test);
+                //print = String.valueOf(i+1) + ". " + topScores[i];
+            }
+            
+
+            //JLabel labelM = new JLabel("Not Only of Sight\n, but of: ");
+            //labelM.setBounds(50, 50, 200, 30);
+
+
+            JButton b = new JButton("Click To Reset");
             b.setOpaque(true);
             b.setBorderPainted(false);
             b.setBackground(Color.red);
-            b.setBounds(150,800,400,80);  
-            add(b);  
+            b.setBounds(1000,300,400,80);  
+            add(b); 
+            add(labelM); 
+
             setSize(1600,1200);  
             setLayout(null);  
             setVisible(true);
             b.addActionListener(this);  
-            startCalled = false;
+            endCalled = true;
+
         } 
 
-        if(healthBarWidthP1 <= 0) {
-            window.drawString("Player 2 wins!", 800, 200);
-        }
-        if(healthBarWidthP2 <= 0) {
-            window.drawString("Player 1 wins!", 800, 200);
-        }
-
-        String[] topScores = scoreFW.getTopScores();
-        window.drawString("High Scores:", 300, 400);
-        for(int i = 0; i < topScores.length; i++) {
-            if(topScores[i] == null)
-                break;
-            window.drawString(String.valueOf(i+1) + ". " + topScores[i], 300, 400 + 20*(i+1));
-        }
+        return endScreen;
     }
 
     public void writeToFile(int points, String name) {
         scoreFW.writePtsToFile(points, name);
+    }
+
+    public void resetEnd(){
+        endScreen = true;
+        endCalled = false;
     }
     
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getActionCommand().equals("Click To Play")) {
             startScreen = false;
+            dispose();
+        }
+        if(e.getActionCommand().equals("Click To Reset")){
+            endScreen = false;
             dispose();
         }
         

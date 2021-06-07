@@ -240,8 +240,16 @@ public class Player extends GameElement{
         health -= h;
     }
 
+    public void setHealth(int h){
+        health = h;
+    }
+
     public void increaseScore(int s){
         score += s;
+    }
+
+    public void setScore(int s){
+        score = s;
     }
     
     public void enableState(PlayerState ps, PlayerState idlePs) {
