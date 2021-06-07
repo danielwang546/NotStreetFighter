@@ -117,13 +117,13 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
             isEnd = GUI.end();
             if(!isEnd){
                 //Player 1 reset
-                player1.setPos(400, 400);
+                player1.setPos(200, 200);
                 player1.setHealth(100);
                 player1.setScore(0);
                 combo1 = 0;
 
                 //player 2 reset
-                player2.setPos(1000, 400);
+                player2.setPos(500, 200);
                 player2.setHealth(100);
                 player2.setScore(0);
                 combo2 = 0;
