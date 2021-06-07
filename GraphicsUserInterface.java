@@ -98,7 +98,7 @@ public class GraphicsUserInterface extends JFrame implements ActionListener{
 
     public boolean start(){
         if(!startCalled){
-            setContentPane(new JLabel("Background.jpg"));
+            setContentPane(new JLabel(new ImageIcon("Background.jpg")));
 
             JButton b = new JButton("Click To Play");
             b.setOpaque(true);
