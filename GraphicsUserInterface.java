@@ -40,16 +40,16 @@ public class GraphicsUserInterface extends JFrame implements ActionListener{
 
     
     public GraphicsUserInterface(int h1, int h2, int s1, int s2){
-        healthBarWidthP1 = h1 * 7;
-        healthBarWidthP2 = h2 * 7;
+        healthBarWidthP1 = h1 * 3;
+        healthBarWidthP2 = h2 * 3;
         scoreP1 = s1;
         scoreP2 = s2;
         scoreFW = new ScoreFileWriter();
     }
 
     public void setHealthBar(int p1, int p2){
-        healthBarWidthP1 = p1 * 7;
-        healthBarWidthP2 = p2 * 7;
+        healthBarWidthP1 = p1 * 3;
+        healthBarWidthP2 = p2 * 3;
     }
 
     public void setScore(int p1, int p2){
@@ -78,10 +78,10 @@ public class GraphicsUserInterface extends JFrame implements ActionListener{
     	window.setFont(new Font("Impact", 0, 30));
         window.setColor(Color.RED);
         window.fillRect(25, 10, healthBarWidthP1, 30);
-        window.fillRect(825, 10, healthBarWidthP2, 30);
+        window.fillRect(425, 10, healthBarWidthP2, 30);
         window.setColor(Color.BLACK);
-        window.drawString(""+healthBarWidthP1/7, 25, 35);
-        window.drawString(""+healthBarWidthP2/7, 825, 35);
+        window.drawString(""+healthBarWidthP1/3, 25, 35);
+        window.drawString(""+healthBarWidthP2/3, 425, 35);
         String p1out = ""+scoreP1;
         while(p1out.length() < 6) {
         	p1out="0"+p1out;
@@ -92,7 +92,7 @@ public class GraphicsUserInterface extends JFrame implements ActionListener{
         }
         
         window.drawString(p1out, 25, 75);
-        window.drawString(p2out, 825, 75);
+        window.drawString(p2out, 425, 75);
         
     }
 
@@ -104,7 +104,7 @@ public class GraphicsUserInterface extends JFrame implements ActionListener{
             JButton b = new JButton("Click To Play");
             b.setOpaque(true);
             b.setBorderPainted(false);
-            b.setBackground(Color.red);
+            b.setBackground(Color.RED);
             b.setBounds(200,400,400,80);  
             add(b);  
             setSize(800,600);  
@@ -166,7 +166,7 @@ public class GraphicsUserInterface extends JFrame implements ActionListener{
             add(b); 
             add(labelM); 
 
-            setSize(1600,1200);  
+            setSize(800,600);  
             setLayout(null);  
             setVisible(true);
             b.addActionListener(this);  

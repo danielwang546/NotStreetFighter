@@ -66,13 +66,13 @@ public class Player extends GameElement{
     
 
     public Player(int id, int x, int y){
-        super(x, y, 0, 0, 170, 200);
+        super(x, y, 0, 0, 85, 100);
         
         yAcceleration = 30;
 
         pID = id;
         
-        hitBox = new HitBox(getX()+40,getY()+20,getXSpeed(), getYSpeed(), getWidth()-80,getHeight()-20);
+        hitBox = new HitBox(getX()+20,getY()+10,getXSpeed(), getYSpeed(), getWidth()-40,getHeight()-10);
         attackBox = new AttackBox(0,0,getXSpeed(), getYSpeed(),0,0);
         attacked = false;
         movementDisabled = false;
@@ -131,18 +131,18 @@ public class Player extends GameElement{
     }
     
     public void updateHitBox() {
-    	hitBox.setX(getX()+40);
-    	hitBox.setY(getY()+20);
+    	hitBox.setX(getX()+20);
+    	hitBox.setY(getY()+10);
     	hitBox.setXSpeed(getXSpeed());
     	hitBox.setYSpeed(getYSpeed());
-    	hitBox.setWidth(getWidth()-80);
-    	hitBox.setHeight(getHeight()-20);
+    	hitBox.setWidth(getWidth()-40);
+    	hitBox.setHeight(getHeight()-10);
     	if(currState == PlayerState.IDLE_CROUCH) {
-    		hitBox.setY(getY()+120);
-    		hitBox.setHeight(getHeight()-120);
+    		hitBox.setY(getY()+60);
+    		hitBox.setHeight(getHeight()-60);
     	} else if(currState == PlayerState.IDLE_BLOCK) {
-    		hitBox.setY(getY()+40);
-    		hitBox.setHeight(getHeight()-40);
+    		hitBox.setY(getY()+20);
+    		hitBox.setHeight(getHeight()-20);
     	}
     }
 
@@ -171,18 +171,18 @@ public class Player extends GameElement{
         	
             if (facingRight) {
             	if(currState == PlayerState.PUNCHING)
-            		attackBox.setPos(getX()+getWidth()-10, getY()+100);
+            		attackBox.setPos(getX()+getWidth()-5, getY()+50);
             	else if(currState == PlayerState.KICKING)
-            		attackBox.setPos(getX()+getWidth()-20, getY()+180);
+            		attackBox.setPos(getX()+getWidth()-10, getY()+90);
             } else {
             	if(currState == PlayerState.PUNCHING)
-            		attackBox.setPos(getX(), getY()+100);
+            		attackBox.setPos(getX(), getY()+50);
             	else if(currState == PlayerState.KICKING)
-            		attackBox.setPos(getX()+10, getY()+180);
+            		attackBox.setPos(getX()+5, getY()+90);
             }
             
-            attackBox.setWidth(10);
-            attackBox.setHeight(10);
+            attackBox.setWidth(5);
+            attackBox.setHeight(5);
         }
     }
     
