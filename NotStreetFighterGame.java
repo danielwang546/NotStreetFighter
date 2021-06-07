@@ -75,8 +75,8 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
         p1holdUsed = 0;
         p2holdUsed = 0;
 
-        ground = new Ground(0,800,1600,20, Color.GREEN);
-        platform = new Ground(600,590,400,20,new Color(139,69,19));
+        ground = new Ground(0,700,1600,20, Color.GREEN);
+        platform = new Ground(600,490,400,20,new Color(139,69,19));
         wall1 = new Wall(-1,0,1,1200, Color.BLACK);
         wall2 = new Wall(1601,0,1,1200, Color.BLACK);
         
@@ -134,13 +134,6 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
             }
         } 
         else {
-
-            
-            // currTime = System.currentTimeMillis();
-            // deltaTime = currTime - beforeTime;
-            // double frameRate = ((int)(100000.0/deltaTime))/100.0; //magic to get the framerate in Hz, truncated to 2 decimals
-            
-            // //graphToBack.drawString(frameRate + " FPS", 5, 10);
             
             //movement determination is first
             if(keys[3]) {
@@ -266,8 +259,6 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
                 player2.applyGravity();
             }
             
-            
-            //terrible horrible garbage { 
             if(player1.getHitBox().touchingTop(player2.getHitBox())){
             	int offset = 21;
             	if(player1.getCurrState() == Player.PlayerState.IDLE_CROUCH)
@@ -287,7 +278,6 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
             	
             	player2.setY(player1.getHitBox().getY()-player2.getHitBox().getHeight()-offset);
             }
-            // }
             
             if(tapKeys[0]){
                 if((player1.isSupported(objects)|| player1.getHitBox().touchingTop(player2.getHitBox())))
@@ -300,27 +290,13 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
                     player2.setYSpeed(-20);
                 tapKeys[1] = false;
             }
-            
-            /*
-            if(player1.getHitBox().touchingTop(player2.getHitBox()) && player1.getHitBox().touchingSide(player2.getHitBox())) {
-            	player1.setYSpeed(player1.getYSpeed()-10);
-            }
-            
-            if(player2.getHitBox().touchingTop(player1.getHitBox()) && player2.getHitBox().touchingSide(player1.getHitBox())) {
-            	player2.setYSpeed(player2.getYSpeed()-10);
-            }
-            */
-
-            
-            //problems arise because these need to all be executed at the exact same time, not in sequence
+           
             if(player1.getHitBox().touchingSide(player2.getHitBox()) || player1.isObstructed(objects)) {
                 player1.setXSpeed(0);
             }
             if(player2.getHitBox().touchingSide(player1.getHitBox()) || player2.isObstructed(objects)) {
                 player2.setXSpeed(0);
             }
-            
-            //player1.printStates();
          
             //attack collision
 
@@ -404,19 +380,8 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
                 combo2 = 0;
             }
             
-            // if(currTime - initTime < 10000 && counter < 10000) {
-            //     counter++;
-            // } else {
-            //     graphToBack.drawString(counter + " frames in 10s", 5, 30);
-            // }
-            
             GUI.setHealthBar(player1.getHealth(),player2.getHealth());
             GUI.setScore(player1.getScore(),player2.getScore());
-            
-            
-            graphToBack.setColor(Color.BLACK);
-            graphToBack.drawString("Player 1 Combo: " + combo1, 25, 100);
-            graphToBack.drawString("Player 2 Combo: " + combo2, 825, 100);
 
             player1.draw(graphToBack);
             player2.draw(graphToBack);

@@ -74,14 +74,25 @@ public class GraphicsUserInterface extends JFrame implements ActionListener{
     }
 
     public void draw(Graphics window){
+    	
+    	window.setFont(new Font("Impact", 0, 30));
         window.setColor(Color.RED);
         window.fillRect(25, 10, healthBarWidthP1, 30);
         window.fillRect(825, 10, healthBarWidthP2, 30);
         window.setColor(Color.BLACK);
-        window.drawString("Player 1 health: " + healthBarWidthP1/7, 25, 55);
-        window.drawString("Player 2 health: " + healthBarWidthP2/7, 825, 55);
-        window.drawString("Player 1 score: " + scoreP1, 25, 75);
-        window.drawString("Player 2 score: " + scoreP2, 825, 75);
+        window.drawString(""+healthBarWidthP1/7, 25, 35);
+        window.drawString(""+healthBarWidthP2/7, 825, 35);
+        String p1out = ""+scoreP1;
+        while(p1out.length() < 6) {
+        	p1out="0"+p1out;
+        }
+        String p2out = ""+scoreP2;
+        while(p2out.length() < 6) {
+        	p2out="0"+p2out;
+        }
+        
+        window.drawString(p1out, 25, 75);
+        window.drawString(p2out, 825, 75);
         
     }
 
@@ -94,9 +105,9 @@ public class GraphicsUserInterface extends JFrame implements ActionListener{
             b.setOpaque(true);
             b.setBorderPainted(false);
             b.setBackground(Color.red);
-            b.setBounds(150,800,400,80);  
+            b.setBounds(150,600,400,80);  
             add(b);  
-            setSize(1600,1200);  
+            setSize(1920,1080);  
             setLayout(null);  
             setVisible(true);
             b.addActionListener(this);  
