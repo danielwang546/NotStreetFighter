@@ -105,9 +105,9 @@ public class GraphicsUserInterface extends JFrame implements ActionListener{
             b.setOpaque(true);
             b.setBorderPainted(false);
             b.setBackground(Color.red);
-            b.setBounds(150,600,400,80);  
+            b.setBounds(200,400,400,80);  
             add(b);  
-            setSize(1920,1080);  
+            setSize(800,600);  
             setLayout(null);  
             setVisible(true);
             b.addActionListener(this);  
