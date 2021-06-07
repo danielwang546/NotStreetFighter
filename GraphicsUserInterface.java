@@ -98,8 +98,7 @@ public class GraphicsUserInterface extends JFrame implements ActionListener{
 
     public boolean start(){
         if(!startCalled){
-            URL url = getClass().getResource("Background.jpg");
-            setContentPane(new JLabel(new ImageIcon(url)));
+            setContentPane(new JLabel("Background.jpg"));
 
             JButton b = new JButton("Click To Play");
             b.setOpaque(true);
@@ -122,20 +121,18 @@ public class GraphicsUserInterface extends JFrame implements ActionListener{
 
         if(!endCalled){
 
-            URL url;
-
             if(healthBarWidthP1 <= 0) {
                 //window.drawString("Player 2 wins!", 800, 200);
-                url = getClass().getResource("Player2Win.jpg");
+                setContentPane(new JLabel(new ImageIcon("Player2Win.jpg")));
                 
             } else{
-                url = getClass().getResource("Player1Win.jpg");
+                setContentPane(new JLabel(new ImageIcon("Player1Win.jpg")));
             }
             
 
             
 
-            setContentPane(new JLabel(new ImageIcon(url)));
+            
             
             String[] topScores = scoreFW.getTopScores();
             
