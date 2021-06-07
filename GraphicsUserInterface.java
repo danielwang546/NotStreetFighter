@@ -89,8 +89,10 @@ public class GraphicsUserInterface extends JFrame implements ActionListener{
             setContentPane(new JLabel(new ImageIcon(url)));
 
             JButton b = new JButton("Click To Play");
+            b.setOpaque(true);
+            b.setBorderPainted(false);
             b.setBackground(Color.red);
-            b.setBounds(200,800,200,40);  
+            b.setBounds(150,800,400,80);  
             add(b);  
             setSize(1600,1200);  
             setLayout(null);  
@@ -104,6 +106,23 @@ public class GraphicsUserInterface extends JFrame implements ActionListener{
     }
 
     public void end(Graphics window){
+
+        if(startCalled){
+            URL url = getClass().getResource("Background.jpg");
+            setContentPane(new JLabel(new ImageIcon(url)));
+
+            JButton b = new JButton("Click To Play");
+            b.setOpaque(true);
+            b.setBorderPainted(false);
+            b.setBackground(Color.red);
+            b.setBounds(150,800,400,80);  
+            add(b);  
+            setSize(1600,1200);  
+            setLayout(null);  
+            setVisible(true);
+            b.addActionListener(this);  
+            startCalled = false;
+        } 
 
         if(healthBarWidthP1 <= 0) {
             window.drawString("Player 2 wins!", 800, 200);
