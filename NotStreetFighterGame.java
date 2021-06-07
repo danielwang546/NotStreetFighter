@@ -117,16 +117,16 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
             isEnd = GUI.end();
             if(!isEnd){
                 //Player 1 reset
-                player1.setPos(200, 200);
-                player1.setHealth(100);
-                player1.setScore(0);
+                player1 = new Player(1, 200, 200);
                 combo1 = 0;
 
                 //player 2 reset
-                player2.setPos(500, 200);
-                player2.setHealth(100);
-                player2.setScore(0);
+                player2 = new Player(2, 500, 200);
                 combo2 = 0;
+                
+                for(int i=0; i < keys.length; i++) {
+                	keys[i] = false;
+                }
 
                 //reset end
                 GUI.resetEnd();
@@ -134,7 +134,6 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
             }
         } 
         else {
-            
             //movement determination is first
             if(keys[3]) {
                 player1.setXSpeed(-4);

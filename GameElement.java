@@ -9,7 +9,6 @@ public abstract class GameElement
   private int ySpeed;
   private int width;
   private int height;
-  private boolean isPerm;
 
   public GameElement()
   {

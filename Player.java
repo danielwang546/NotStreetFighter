@@ -307,7 +307,6 @@ public class Player extends GameElement{
     public void addState(PlayerState state) {
     	if(currState.interruptible && state != currState) {
     		setCurrState(state);
-    		currFrame=0;
     	} else if(stateQueue.size() < 5 && !(stateQueue.contains(state) && state == currState)){
     		stateQueue.add(state);
     	}
