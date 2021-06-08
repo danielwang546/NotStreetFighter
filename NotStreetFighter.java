@@ -18,6 +18,6 @@ public class NotStreetFighter extends JFrame{
     }
 
     public static void main(String[] args) {
-        NotStreetFighter run = new NotStreetFighter();
+        new NotStreetFighter();
     }
 }

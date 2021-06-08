@@ -1,15 +1,13 @@
-import java.util.Map;
-import java.util.HashMap;
-import java.util.TreeMap;
-import java.util.StringTokenizer;
-import java.util.Scanner;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Map;
+import java.util.Scanner;
+import java.util.TreeMap;
 
 public class ScoreFileWriter implements Writer{
 
@@ -25,22 +23,29 @@ public class ScoreFileWriter implements Writer{
     }
 
     public void writePtsToFile(int points, String name) {
-        HashMap<Integer, String> unsorted = new HashMap<Integer, String>();
+        TreeMap<Integer, ArrayList<String>> sorted = new TreeMap<Integer, ArrayList<String>>(Collections.reverseOrder());
         String[] fileLines = readFromFile();
 
         for(String line : fileLines) {
-
             int space = line.indexOf(" ");
-            unsorted.put(Integer.valueOf(line.substring(0, space)), line.substring(space + 1));
-        }
-        unsorted.put(points, name);
+            int pts = Integer.valueOf(line.substring(0, space));
+            String nm = line.substring(space + 1);
 
-        Map<Integer, String> sorted = new TreeMap<Integer, String>(Collections.reverseOrder());
-        sorted.putAll(unsorted);
+            if(!sorted.containsKey(pts)) {
+                sorted.put(pts, new ArrayList<String>());
+            }
+            sorted.get(pts).add(nm);
+        }
+        if(!sorted.containsKey(points)) {
+            sorted.put(points, new ArrayList<String>());
+        }
+        sorted.get(points).add(name);
 
         String sortedStr = "";
-        for(Map.Entry<Integer, String> entry : sorted.entrySet()) {
-            sortedStr += entry.getKey() + " " + entry.getValue() + "\n";
+        for(Map.Entry<Integer, ArrayList<String>> entry : sorted.entrySet()) {
+            for(String nameWPts : entry.getValue()) {
+                sortedStr += entry.getKey() + " " + nameWPts + "\n";
+            }
         }
 
         writeToFile(sortedStr);
