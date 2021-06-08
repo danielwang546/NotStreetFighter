@@ -29,6 +29,12 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
     private Wall wall1;
     private Wall wall2;
     private GraphicsUserInterface GUI;
+    private String dmgDisplay1;
+    private int dmgX1;
+    private int dmgY1;
+    private String dmgDisplay2;
+    private int dmgX2;
+    private int dmgY2;
     private boolean isStart = true ;
     private boolean isEnd = false;
 
@@ -86,6 +92,12 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
         objects.add(wall2);
 
         GUI = new GraphicsUserInterface(player1.getHealth(), player2.getHealth(), player1.getScore(), player2.getScore());
+        dmgDisplay1 = "";
+        dmgX1 = 0;
+        dmgY1 = 0;
+        dmgDisplay2 = "";
+        dmgX2 = 0;
+        dmgY2 = 0;
 
         this.addKeyListener(this);
         new Thread(this).start();
@@ -302,26 +314,33 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
             if (player1.attackBox().touching(player2.getHitBox())) {
                 p1Hit = true;
                 player1.deleteAttackBox();
+                dmgX1 = player1.attackBox().getX();
                 if (player1.getCurrState() == Player.PlayerState.PUNCHING) {
                     if (player2.getCurrState() == Player.PlayerState.IDLE_BLOCK) {
                         player2.decreaseHealth(5);
+                        dmgDisplay1="-5";
                         player1.increaseScore(20);
                     } else {
                         player2.decreaseHealth(10);
+                        dmgDisplay1="-10";
                         player1.increaseScore(100);
                         if (combo1 < 2)
                             combo1++;
                     }
+                    dmgY1 = player1.attackBox().getY()-80;
                 } else if(player1.getCurrState() == Player.PlayerState.KICKING) {
                     if (player2.getCurrState() == Player.PlayerState.IDLE_BLOCK) {
                         player2.decreaseHealth(2);
+                        dmgDisplay1="-2";
                         player1.increaseScore(10);
                     } else {
                         player2.decreaseHealth(5);
+                        dmgDisplay1="-5";
                         player1.increaseScore(50);
                         if (combo1 == 2)
                             combo1++;
                     }
+                    dmgY1 = player1.attackBox().getY()-120;
                 }
             } else {
                 if (!player1.attacked() && player1.getCurrFrame() == 6) {
@@ -330,31 +349,42 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
                     p1Hit = false;
                 }
             }
+           
+            graphToBack.setColor(Color.RED);
+            if(player1.getCurrState() != Player.PlayerState.PUNCHING && player1.getCurrState() != Player.PlayerState.KICKING)
+            	dmgDisplay1 = "";
             
             //player 2
             if (player2.attackBox().touching(player1.getHitBox())) {
                 player2.deleteAttackBox();
                 p2Hit = true;
+                dmgX2 = player2.attackBox().getX();
                 if (player2.getCurrState() == Player.PlayerState.PUNCHING) {
                     if (player1.getCurrState() == Player.PlayerState.IDLE_BLOCK) {
                         player1.decreaseHealth(5);
+                        dmgDisplay2="-5";
                         player2.increaseScore(20);
                     } else {
                         player1.decreaseHealth(10);
+                        dmgDisplay2="-10";
                         player2.increaseScore(100);
                         if (combo2 < 2)
                             combo2++;
                     }
+                    dmgY2 = player2.attackBox().getY()-80;
                 }  else if(player2.getCurrState() == Player.PlayerState.KICKING) {
                     if (player1.getCurrState() == Player.PlayerState.IDLE_BLOCK) {
                         player1.decreaseHealth(2);
+                        dmgDisplay2="-2";
                         player2.increaseScore(10);
                     } else {
                         player1.decreaseHealth(5);
+                        dmgDisplay2="-5";
                         player2.increaseScore(50);
                         if (combo2 == 2)
                             combo2++;
                     }
+                    dmgY2 = player2.attackBox().getY()-120;
                 }
             }  else {
                 if (!player2.attacked() && player2.getCurrFrame() == 6) {
@@ -364,19 +394,26 @@ public class NotStreetFighterGame extends Canvas implements KeyListener, Runnabl
                 }
             }
             
+            if(player2.getCurrState() != Player.PlayerState.PUNCHING && player2.getCurrState() != Player.PlayerState.KICKING)
+            	dmgDisplay2 = "";
 
             if (combo1 == 3) {
                 player2.setCurrState(Player.PlayerState.STUNNED);
                 player2.setMovementDis(true);
+                dmgDisplay1 = "COMBO";
                 player1.increaseScore(1000);
                 combo1 = 0;
             }
             if (combo2 == 3) {
                 player1.setCurrState(Player.PlayerState.STUNNED);
                 player1.setMovementDis(true);
+                dmgDisplay2 = "COMBO";
                 player2.increaseScore(1000);
                 combo2 = 0;
             }
+            
+            graphToBack.drawString(dmgDisplay1,dmgX1,dmgY1);
+            graphToBack.drawString(dmgDisplay2,dmgX2,dmgY2);
             
             GUI.setHealthBar(player1.getHealth(),player2.getHealth());
             GUI.setScore(player1.getScore(),player2.getScore());

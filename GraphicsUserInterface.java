@@ -123,13 +123,20 @@ public class GraphicsUserInterface extends JFrame implements ActionListener{
     public boolean end(){
 
         if(!endCalled){
+        	
+        	JLabel winner = new JLabel();
+			winner.setFont(new Font("Impact", 0, 60));
+			winner.setBounds(50,50,800,100);
 
             if(healthBarWidthP1 <= 0) {
                 //window.drawString("Player 2 wins!", 800, 200);
                 setContentPane(new JLabel(new ImageIcon("Player2Win.jpg")));
+                winner.setText(p2Name+" Wins!");
                 writeToFile(scoreP2, p2Name);
+                
             } else{
                 setContentPane(new JLabel(new ImageIcon("Player1Win.jpg")));
+                winner.setText(p1Name+" Wins!");
                 writeToFile(scoreP1, p1Name);
             }
 
@@ -163,6 +170,7 @@ public class GraphicsUserInterface extends JFrame implements ActionListener{
             b.setBounds(420,200,200,50);  
             add(b); 
             add(labelM); 
+            add(winner);
 
             setSize(800,600);  
             setLayout(null);  

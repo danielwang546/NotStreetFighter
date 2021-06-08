@@ -100,11 +100,11 @@ public class Player extends GameElement{
         }
         
         window.setColor(Color.BLACK);
-        hitBox.draw(window);
+        //hitBox.draw(window);
 
         updateAttackBox();
         window.setColor(Color.RED);
-        attackBox.draw(window);
+        //attackBox.draw(window);
         window.setColor(Color.BLACK);
     }
 
