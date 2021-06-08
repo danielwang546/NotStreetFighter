@@ -103,8 +103,8 @@ public class GraphicsUserInterface extends JFrame implements ActionListener{
         	p2out="0"+p2out;
         }
         
-        window.drawString(p1out, 25, 75);
-        window.drawString(p2out, 425, 75);
+        window.drawString(p1Name+": "+p1out, 25, 75);
+        window.drawString(p2Name+": "+p2out, 425, 75);
         
     }
 
@@ -161,9 +161,9 @@ public class GraphicsUserInterface extends JFrame implements ActionListener{
             for(int i = 0; i < topScores.length; i++) {
                 if(topScores[i] == null)
                     break;
-                JLabel test = new JLabel(String.valueOf(i+1) + ". " + topScores[i]);
-                test.setBounds(500, 250 + 20*(i+1), 200, 30);
-                add(test);
+                JLabel scores = new JLabel(String.valueOf(i+1) + ". " + topScores[i]);
+                scores.setBounds(450, 250 + 20*(i+1), 200, 30);
+                add(scores);
                 //print = String.valueOf(i+1) + ". " + topScores[i];
             }
             
@@ -200,12 +200,29 @@ public class GraphicsUserInterface extends JFrame implements ActionListener{
         endCalled = false;
     }
     
+    public String checkString(String s) {
+    	if(s.length() > 10)
+        	s = s.substring(0,10);
+    	boolean b = true;
+    	for(int i=0; i < s.length(); i++)
+    		if(s.charAt(i) != ' ')
+    			b = false;
+    	if(b)
+    		s = "Player";
+    	if(s.equals(""))
+        	s = "Player";
+    	return s;
+    }
+    
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getActionCommand().equals("Click To Play")) {
             startScreen = false;
             p1Name = t1.getText();
             p2Name = t2.getText();
+            p1Name = checkString(p1Name);
+            p2Name = checkString(p2Name);
+            
             dispose();
         }
         if(e.getActionCommand().equals("Click To Reset")){
